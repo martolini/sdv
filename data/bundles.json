@@ -1,0 +1,382 @@
+{
+  "0": {
+    "id": "0",
+    "roomName": "Pantry",
+    "bundleName": "Spring Crops",
+    "reward": { "id": 465, "name": "Speed-Gro", "stack": "20" },
+    "ingredients": [
+      { "itemId": 24, "stack": 1, "quality": 0, "name": "Parsnip" },
+      { "itemId": 188, "stack": 1, "quality": 0, "name": "Green Bean" },
+      { "itemId": 190, "stack": 1, "quality": 0, "name": "Cauliflower" },
+      { "itemId": 192, "stack": 1, "quality": 0, "name": "Potato" }
+    ]
+  },
+  "1": {
+    "id": "1",
+    "roomName": "Pantry",
+    "bundleName": "Summer Crops",
+    "reward": { "id": 621, "name": "Quality Sprinkler", "stack": "1" },
+    "ingredients": [
+      { "itemId": 256, "stack": 1, "quality": 0, "name": "Tomato" },
+      { "itemId": 260, "stack": 1, "quality": 0, "name": "Hot Pepper" },
+      { "itemId": 258, "stack": 1, "quality": 0, "name": "Blueberry" },
+      { "itemId": 254, "stack": 1, "quality": 0, "name": "Melon" }
+    ]
+  },
+  "2": {
+    "id": "2",
+    "roomName": "Pantry",
+    "bundleName": "Fall Crops",
+    "reward": { "id": 10, "name": "Bee House", "stack": "1" },
+    "ingredients": [
+      { "itemId": 270, "stack": 1, "quality": 0, "name": "Corn" },
+      { "itemId": 272, "stack": 1, "quality": 0, "name": "Eggplant" },
+      { "itemId": 276, "stack": 1, "quality": 0, "name": "Pumpkin" },
+      { "itemId": 280, "stack": 1, "quality": 0, "name": "Yam" }
+    ]
+  },
+  "3": {
+    "id": "3",
+    "roomName": "Pantry",
+    "bundleName": "Quality Crops",
+    "reward": { "id": 15, "name": "Preserves Jar", "stack": "1" },
+    "ingredients": [
+      { "itemId": 24, "stack": 5, "quality": 2, "name": "Parsnip" },
+      { "itemId": 254, "stack": 5, "quality": 2, "name": "Melon" },
+      { "itemId": 276, "stack": 5, "quality": 2, "name": "Pumpkin" },
+      { "itemId": 270, "stack": 5, "quality": 2, "name": "Corn" }
+    ]
+  },
+  "4": {
+    "id": "4",
+    "roomName": "Pantry",
+    "bundleName": "Animal",
+    "reward": { "id": 16, "name": "Cheese Press", "stack": "1" },
+    "ingredients": [
+      { "itemId": 186, "stack": 1, "quality": 0, "name": "Large Milk" },
+      { "itemId": 182, "stack": 1, "quality": 0, "name": "Large Egg" },
+      { "itemId": 174, "stack": 1, "quality": 0 },
+      { "itemId": 438, "stack": 1, "quality": 0, "name": "L. Goat Milk" },
+      { "itemId": 440, "stack": 1, "quality": 0, "name": "Wool" },
+      { "itemId": 442, "stack": 1, "quality": 0, "name": "Duck Egg" },
+      { "itemId": 639, "stack": 1, "quality": 0 },
+      { "itemId": 640, "stack": 1, "quality": 0 },
+      { "itemId": 641, "stack": 1, "quality": 0 },
+      { "itemId": 642, "stack": 1, "quality": 0 },
+      { "itemId": 643, "stack": 1, "quality": 0 }
+    ]
+  },
+  "5": {
+    "id": "5",
+    "roomName": "Pantry",
+    "bundleName": "Artisan",
+    "reward": { "id": 12, "name": "Keg", "stack": "1" },
+    "ingredients": [
+      { "itemId": 432, "stack": 1, "quality": 0, "name": "Truffle Oil" },
+      { "itemId": 428, "stack": 1, "quality": 0, "name": "Cloth" },
+      { "itemId": 426, "stack": 1, "quality": 0, "name": "Goat Cheese" },
+      { "itemId": 424, "stack": 1, "quality": 0, "name": "Cheese" },
+      { "itemId": 340, "stack": 1, "quality": 0, "name": "Honey" },
+      { "itemId": 344, "stack": 1, "quality": 0, "name": "Jelly" },
+      { "itemId": 613, "stack": 1, "quality": 0, "name": "Apple" },
+      { "itemId": 634, "stack": 1, "quality": 0, "name": "Apricot" },
+      { "itemId": 635, "stack": 1, "quality": 0, "name": "Orange" },
+      { "itemId": 636, "stack": 1, "quality": 0, "name": "Peach" },
+      { "itemId": 637, "stack": 1, "quality": 0, "name": "Pomegranate" },
+      { "itemId": 638, "stack": 1, "quality": 0, "name": "Cherry" }
+    ]
+  },
+  "6": {
+    "id": "6",
+    "roomName": "Fish Tank",
+    "bundleName": "River Fish",
+    "reward": { "id": 685, "name": "Bait", "stack": "30" },
+    "ingredients": [
+      { "itemId": 145, "stack": 1, "quality": 0, "name": "Sunfish" },
+      { "itemId": 143, "stack": 1, "quality": 0, "name": "Catfish" },
+      { "itemId": 706, "stack": 1, "quality": 0, "name": "Shad" },
+      { "itemId": 699, "stack": 1, "quality": 0, "name": "Tiger Trout" }
+    ]
+  },
+  "7": {
+    "id": "7",
+    "roomName": "Fish Tank",
+    "bundleName": "Lake Fish",
+    "reward": { "id": 687, "name": "Dressed Spinner", "stack": "1" },
+    "ingredients": [
+      { "itemId": 136, "stack": 1, "quality": 0, "name": "Largemouth Bass" },
+      { "itemId": 142, "stack": 1, "quality": 0, "name": "Carp" },
+      { "itemId": 700, "stack": 1, "quality": 0, "name": "Bullhead" },
+      { "itemId": 698, "stack": 1, "quality": 0, "name": "Sturgeon" }
+    ]
+  },
+  "8": {
+    "id": "8",
+    "roomName": "Fish Tank",
+    "bundleName": "Ocean Fish",
+    "reward": { "id": 690, "name": "Warp Totem Beach", "stack": "5" },
+    "ingredients": [
+      { "itemId": 131, "stack": 1, "quality": 0, "name": "Sardine" },
+      { "itemId": 130, "stack": 1, "quality": 0, "name": "Tuna" },
+      { "itemId": 150, "stack": 1, "quality": 0, "name": "Red Snapper" },
+      { "itemId": 701, "stack": 1, "quality": 0, "name": "Tilapia" }
+    ]
+  },
+  "9": {
+    "id": "9",
+    "roomName": "Fish Tank",
+    "bundleName": "Night Fishing",
+    "reward": { "id": 516, "name": "Small Glow Ring", "stack": "1" },
+    "ingredients": [
+      { "itemId": 140, "stack": 1, "quality": 0, "name": "Walleye" },
+      { "itemId": 132, "stack": 1, "quality": 0, "name": "Bream" },
+      { "itemId": 148, "stack": 1, "quality": 0, "name": "Eel" }
+    ]
+  },
+  "10": {
+    "id": "10",
+    "roomName": "Fish Tank",
+    "bundleName": "Specialty Fish",
+    "reward": { "id": 242, "name": "Dish O' The Sea", "stack": "5" },
+    "ingredients": [
+      { "itemId": 128, "stack": 1, "quality": 0, "name": "Pufferfish" },
+      { "itemId": 156, "stack": 1, "quality": 0, "name": "Ghostfish" },
+      { "itemId": 164, "stack": 1, "quality": 0, "name": "Sandfish" },
+      { "itemId": 734, "stack": 1, "quality": 0, "name": "Woodskip" }
+    ]
+  },
+  "11": {
+    "id": "11",
+    "roomName": "Fish Tank",
+    "bundleName": "Crab Pot",
+    "reward": { "id": 710, "name": "Crab Pot", "stack": "3" },
+    "ingredients": [
+      { "itemId": 715, "stack": 1, "quality": 0, "name": "Lobster" },
+      { "itemId": 716, "stack": 1, "quality": 0, "name": "Crayfish" },
+      { "itemId": 717, "stack": 1, "quality": 0, "name": "Crab" },
+      { "itemId": 718, "stack": 1, "quality": 0, "name": "Cockle" },
+      { "itemId": 719, "stack": 1, "quality": 0, "name": "Mussel" },
+      { "itemId": 720, "stack": 1, "quality": 0, "name": "Shrimp" },
+      { "itemId": 721, "stack": 1, "quality": 0, "name": "Snail" },
+      { "itemId": 722, "stack": 1, "quality": 0, "name": "Periwinkle" },
+      { "itemId": 723, "stack": 1, "quality": 0, "name": "Oyster" },
+      { "itemId": 372, "stack": 1, "quality": 0, "name": "Clam" }
+    ]
+  },
+  "13": {
+    "id": "13",
+    "roomName": "Crafts Room",
+    "bundleName": "Spring Foraging",
+    "reward": { "id": 495, "name": "Spring Seeds", "stack": "30" },
+    "ingredients": [
+      { "itemId": 16, "stack": 1, "quality": 0, "name": "Wild Horseradish" },
+      { "itemId": 18, "stack": 1, "quality": 0, "name": "Daffodil" },
+      { "itemId": 20, "stack": 1, "quality": 0, "name": "Leek" },
+      { "itemId": 22, "stack": 1, "quality": 0, "name": "Dandelion" }
+    ]
+  },
+  "14": {
+    "id": "14",
+    "roomName": "Crafts Room",
+    "bundleName": "Summer Foraging",
+    "reward": { "id": 496, "name": "Summer Seeds", "stack": "30" },
+    "ingredients": [
+      { "itemId": 396, "stack": 1, "quality": 0, "name": "Spice Berry" },
+      { "itemId": 398, "stack": 1, "quality": 0, "name": "Grape" },
+      { "itemId": 402, "stack": 1, "quality": 0, "name": "Sweet Pea" }
+    ]
+  },
+  "15": {
+    "id": "15",
+    "roomName": "Crafts Room",
+    "bundleName": "Fall Foraging",
+    "reward": { "id": 497, "name": "Fall Seeds", "stack": "30" },
+    "ingredients": [
+      { "itemId": 404, "stack": 1, "quality": 0, "name": "Common Mushroom" },
+      { "itemId": 406, "stack": 1, "quality": 0, "name": "Wild Plum" },
+      { "itemId": 408, "stack": 1, "quality": 0, "name": "Hazelnut" },
+      { "itemId": 410, "stack": 1, "quality": 0, "name": "Blackberry" }
+    ]
+  },
+  "16": {
+    "id": "16",
+    "roomName": "Crafts Room",
+    "bundleName": "Winter Foraging",
+    "reward": { "id": 498, "name": "Winter Seeds", "stack": "30" },
+    "ingredients": [
+      { "itemId": 412, "stack": 1, "quality": 0, "name": "Winter Root" },
+      { "itemId": 414, "stack": 1, "quality": 0, "name": "Crystal Fruit" },
+      { "itemId": 416, "stack": 1, "quality": 0, "name": "Snow Yam" },
+      { "itemId": 418, "stack": 1, "quality": 0, "name": "Crocus" }
+    ]
+  },
+  "17": {
+    "id": "17",
+    "roomName": "Crafts Room",
+    "bundleName": "Construction",
+    "reward": { "id": 114, "name": "Charcoal Kiln", "stack": "1" },
+    "ingredients": [
+      { "itemId": 388, "stack": 99, "quality": 0, "name": "Wood" },
+      { "itemId": 388, "stack": 99, "quality": 0, "name": "Wood" },
+      { "itemId": 390, "stack": 99, "quality": 0 },
+      { "itemId": 709, "stack": 10, "quality": 0, "name": "Hardwood" }
+    ]
+  },
+  "19": {
+    "id": "19",
+    "roomName": "Crafts Room",
+    "bundleName": "Exotic Foraging",
+    "reward": { "id": 235, "name": "Autumn's Bounty", "stack": "5" },
+    "ingredients": [
+      { "itemId": 88, "stack": 1, "quality": 0, "name": "Coconut" },
+      { "itemId": 90, "stack": 1, "quality": 0, "name": "Cactus Fruit" },
+      { "itemId": 78, "stack": 1, "quality": 0, "name": "Cave Carrot" },
+      { "itemId": 420, "stack": 1, "quality": 0, "name": "Red Mushroom" },
+      { "itemId": 422, "stack": 1, "quality": 0, "name": "Purple Mushroom" },
+      { "itemId": 724, "stack": 1, "quality": 0, "name": "Maple Syrup" },
+      { "itemId": 725, "stack": 1, "quality": 0, "name": "Oak Resin" },
+      { "itemId": 726, "stack": 1, "quality": 0, "name": "Pine Tar" },
+      { "itemId": 257, "stack": 1, "quality": 0, "name": "Morel" }
+    ]
+  },
+  "20": {
+    "id": "20",
+    "roomName": "Boiler Room",
+    "bundleName": "Blacksmith's",
+    "reward": { "id": 13, "name": "Furnace", "stack": "1" },
+    "ingredients": [
+      { "itemId": 334, "stack": 1, "quality": 0, "name": "Copper Bar" },
+      { "itemId": 335, "stack": 1, "quality": 0, "name": "Iron Bar" },
+      { "itemId": 336, "stack": 1, "quality": 0, "name": "Gold Bar" }
+    ]
+  },
+  "21": {
+    "id": "21",
+    "roomName": "Boiler Room",
+    "bundleName": "Geologist's",
+    "reward": { "id": 749, "name": "Omni Geode", "stack": "5" },
+    "ingredients": [
+      { "itemId": 80, "stack": 1, "quality": 0, "name": "Quartz" },
+      { "itemId": 86, "stack": 1, "quality": 0, "name": "Earth Crystal" },
+      { "itemId": 84, "stack": 1, "quality": 0, "name": "Frozen Tear" },
+      { "itemId": 82, "stack": 1, "quality": 0, "name": "Fire Quartz" }
+    ]
+  },
+  "22": {
+    "id": "22",
+    "roomName": "Boiler Room",
+    "bundleName": "Adventurer's",
+    "reward": { "id": 518, "name": "Small Magnet Ring", "stack": "1" },
+    "ingredients": [
+      { "itemId": 766, "stack": 99, "quality": 0, "name": "Slime" },
+      { "itemId": 767, "stack": 10, "quality": 0, "name": "Bat Wing" },
+      { "itemId": 768, "stack": 1, "quality": 0, "name": "Solar Essence" },
+      { "itemId": 769, "stack": 1, "quality": 0, "name": "Void Essence" }
+    ]
+  },
+  "23": {
+    "id": "23",
+    "roomName": "Vault",
+    "bundleName": "2,500g",
+    "reward": { "id": 220, "name": "Chocolate Cake", "stack": "3" },
+    "ingredients": [{ "itemId": -1, "stack": 2500, "quality": 2500 }]
+  },
+  "24": {
+    "id": "24",
+    "roomName": "Vault",
+    "bundleName": "5,000g",
+    "reward": { "id": 369, "name": "Quality Fertilizer", "stack": "30" },
+    "ingredients": [{ "itemId": -1, "stack": 5000, "quality": 5000 }]
+  },
+  "25": {
+    "id": "25",
+    "roomName": "Vault",
+    "bundleName": "10,000g",
+    "reward": { "id": 9, "name": "Lightning Rod", "stack": "1" },
+    "ingredients": [{ "itemId": -1, "stack": 10000, "quality": 10000 }]
+  },
+  "26": {
+    "id": "26",
+    "roomName": "Vault",
+    "bundleName": "25,000g",
+    "reward": { "id": 21, "name": "Crystalarium", "stack": "1" },
+    "ingredients": [{ "itemId": -1, "stack": 25000, "quality": 25000 }]
+  },
+  "31": {
+    "id": "31",
+    "roomName": "Bulletin Board",
+    "bundleName": "Chef's",
+    "reward": { "id": 221, "name": "Pink Cake", "stack": "3" },
+    "ingredients": [
+      { "itemId": 724, "stack": 1, "quality": 0, "name": "Maple Syrup" },
+      { "itemId": 259, "stack": 1, "quality": 0, "name": "Fiddlehead Fern" },
+      { "itemId": 430, "stack": 1, "quality": 0, "name": "Truffle" },
+      { "itemId": 376, "stack": 1, "quality": 0, "name": "Poppy" },
+      { "itemId": 228, "stack": 1, "quality": 0, "name": "Maki Roll" },
+      { "itemId": 194, "stack": 1, "quality": 0, "name": "Fried Egg" }
+    ]
+  },
+  "32": {
+    "id": "32",
+    "roomName": "Bulletin Board",
+    "bundleName": "Field Research",
+    "reward": { "id": 20, "name": "Recycling Machine", "stack": "1" },
+    "ingredients": [
+      { "itemId": 422, "stack": 1, "quality": 0, "name": "Purple Mushroom" },
+      { "itemId": 392, "stack": 1, "quality": 0, "name": "Nautilus Shell" },
+      { "itemId": 702, "stack": 1, "quality": 0, "name": "Chub" },
+      { "itemId": 536, "stack": 1, "quality": 0, "name": "Frozen Geode" }
+    ]
+  },
+  "33": {
+    "id": "33",
+    "roomName": "Bulletin Board",
+    "bundleName": "Enchanter's",
+    "reward": { "id": 336, "name": "Gold Bar", "stack": "5" },
+    "ingredients": [
+      { "itemId": 725, "stack": 1, "quality": 0, "name": "Oak Resin" },
+      { "itemId": 348, "stack": 1, "quality": 0, "name": "Wine" },
+      { "itemId": 446, "stack": 1, "quality": 0, "name": "Rabbit's Foot" },
+      { "itemId": 637, "stack": 1, "quality": 0, "name": "Pomegranate" }
+    ]
+  },
+  "34": {
+    "id": "34",
+    "roomName": "Bulletin Board",
+    "bundleName": "Dye",
+    "reward": { "id": 25, "name": "Seed Maker", "stack": "1" },
+    "ingredients": [
+      { "itemId": 420, "stack": 1, "quality": 0, "name": "Red Mushroom" },
+      { "itemId": 397, "stack": 1, "quality": 0, "name": "Sea Urchin" },
+      { "itemId": 421, "stack": 1, "quality": 0, "name": "Sunflower" },
+      { "itemId": 444, "stack": 1, "quality": 0, "name": "Duck Feather" },
+      { "itemId": 62, "stack": 1, "quality": 0, "name": "Aquamarine" },
+      { "itemId": 266, "stack": 1, "quality": 0, "name": "Red Cabbage" }
+    ]
+  },
+  "35": {
+    "id": "35",
+    "roomName": "Bulletin Board",
+    "bundleName": "Fodder",
+    "reward": { "id": 104, "stack": "1" },
+    "ingredients": [
+      { "itemId": 262, "stack": 10, "quality": 0, "name": "Wheat" },
+      { "itemId": 178, "stack": 10, "quality": 0, "name": "Hay" },
+      { "itemId": 613, "stack": 3, "quality": 0, "name": "Apple" }
+    ]
+  },
+  "36": {
+    "id": "36",
+    "roomName": "Abandoned Joja Mart",
+    "bundleName": "The Missing",
+    "reward": { "id": null },
+    "ingredients": [
+      { "itemId": 348, "stack": 1, "quality": 1, "name": "Wine" },
+      { "itemId": 807, "stack": 1, "quality": 0 },
+      { "itemId": 74, "stack": 1, "quality": 0, "name": "Prismatic Shard" },
+      { "itemId": 454, "stack": 5, "quality": 2, "name": "Ancient Fruit" },
+      { "itemId": 795, "stack": 1, "quality": 2, "name": "Void Salmon" },
+      { "itemId": 445, "stack": 1, "quality": 0 }
+    ]
+  }
+}

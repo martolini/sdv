@@ -1,0 +1,139 @@
+import { Layout, Menu, Icon, Tag } from 'antd';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import KeepQueryLink from './KeepQueryLink';
+
+const OuterDiv = styled.div`
+  font-family: VT323;
+  line-height: 1;
+  font-size: 18px;
+
+  .ant-table {
+    font-size: 18px !important;
+  }
+
+  .ant-checkbox-wrapper {
+    font-size: 18px !important;
+  }
+
+  .ant-tag {
+    font-size: 18px !important;
+  }
+
+  .ant-select {
+    font-size: 18px !important;
+  }
+
+  .ant-menu-inline .ant-menu-item {
+    font-size: 18px !important;
+  }
+`;
+
+const { Header, Content, Footer, Sider } = Layout;
+
+export default function LayoutView(props) {
+  const { info = {} } = props;
+  const { pathname } = useRouter();
+  const [collapsed, setCollapsed] = useState(true);
+  return (
+    <OuterDiv>
+      <Head>
+        <title>Stardew guide</title>
+        <link
+          href={`https://fonts.googleapis.com/css?family=VT323&display=swap`}
+          rel="stylesheet"
+        />
+      </Head>
+      <Layout>
+        <Sider
+          collapsible
+          collapsed={collapsed}
+          onCollapse={c => setCollapsed(c)}
+          style={{
+            overflow: 'auto',
+            height: '100vh',
+            position: 'fixed',
+            left: 0,
+          }}
+        >
+          <div className="logo" />
+          <Menu theme="dark" mode="inline" selectedKeys={[pathname.slice(1)]}>
+            <Menu.Item key="farm">
+              <KeepQueryLink href="/farm">
+                <a>
+                  <Icon type="home" />
+                  <span className="nav-text">Farm</span>
+                </a>
+              </KeepQueryLink>
+            </Menu.Item>
+            <Menu.Item key="inventory">
+              <KeepQueryLink href="/inventory">
+                <a>
+                  <Icon type="database" />
+                  <span className="nav-text">Inventory</span>
+                </a>
+              </KeepQueryLink>
+            </Menu.Item>
+            <Menu.Item key="bundles">
+              <KeepQueryLink href="/bundles">
+                <a>
+                  <Icon type="appstore" />
+                  <span className="nav-text">Bundles</span>
+                </a>
+              </KeepQueryLink>
+            </Menu.Item>
+            <Menu.Item key="forage">
+              <KeepQueryLink href="/forage">
+                <a>
+                  <Icon type="environment" />
+                  <span className="nav-text">Forage</span>
+                </a>
+              </KeepQueryLink>
+            </Menu.Item>
+            <Menu.Item key="user">
+              <KeepQueryLink href="/user">
+                <a>
+                  <Icon type="user" />
+                  <span className="nav-text">User</span>
+                </a>
+              </KeepQueryLink>
+            </Menu.Item>
+          </Menu>
+        </Sider>
+        <Layout style={{ marginLeft: collapsed ? 80 : 200 }}>
+          <Header
+            style={{ background: '#fff', padding: 0, paddingLeft: '15px' }}
+          >
+            <h2>
+              {`${info.farmName} farm`}
+              <Tag
+                style={{ marginLeft: 25 }}
+                color="orange"
+              >{`${info.currentSeason} ${info.dayOfMonth}`}</Tag>
+              <Tag color="magenta">Year {info.year}</Tag>
+              <Tag color="gold">
+                {`${Math.round(((+info.dailyLuck + 0.1) / 0.2) * 100)}% luck`}
+              </Tag>
+              <Tag color="green">
+                {info.money}
+                <span role="img" aria-label="money">
+                  💰
+                </span>
+              </Tag>
+            </h2>
+          </Header>
+          <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
+            <div style={{ padding: 24, background: '#fff' }}>
+              {props.children}
+            </div>
+          </Content>
+          <Footer style={{ textAlign: 'center' }}>
+            <p>{'martolini <3 stardew'}</p>
+          </Footer>
+        </Layout>
+      </Layout>
+    </OuterDiv>
+  );
+}
