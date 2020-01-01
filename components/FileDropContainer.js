@@ -32,14 +32,10 @@ export default function HandleFileDrop(props) {
               id: state.info.id,
             },
           });
-          try {
-            await ref.getDownloadURL();
-          } catch (ex) {
-            await ref.putString(JSON.stringify(json), undefined, {
-              contentType: 'application/json',
-              cacheControl: 'max-age=43200',
-            });
-          }
+          await ref.putString(JSON.stringify(json), undefined, {
+            contentType: 'application/json',
+            cacheControl: 'max-age=43200',
+          });
           setIsDraggingFile(false);
           props.onFinished(state);
         };
