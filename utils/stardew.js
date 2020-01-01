@@ -143,6 +143,16 @@ export function findHarvestOnFarm(gameState) {
   const preservesJars = filterObjectsByName(location, 'Preserves Jar');
   const beeHouses = filterObjectsByName(location, 'Bee House');
   const eggs = findInBuildings(location, 'Coop', ['Egg']);
+  const trees = location.terrainFeatures.item
+    .filter(o => o.value.TerrainFeature['@_xsi:type'] === 'FruitTree')
+    .map(o => ({
+      ...o,
+      name: `${REVERSE_ID_TABLE[o.value.TerrainFeature.indexOfFruit]} Tree`,
+      daysToHarvest: o.value.TerrainFeature.daysUntilMature,
+      done: o.value.TerrainFeature.daysUntilMature === 0,
+      x: o.key.Vector2.X,
+      y: o.key.Vector2.Y,
+    }));
 
   let crops = location.terrainFeatures.item
     .filter(feature => feature.value.TerrainFeature.crop)
@@ -189,7 +199,14 @@ export function findHarvestOnFarm(gameState) {
         y: feature.key.Vector2.Y,
       };
     });
-  return [...crops, ...tappers, ...preservesJars, ...beeHouses, ...eggs];
+  return [
+    ...crops,
+    ...tappers,
+    ...preservesJars,
+    ...beeHouses,
+    ...eggs,
+    ...trees,
+  ];
 }
 
 const findPaths = (
