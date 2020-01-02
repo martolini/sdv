@@ -149,8 +149,8 @@ export function findHarvestOnFarm(gameState) {
     .map(o => ({
       ...o,
       name: `${REVERSE_ID_TABLE[o.value.TerrainFeature.indexOfFruit]} Tree`,
-      daysToHarvest: o.value.TerrainFeature.daysUntilMature,
-      done: o.value.TerrainFeature.daysUntilMature === 0,
+      daysToHarvest: Math.max(o.value.TerrainFeature.daysUntilMature, 0),
+      done: o.value.TerrainFeature.fruitsOnTree > 0,
       x: o.key.Vector2.X,
       y: o.key.Vector2.Y,
     }));
