@@ -249,7 +249,7 @@ function calculatePrice(item) {
       return Math.floor(item.price * 1.25);
     case 2:
       return Math.floor(item.price * 1.5);
-    case 3:
+    case 4:
       return Math.floor(item.price * 2);
     default:
       return item.price;

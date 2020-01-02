@@ -27,6 +27,7 @@ function MyApp({ Component, pageProps }) {
         const url = await storageRef.getDownloadURL();
         const data = (await axios.get(url)).data;
         const state = await goCrazyWithJson(data.SaveGame);
+        window.state = state;
         setGameState(state);
       } catch (ex) {
         console.log(ex);
