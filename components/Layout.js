@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import KeepQueryLink from './KeepQueryLink';
+import Header from './Header';
 
 const OuterDiv = styled.div`
   font-family: VT323;
@@ -31,7 +32,7 @@ const OuterDiv = styled.div`
   }
 `;
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Footer, Sider } = Layout;
 
 export default function LayoutView(props) {
   const { info = {} } = props;
@@ -103,27 +104,7 @@ export default function LayoutView(props) {
           </Menu>
         </Sider>
         <Layout style={{ marginLeft: collapsed ? 80 : 200 }}>
-          <Header
-            style={{ background: '#fff', padding: 0, paddingLeft: '15px' }}
-          >
-            <h2>
-              {`${info.farmName} farm`}
-              <Tag
-                style={{ marginLeft: 25 }}
-                color="orange"
-              >{`${info.currentSeason} ${info.dayOfMonth}`}</Tag>
-              <Tag color="magenta">Year {info.year}</Tag>
-              <Tag color="gold">
-                {`${Math.round(((+info.dailyLuck + 0.1) / 0.2) * 100)}% luck`}
-              </Tag>
-              <Tag color="green">
-                {info.money}
-                <span role="img" aria-label="money">
-                  💰
-                </span>
-              </Tag>
-            </h2>
-          </Header>
+          <Header info={info} />
           <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
             <div style={{ padding: 24, background: '#fff' }}>
               {props.children}
