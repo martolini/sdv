@@ -3,19 +3,25 @@ import { Popover, Tooltip } from 'antd';
 import ReactJsonView from './JsonView';
 import styled from 'styled-components';
 
-const PlacedDiv = styled.div`
+const PlacedDiv = styled.div.attrs(props => ({
+  style: {
+    left: `${(props.c.x / props.mapSize.x) * 100}%`,
+    top: `${(props.c.y / props.mapSize.y) * 100}%`,
+    height: `${(props.tileSize * props.mapSize.x) / props.mapSize.y}%`,
+    width: `${props.tileSize}%`,
+    backgroundColor: props.c.dead
+      ? '#111111'
+      : props.c.done
+      ? '#2ECC40'
+      : '#FF4136',
+  },
+}))`
   text-align: center;
   cursor: pointer;
-  left: ${props => (props.c.x / props.mapSize.x) * 100}%;
-  top: ${props => (props.c.y / props.mapSize.y) * 100}%;
   position: absolute;
-  height: ${props => (props.tileSize * props.mapSize.x) / props.mapSize.y}%;
-  width: ${props => props.tileSize}%;
   color: white;
   font-size: 0.7rem;
   font-weight: 800;
-  background-color: ${({ c }) =>
-    c.dead ? '#111111' : c.done ? '#2ECC40' : '#FF4136'};
   &:hover {
     opacity: 0.5;
   }
