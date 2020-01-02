@@ -143,6 +143,7 @@ export function findHarvestOnFarm(gameState) {
   const preservesJars = filterObjectsByName(location, 'Preserves Jar');
   const beeHouses = filterObjectsByName(location, 'Bee House');
   const eggs = findInBuildings(location, 'Coop', ['Egg']);
+  const kegs = findInBuildings(location, 'Barn', ['Keg']);
   const trees = location.terrainFeatures.item
     .filter(o => o.value.TerrainFeature['@_xsi:type'] === 'FruitTree')
     .map(o => ({
@@ -206,6 +207,7 @@ export function findHarvestOnFarm(gameState) {
     ...beeHouses,
     ...eggs,
     ...trees,
+    ...kegs,
   ];
 }
 
