@@ -116,11 +116,11 @@ const findInBuildings = (location, building, names = []) => {
         item => names.length === 0 || names.includes(item.value.Object.name)
       )
       .map(item => {
-        const { name, minutesUntilReady } = item.value.Object;
+        const { name, minutesUntilReady, heldObject } = item.value.Object;
         const daysToHarvest = Math.round(minutesUntilReady / 60 / 24);
         return {
           ...item,
-          name,
+          name: heldObject ? `${name} (${heldObject.name})` : name,
           daysToHarvest,
           x: item.key.Vector2.X,
           y: item.key.Vector2.Y,
