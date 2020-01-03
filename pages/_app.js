@@ -26,19 +26,27 @@ function MyApp({ Component, pageProps }) {
 }
 
 MyApp.getInitialProps = async function(context) {
+  const pageProps = {};
   if (typeof window !== 'undefined') {
-    return { pageProps: {} };
+    return { pageProps };
   }
   const {
     query: { id },
   } = context.ctx;
   if (!id) {
-    return {};
+    return { pageProps };
   }
-  const state = await getFarmState(id);
-  return {
-    pageProps: state,
-  };
+  try {
+    const state = await getFarmState(id);
+    return {
+      pageProps: state,
+    };
+  } catch (ex) {
+    console.error(ex);
+    return {
+      pageProps,
+    };
+  }
 };
 
 export default MyApp;
