@@ -11,14 +11,20 @@ if (typeof window === 'undefined') {
   };
 }
 
+const fileCache = {};
+
 export const getFarmState = async farm => {
   if (admin.apps.length === 0) {
     admin.initializeApp(config);
   }
+  if (fileCache[farm]) {
+    return fileCache[farm];
+  }
   const bucket = admin.storage().bucket();
-  const f = await bucket.file(`farms/${farm}`).download({ decompress: true });
+  const f = await bucket.file(`farms/${farm}`).download();
   const output = JSON.parse(f.toString());
   const state = await goCrazyWithJson(output.SaveGame);
+  fileCache[farm] = state;
   return state;
 };
 
