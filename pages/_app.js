@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ThemeProvider } from 'styled-components';
 import { getStorage } from '../utils/firebase';
+import { getFarmState } from '../utils/firebase-admin';
 import qs from 'query-string';
 import axios from 'axios';
 import { goCrazyWithJson } from '../utils/stardew';
@@ -12,51 +13,37 @@ import FileDropContainer from '../components/FileDropContainer';
 const theme = {};
 
 function MyApp({ Component, pageProps }) {
-  const routerData = useRouter();
-  const [gameState, setGameState] = useState({});
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    // Fetch data
-    const { id } = qs.parse(routerData.asPath.split('?')[1]);
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const storageRef = getStorage()
-          .ref('farms')
-          .child(id);
-        const url = await storageRef.getDownloadURL();
-        const data = (await axios.get(url)).data;
-        const state = await goCrazyWithJson(data.SaveGame);
-        window.state = state;
-        setGameState(state);
-      } catch (ex) {
-        console.log(ex);
-      }
-      setLoading(false);
-    };
-    if (id) {
-      fetchData();
-    }
-  }, []);
+  const [gameState, setGameState] = useState(pageProps);
 
   return (
     <ThemeProvider theme={theme}>
       <FileDropContainer
         onFinished={state => {
           setGameState(state);
-          setLoading(false);
         }}
       >
         <Layout {...gameState}>
-          {loading ? (
-            <h1>Loading...</h1>
-          ) : (
-            <Component {...pageProps} {...gameState} />
-          )}
+          <Component {...gameState} />
         </Layout>
       </FileDropContainer>
     </ThemeProvider>
   );
 }
+
+MyApp.getInitialProps = async function(context) {
+  if (typeof window !== 'undefined') {
+    return {};
+  }
+  const {
+    query: { id },
+  } = context.ctx;
+  if (!id) {
+    return {};
+  }
+  const state = await getFarmState(id);
+  return {
+    pageProps: state,
+  };
+};
 
 export default MyApp;
