@@ -7,7 +7,7 @@ export default function FarmView(props) {
   const [checked, setChecked] = useState([]);
   const [indeterminate, setIndeterminate] = useState(false);
 
-  const { harvestOnFarm } = props;
+  const { harvestOnFarm = [] } = props;
   const mapSize = MAP_SIZES['Farm'];
 
   const cropsCountMap = harvestOnFarm.reduce((p, c) => {

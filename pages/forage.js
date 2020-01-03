@@ -3,7 +3,7 @@ import { Tooltip, Select, Divider } from 'antd';
 import { MAP_IMAGES, MAP_SIZES } from '../utils/lookups';
 
 export default function Forage(props) {
-  const { foraging } = props;
+  const { foraging = {} } = props;
   const [selectedMaps, setSelectedMaps] = useState(Object.keys(MAP_IMAGES));
   return (
     <div>

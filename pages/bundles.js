@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tag, Table } from 'antd';
+import { Tag, Table, Empty } from 'antd';
 import styled from 'styled-components';
 import { uniqBy } from 'lodash';
 import { getBundleStatus, canDeliverItem } from '../utils/stardew';
@@ -18,7 +18,10 @@ const WrapperDiv = styled.div`
 `;
 
 export default function BundleView(props) {
-  const { deliverableItems, gameState } = props;
+  const { deliverableItems = [], gameState } = props;
+  if (!gameState) {
+    return <Empty />;
+  }
   const bundleStatus = getBundleStatus(gameState);
   const missingBundleItems = Object.keys(Bundles)
     .map(bundleKey => {

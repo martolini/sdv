@@ -1,12 +1,7 @@
 import 'antd/dist/antd.css';
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
-import { getStorage } from '../utils/firebase';
 import { getFarmState } from '../utils/firebase-admin';
-import qs from 'query-string';
-import axios from 'axios';
-import { goCrazyWithJson } from '../utils/stardew';
 import Layout from '../components/Layout';
 import FileDropContainer from '../components/FileDropContainer';
 
@@ -32,7 +27,7 @@ function MyApp({ Component, pageProps }) {
 
 MyApp.getInitialProps = async function(context) {
   if (typeof window !== 'undefined') {
-    return {};
+    return { pageProps: {} };
   }
   const {
     query: { id },

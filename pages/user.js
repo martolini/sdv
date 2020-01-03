@@ -1,5 +1,5 @@
 import React from 'react';
-import { Progress, Row, Col } from 'antd';
+import { Progress, Row, Col, Empty } from 'antd';
 import { getPlayers } from '../utils/stardew';
 
 const SKILL_TABLE = {
@@ -26,6 +26,9 @@ const EXP_TABLE = {
 
 export default function PlayerView(props) {
   const { gameState } = props;
+  if (!gameState) {
+    return <Empty />;
+  }
   const players = getPlayers(gameState);
   const renderObject = Object.keys(players).map(playerName => {
     const player = players[playerName];

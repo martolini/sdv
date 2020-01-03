@@ -9,7 +9,7 @@ const { Search } = Input;
 
 export default function InventoryView(props) {
   const [searchTerm, setSearchTerm] = useState();
-  const { deliverableItems: itemsMap } = props;
+  const { deliverableItems: itemsMap = {} } = props;
   const itemsArray = Object.keys(itemsMap).reduce(
     (p, c) => [...p, ...itemsMap[c]],
     []
