@@ -71,7 +71,7 @@ export async function goCrazyWithJson(json) {
       .filter(l => !!l);
     return p;
   }, {});
-  if (window) {
+  if (typeof window !== 'undefined') {
     window.json = json;
   }
   return {
