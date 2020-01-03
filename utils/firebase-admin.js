@@ -18,6 +18,7 @@ export const getFarmState = async farm => {
     admin.initializeApp(config);
   }
   if (fileCache[farm]) {
+    console.log('Using cache');
     return fileCache[farm];
   }
   const bucket = admin.storage().bucket();
