@@ -37,26 +37,14 @@ export default function HandleFileDrop(props) {
             contentType: 'application/json',
             cacheControl: 'max-age=43200',
           });
-          const recentRef = getFirestore()
+          await getFirestore()
             .collection('uploads')
-            .doc('global');
-          await getFirestore().runTransaction(async t => {
-            const doc = await t.get(recentRef);
-            const { saveGames } = doc.data();
-            await t.update(recentRef, {
-              saveGames: uniqBy(
-                [
-                  {
-                    id: state.info.id,
-                    farmName: state.info.farmName,
-                    uploadedAtMillis: Date.now(),
-                  },
-                  ...saveGames,
-                ],
-                a => a.id
-              ),
+            .doc(state.info.id)
+            .set({
+              id: state.info.id,
+              farmName: state.info.farmName,
+              uploadedAtMillis: Date.now(),
             });
-          });
           setIsDraggingFile(false);
           props.onFinished(state);
         };

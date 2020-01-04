@@ -9,9 +9,16 @@ export default function Footer(props) {
   useEffect(() => {
     const unsubscribe = getFirestore()
       .collection('uploads')
-      .doc('global')
-      .onSnapshot(doc => {
-        setRecents(doc.data().saveGames);
+      .orderBy('uploadedAtMillis', 'desc')
+      .limit(5)
+      .onSnapshot(snapshot => {
+        if (!snapshot.empty) {
+          const saveGames = [];
+          snapshot.forEach(doc => {
+            saveGames.push(doc.data());
+          });
+          setRecents(saveGames);
+        }
       });
     return unsubscribe;
   }, []);
