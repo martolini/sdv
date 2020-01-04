@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { MAP_SIZES } from '../utils/lookups';
 import { Checkbox, Divider } from 'antd';
 import FarmOverlayView from '../components/FarmOverlayView';
 
@@ -8,7 +7,7 @@ export default function FarmView(props) {
   const [indeterminate, setIndeterminate] = useState(false);
 
   const { harvestOnFarm = [] } = props;
-  const mapSize = MAP_SIZES['Farm'];
+  const mapSize = { x: 80, y: 65 };
 
   const cropsCountMap = harvestOnFarm.reduce((p, c) => {
     const existing = p[c.name] || 0;

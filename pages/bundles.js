@@ -2,8 +2,6 @@ import React from 'react';
 import { Tag, Table, Empty } from 'antd';
 import styled from 'styled-components';
 import { uniqBy } from 'lodash';
-import { getBundleStatus, canDeliverItem } from '../utils/stardew';
-import Bundles from '../data/bundles.json';
 import Wikify from '../components/Wikify';
 import QualityIcon from '../components/QualityIcon';
 
@@ -18,31 +16,11 @@ const WrapperDiv = styled.div`
 `;
 
 export default function BundleView(props) {
-  const { deliverableItems = [], gameState } = props;
-  if (!gameState) {
+  const { missingBundleItems = [] } = props;
+  if (missingBundleItems.length === 0) {
     return <Empty />;
   }
-  const bundleStatus = getBundleStatus(gameState);
-  const missingBundleItems = Object.keys(Bundles)
-    .map(bundleKey => {
-      const dataBundle = Bundles[bundleKey];
-      return {
-        ...dataBundle,
-        ...bundleStatus[dataBundle.id],
-        missingIngredients: bundleStatus[dataBundle.id].missingIngredients.map(
-          i => ({
-            ...i,
-            deliverable: canDeliverItem(
-              deliverableItems,
-              i.itemId,
-              i.stack,
-              i.quality
-            ),
-          })
-        ),
-      };
-    })
-    .filter(({ nMissing }) => nMissing > 0);
+
   const columns = [
     {
       title: 'Room',
