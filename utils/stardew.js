@@ -1,4 +1,4 @@
-import { MAP_SIZES, ID_TABLE, REVERSE_ID_TABLE } from './lookups';
+import { MAP_SIZES, REVERSE_ID_TABLE } from './lookups';
 import bundles from '../data/bundles.json';
 
 const forageItems = [
@@ -74,12 +74,37 @@ export async function goCrazyWithJson(json) {
   if (typeof window !== 'undefined') {
     window.json = json;
   }
+  // Generate bundle status
+  const deliverableItems = getDeliverableItems(json);
+  const bundleStatus = getBundleStatus(json);
+  const missingBundleItems = Object.keys(bundles)
+    .map(bundleKey => {
+      const dataBundle = bundles[bundleKey];
+      return {
+        ...dataBundle,
+        ...bundleStatus[dataBundle.id],
+        missingIngredients: bundleStatus[dataBundle.id].missingIngredients.map(
+          i => ({
+            ...i,
+            deliverable: canDeliverItem(
+              deliverableItems,
+              i.itemId,
+              i.stack,
+              i.quality
+            ),
+          })
+        ),
+      };
+    })
+    .filter(({ nMissing }) => nMissing > 0);
   return {
     gameState: json,
     foraging,
     info,
     harvestOnFarm: findHarvestOnFarm(json),
-    deliverableItems: getDeliverableItems(json),
+    missingBundleItems,
+    deliverableItems,
+    players: getPlayers(json),
   };
 }
 

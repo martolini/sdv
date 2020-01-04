@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Tooltip, Select, Divider } from 'antd';
 import { MAP_IMAGES, MAP_SIZES } from '../utils/lookups';
+import fetchStaticProps from '../utils/fetchStaticProps';
 
-export default function Forage(props) {
+export default function ForageView(props) {
   const { foraging = {} } = props;
   const [selectedMaps, setSelectedMaps] = useState(Object.keys(MAP_IMAGES));
   return (
@@ -100,3 +101,8 @@ const createMapElements = (maps, foraging) => {
   });
   return mapElements;
 };
+
+ForageView.getInitialProps = fetchStaticProps({
+  path: 'forage',
+  propsKey: 'foraging',
+});

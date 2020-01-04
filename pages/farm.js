@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { MAP_SIZES } from '../utils/lookups';
 import { Checkbox, Divider } from 'antd';
 import FarmOverlayView from '../components/FarmOverlayView';
+import fetchStaticProps from '../utils/fetchStaticProps';
+
+const mapSize = { x: 80, y: 65 };
 
 export default function FarmView(props) {
   const [checked, setChecked] = useState([]);
   const [indeterminate, setIndeterminate] = useState(false);
 
   const { harvestOnFarm = [] } = props;
-  const mapSize = MAP_SIZES['Farm'];
 
   const cropsCountMap = harvestOnFarm.reduce((p, c) => {
     const existing = p[c.name] || 0;
@@ -76,3 +77,8 @@ export default function FarmView(props) {
     </div>
   );
 }
+
+FarmView.getInitialProps = fetchStaticProps({
+  path: 'harvest',
+  propsKey: 'harvestOnFarm',
+});

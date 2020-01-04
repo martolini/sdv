@@ -2,7 +2,6 @@ import { useState } from 'react';
 import parser from 'fast-xml-parser';
 import { useRouter } from 'next/router';
 import { getStorage } from '../utils/firebase';
-import { goCrazyWithJson } from '../utils/stardew';
 
 export default function HandleFileDrop(props) {
   const [isDraggingFile, setIsDraggingFile] = useState(false);
@@ -21,29 +20,27 @@ export default function HandleFileDrop(props) {
             parseAttributeValue: true,
           });
           // Parse main info
-          const state = await goCrazyWithJson(json.SaveGame);
+          const info = json.SaveGame;
+          const id = `${info.uniqueIDForThisGame}-${info.year}-${info.currentSeason}-${info.dayOfMonth}`;
           // Upload if it doesn't exist
           const ref = getStorage()
             .ref()
-            .child(`farms/${state.info.id}`);
-          router.push({
-            pathname: router.pathname,
-            query: {
-              id: state.info.id,
-            },
-          });
+            .child(`farms/${id}`);
           await ref.putString(JSON.stringify(json), undefined, {
             contentType: 'application/json',
             cacheControl: 'max-age=43200',
           });
           setIsDraggingFile(false);
-          props.onFinished(state);
+          router.push({
+            pathname: router.pathname,
+            query: {
+              id,
+            },
+          });
+          props.onFinished();
         };
         reader.readAsText(file);
       }
-    } else {
-      // Use DataTransfer interface to access the file(s)
-      for (var i = 0; i < ev.dataTransfer.files.length; i++) {}
     }
   };
 
@@ -51,13 +48,16 @@ export default function HandleFileDrop(props) {
     <div
       onDrop={onDrop}
       onDragOver={event => {
-        if (event.dataTransfer.items.length) {
+        if (event.dataTransfer.items.length && !isDraggingFile) {
           setIsDraggingFile(true);
         }
         event.preventDefault();
       }}
       onDragEnd={() => setIsDraggingFile(false)}
       onMouseOut={() => {
+        setIsDraggingFile(false);
+      }}
+      onMouseLeave={() => {
         setIsDraggingFile(false);
       }}
       onMouseUp={e => {

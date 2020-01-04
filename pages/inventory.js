@@ -4,6 +4,7 @@ import { Table, Input } from 'antd';
 import QualityIcon from '../components/QualityIcon';
 import TableWrapper from '../components/TableWrapper';
 import Wikify from '../components/Wikify';
+import fetchStaticProps from '../utils/fetchStaticProps';
 
 const { Search } = Input;
 
@@ -91,3 +92,8 @@ export default function InventoryView(props) {
     </div>
   );
 }
+
+InventoryView.getInitialProps = fetchStaticProps({
+  path: 'deliverableItems',
+  propsKey: 'deliverableItems',
+});

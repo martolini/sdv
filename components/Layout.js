@@ -30,6 +30,10 @@ const OuterDiv = styled.div`
   .ant-menu-inline .ant-menu-item {
     font-size: 18px !important;
   }
+
+  .stardew-sider: {
+    background: #ffcb7a;
+  }
 `;
 
 const { Content, Footer, Sider } = Layout;
@@ -58,6 +62,7 @@ export default function LayoutView(props) {
             position: 'fixed',
             left: 0,
           }}
+          className="stardew-sider"
         >
           <div className="logo" />
           <Menu theme="dark" mode="inline" selectedKeys={[pathname.slice(1)]}>

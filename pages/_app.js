@@ -1,52 +1,51 @@
 import 'antd/dist/antd.css';
-import React, { useState } from 'react';
+import React from 'react';
 import { ThemeProvider } from 'styled-components';
-import { getFarmState } from '../utils/firebase-admin';
 import Layout from '../components/Layout';
 import FileDropContainer from '../components/FileDropContainer';
+import absoluteUrl from '../utils/absoluteUrl';
 
 const theme = {};
 
-function MyApp({ Component, pageProps }) {
-  const [gameState, setGameState] = useState(pageProps);
-
+function MyApp({ Component, selfProps = {}, componentProps = {} }) {
   return (
     <ThemeProvider theme={theme}>
       <FileDropContainer
-        onFinished={state => {
-          setGameState(state);
+        onFinished={() => {
+          window.location.href = window.location.href;
         }}
       >
-        <Layout {...gameState}>
-          <Component {...gameState} />
+        <Layout {...selfProps}>
+          <Component {...componentProps} />
         </Layout>
       </FileDropContainer>
     </ThemeProvider>
   );
 }
 
-MyApp.getInitialProps = async function(context) {
-  const pageProps = {};
-  if (typeof window !== 'undefined') {
-    return { pageProps };
-  }
-  const {
-    query: { id },
-  } = context.ctx;
+MyApp.getInitialProps = async context => {
+  const output = {
+    selfProps: {},
+    componentProps: {},
+  };
+  const { id } = context.ctx.query;
   if (!id) {
-    return { pageProps };
+    return output;
   }
   try {
-    const state = await getFarmState(id);
-    return {
-      pageProps: state,
+    if (context.Component.getInitialProps) {
+      output.componentProps = await context.Component.getInitialProps(context);
+    }
+    const { origin } = absoluteUrl(context.ctx.req, 'localhost:3000');
+    const result = await fetch(`${origin}/api/info/${id}`);
+    const info = await result.json();
+    output.selfProps = {
+      info,
     };
   } catch (ex) {
     console.error(ex);
-    return {
-      pageProps,
-    };
   }
+  return output;
 };
 
 export default MyApp;
