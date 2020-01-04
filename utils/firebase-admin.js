@@ -29,4 +29,19 @@ export const getFarmState = async farm => {
   return state;
 };
 
+export const addRecentlySeenId = async (uid, farmId) => {
+  if (admin.apps.length === 0) {
+    admin.initializeApp(config);
+  }
+
+  const ref = admin
+    .firestore()
+    .collections('users')
+    .doc(uid)
+    .collections('recents');
+  const data = await ref.get().get();
+  const current = data.data() || [];
+  await ref.set([farmId, ...current].slice(0, 5));
+};
+
 export default admin;

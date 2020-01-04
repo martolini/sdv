@@ -1,14 +1,25 @@
 import 'antd/dist/antd.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { getFarmState } from '../utils/firebase-admin';
 import Layout from '../components/Layout';
 import FileDropContainer from '../components/FileDropContainer';
+import { authenticate, addRecentlySeenId } from '../utils/firebase';
 
 const theme = {};
 
 function MyApp({ Component, pageProps }) {
   const [gameState, setGameState] = useState(pageProps);
+
+  const [recentFarms, setRecentFarms] = useState([]);
+  useEffect(() => {
+    (async () => {
+      await authenticate();
+      const id = gameState.info ? gameState.info.id : undefined;
+      const recents = await addRecentlySeenId(id);
+      setRecentFarms(recents);
+    })();
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -17,7 +28,7 @@ function MyApp({ Component, pageProps }) {
           setGameState(state);
         }}
       >
-        <Layout {...gameState}>
+        <Layout {...gameState} recentFarms={recentFarms}>
           <Component {...gameState} />
         </Layout>
       </FileDropContainer>
