@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { groupBy, uniqBy } from 'lodash';
+import { groupBy, uniqBy, debounce } from 'lodash';
 import { Table, Input } from 'antd';
 import QualityIcon from '../components/QualityIcon';
 import TableWrapper from '../components/TableWrapper';
@@ -9,6 +9,7 @@ const { Search } = Input;
 
 export default function InventoryView(props) {
   const [searchTerm, setSearchTerm] = useState();
+  const debouncedSetSearchTerm = debounce(setSearchTerm, 100);
   const { deliverableItems: itemsMap = {} } = props;
   const itemsArray = Object.keys(itemsMap).reduce(
     (p, c) => [...p, ...itemsMap[c]],
@@ -76,6 +77,9 @@ export default function InventoryView(props) {
         size="large"
         style={{ marginBottom: '10px' }}
         placeholder="Press enter to search"
+        onChange={e => {
+          debouncedSetSearchTerm(e.target.value);
+        }}
         onSearch={value => {
           setSearchTerm(value);
         }}
