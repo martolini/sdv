@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import parser from 'fast-xml-parser';
 import { useRouter } from 'next/router';
-import { getStorage } from '../utils/firebase';
+import { getStorage, getFirestore } from '../utils/firebase';
+import { uniqBy } from 'lodash';
 import { goCrazyWithJson } from '../utils/stardew';
 
 export default function HandleFileDrop(props) {
@@ -35,6 +36,26 @@ export default function HandleFileDrop(props) {
           await ref.putString(JSON.stringify(json), undefined, {
             contentType: 'application/json',
             cacheControl: 'max-age=43200',
+          });
+          const recentRef = getFirestore()
+            .collection('uploads')
+            .doc('global');
+          await getFirestore().runTransaction(async t => {
+            const doc = await t.get(recentRef);
+            const { saveGames } = doc.data();
+            await t.update(recentRef, {
+              saveGames: uniqBy(
+                [
+                  {
+                    id: state.info.id,
+                    farmName: state.info.farmName,
+                    uploadedAtMillis: Date.now(),
+                  },
+                  ...saveGames,
+                ],
+                a => a.id
+              ),
+            });
           });
           setIsDraggingFile(false);
           props.onFinished(state);

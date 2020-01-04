@@ -5,6 +5,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import KeepQueryLink from './KeepQueryLink';
 import Header from './Header';
+import Footer from './Footer';
 
 const OuterDiv = styled.div`
   font-family: VT323;
@@ -32,10 +33,10 @@ const OuterDiv = styled.div`
   }
 `;
 
-const { Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 export default function LayoutView(props) {
-  const { info = {} } = props;
+  const { info = {}, recentFarms = [] } = props;
   const { pathname } = useRouter();
   const [collapsed, setCollapsed] = useState(true);
   return (
@@ -101,6 +102,27 @@ export default function LayoutView(props) {
                 </a>
               </KeepQueryLink>
             </Menu.Item>
+            <Menu.SubMenu
+              key="recents"
+              title={
+                <>
+                  <Icon type="clock-circle" />
+                  <span className="nav-text">Recent farms</span>
+                </>
+              }
+            >
+              {recentFarms.map(r => (
+                <Menu.Item
+                  key={r}
+                  onClick={e => {
+                    window.location.href =
+                      window.location.href.split('?')[0] + `?id=${r}`;
+                  }}
+                >
+                  {r}
+                </Menu.Item>
+              ))}
+            </Menu.SubMenu>
           </Menu>
         </Sider>
         <Layout style={{ marginLeft: collapsed ? 80 : 200 }}>
@@ -110,9 +132,7 @@ export default function LayoutView(props) {
               {props.children}
             </div>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>
-            <p>{'martolini <3 stardew'}</p>
-          </Footer>
+          <Footer />
         </Layout>
       </Layout>
     </OuterDiv>

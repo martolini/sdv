@@ -9,6 +9,8 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
 
+import { uniq } from 'lodash';
+
 export const firebaseConfig = {
   apiKey: 'AIzaSyDcMbocz-KqX22h6-dc_-g5r7_2BjMHOR0',
   authDomain: 'stardew-help.firebaseapp.com',
@@ -20,9 +22,51 @@ export const firebaseConfig = {
   measurementId: 'G-2901BYNPJ7',
 };
 
-export const getStorage = () => {
+export const withInitializedFirebase = func => {
   if (firebase.apps.length === 0) {
     firebase.initializeApp(firebaseConfig);
   }
-  return firebase.storage();
+  return func;
 };
+
+export const getStorage = withInitializedFirebase(() => firebase.storage());
+
+export const getFirestore = withInitializedFirebase(() => firebase.firestore());
+
+let currentUser = null;
+
+export const authenticate = withInitializedFirebase(() => {
+  return new Promise(async (resolve, reject) => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        currentUser = user;
+        resolve(user);
+      } else {
+        currentUser = null;
+        reject();
+      }
+    });
+
+    await firebase.auth().signInAnonymously();
+  });
+});
+
+export const addRecentlySeenId = withInitializedFirebase(async farmId => {
+  const ref = firebase
+    .firestore()
+    .collection('users')
+    .doc(currentUser.uid);
+  const doc = await ref.get();
+  const current = doc.exists ? doc.data().recents || [] : [];
+  if (!farmId) {
+    return current;
+  }
+  const newRecents = uniq([farmId, ...current]).slice(0, 5);
+  await ref.set(
+    {
+      recents: newRecents,
+    },
+    { merge: true }
+  );
+  return newRecents;
+});
