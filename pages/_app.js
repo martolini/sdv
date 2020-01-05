@@ -41,6 +41,10 @@ class RootApp extends App {
     return pageProps;
   }
 
+  componentDidMount() {
+    window.json = this.props.store.getState().gameState;
+  }
+
   render() {
     const { Component, store, pageProps } = this.props;
     return (
