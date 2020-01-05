@@ -1,13 +1,12 @@
 import { useStoreState } from 'easy-peasy';
-import { Descriptions } from 'antd';
+import { Descriptions, Empty } from 'antd';
 import CSRandom from '../utils/csrandom';
-
-const seasons = ['spring', 'summer', 'fall', 'winter'];
 
 export default function Mines() {
   const gameState = useStoreState(state => state.gameState);
-  const month = seasons.indexOf(gameState.currentSeason);
-  const year = gameState.year;
+  if (Object.keys(gameState).length === 0) {
+    return <Empty />;
+  }
   const quarryUnlocked = !!gameState.player.mailReceived.string.find(
     t => t === 'ccCraftsRoom'
   );
