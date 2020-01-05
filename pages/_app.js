@@ -18,6 +18,7 @@ function MyApp({ Component, pageProps }) {
       const id = gameState.info ? gameState.info.id : undefined;
       const recents = await addRecentlySeenId(id);
       setRecentFarms(recents);
+      window.json = gameState;
     })();
   }, []);
 
