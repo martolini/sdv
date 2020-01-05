@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "pretty-quick --staged",
-    "commit": "npx git-cz"
+    "commit": "yarn lint && npx git-cz"
   },
   "keywords": [],
   "author": "",
@@ -37,14 +37,8 @@
   "devDependencies": {
     "babel-plugin-styled-components": "^1.10.6",
     "cz-conventional-changelog": "3.0.2",
-    "husky": "^3.1.0",
     "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint"
-    }
   },
   "config": {
     "commitizen": {
