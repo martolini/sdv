@@ -33,18 +33,29 @@ export default function HandleFileDrop(props) {
               id: state.info.id,
             },
           });
-          await ref.putString(JSON.stringify(json), undefined, {
-            contentType: 'application/json',
-            cacheControl: 'max-age=43200',
-          });
-          await getFirestore()
-            .collection('uploads')
-            .doc(state.info.id)
-            .set({
-              id: state.info.id,
-              farmName: state.info.farmName,
-              uploadedAtMillis: Date.now(),
-            });
+
+          const promises = [
+            ref.putString(JSON.stringify(json), undefined, {
+              contentType: 'application/json',
+              cacheControl: 'max-age=43200',
+            }),
+            getFirestore()
+              .collection('uploads')
+              .doc(state.info.id)
+              .set({
+                id: state.info.id,
+                farmName: state.info.farmName,
+                uploadedAtMillis: Date.now(),
+              }),
+            getStorage()
+              .ref()
+              .child(`backups/${state.info.id}`)
+              .putString(result, undefined, {
+                contentType: 'text/xml',
+                cacheControl: 'max-age=43200',
+              }),
+          ];
+          await Promise.all(promises);
           setIsDraggingFile(false);
           props.onFinished(state);
         };
