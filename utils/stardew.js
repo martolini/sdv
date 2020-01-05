@@ -504,13 +504,3 @@ export function getPlayers(gameState) {
     return p;
   }, {});
 }
-
-const seasons = ['spring', 'summer', 'fall', 'winter'];
-
-export function predictMines(gameState) {
-  const month = seasons.indexOf(gameState.currentSeason);
-  const year = gameState.year;
-  // const dayOfMonth =
-  //   gameState.dayOfMonth(year - 1) * 28 * 4 +
-  //   s.indexOf(json.currentSeason) * 28 +
-}
