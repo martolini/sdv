@@ -14,8 +14,8 @@ export default function Mines() {
   const offset = 28 * Math.floor(daysPlayed / 28);
   const gameID = gameState.uniqueIDForThisGame;
   const data = {};
-  for (let week = 0; week < 1; week++) {
-    for (let weekDay = 4; weekDay < 5; weekDay++) {
+  for (let week = 0; week < 4; week++) {
+    for (let weekDay = 1; weekDay < 8; weekDay++) {
       const infestedMonster = [];
       const infestedSlime = [];
       const quarryLevel = [];
@@ -91,6 +91,9 @@ export default function Mines() {
     }
   }
   const dayData = data[daysPlayed];
+  if (!dayData) {
+    return <Empty />;
+  }
   return (
     <div>
       <h1 style={{ fontSize: 30 }}>Mines</h1>
