@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { groupBy, uniqBy, debounce } from 'lodash';
-import { Table, Input } from 'antd';
+import { groupBy, uniqBy, debounce, uniq } from 'lodash';
+import { Table, Input, Icon } from 'antd';
 import { useStoreState } from 'easy-peasy';
 import QualityIcon from '../components/QualityIcon';
 import TableWrapper from '../components/TableWrapper';
@@ -25,7 +25,13 @@ export default function InventoryView() {
       ...p,
       c.length === 0
         ? undefined
-        : { ...c[0], stack: c.reduce((prev, cur) => prev + cur.stack, 0) },
+        : {
+            ...c[0],
+            stack: c.reduce((prev, cur) => prev + cur.stack, 0),
+            chestColors: uniq(
+              c.reduce((prev, cur) => [...prev, cur.chestColor], [])
+            ),
+          },
     ],
     []
   );
@@ -65,6 +71,27 @@ export default function InventoryView() {
         .filter(t => t)
         .map(t => ({ text: t, value: t })),
       onFilter: (value, record) => record.type === value,
+    },
+    {
+      title: 'Chest color',
+      width: '20%',
+      render: record => (
+        <div>
+          {record.chestColors.map(color => (
+            <Icon
+              type="wallet"
+              key={color}
+              theme="filled"
+              style={{
+                fontSize: 24,
+                color: `#${color}`,
+                border: '1px solid grey',
+                marginRight: 5,
+              }}
+            />
+          ))}
+        </div>
+      ),
     },
   ];
 

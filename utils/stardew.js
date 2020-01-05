@@ -1,6 +1,7 @@
 import { MAP_SIZES, ID_TABLE, REVERSE_ID_TABLE } from './lookups';
 import bundles from '../data/bundles.json';
 import CSRandom from './csrandom';
+import rgbhex from 'rgb-hex';
 
 const forageItems = [
   16,
@@ -365,8 +366,14 @@ function parseItem(item) {
     quality: item.quality,
     price: calculatePrice(item),
     type: item.type,
+    chestColor: item.chestColor,
   };
 }
+
+const parseChestColor = chestColor => {
+  const { R, G, B, A } = chestColor;
+  return rgbhex(R, G, B, A / 255);
+};
 
 export const getDeliverableItems = gameState => {
   // Find player inventory
@@ -394,8 +401,13 @@ export const getDeliverableItems = gameState => {
         .slice(0, -1)
         .reduce((p, c) => p[c], gameState)
     )
-    .map(chest => (chest.items === '' ? [] : chest.items.Item))
-    .filter(chest => chest.length > 0)
+    .filter(chest => (chest.items === '' ? [] : chest.items.Item).length > 0)
+    .map(chest =>
+      chest.items.Item.map(c => ({
+        ...c,
+        chestColor: parseChestColor(chest.playerChoiceColor),
+      }))
+    )
     .map(chest => chest.map(parseItem))
     .reduce((p, c) => [...p, ...c], []);
 
