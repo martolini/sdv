@@ -1,64 +1,58 @@
 import 'antd/dist/antd.css';
 import React, { useState, useEffect } from 'react';
+import App from 'next/app';
+import withRedux from 'next-redux-wrapper';
 import { ThemeProvider } from 'styled-components';
+import { createStore, StoreProvider } from 'easy-peasy';
 import { getFarmState } from '../utils/firebase-admin';
+import storeModel from '../store';
 import Layout from '../components/Layout';
 import FileDropContainer from '../components/FileDropContainer';
 import { authenticate, addRecentlySeenId } from '../utils/firebase';
 
 const theme = {};
 
-function MyApp({ Component, pageProps }) {
-  const [gameState, setGameState] = useState(pageProps);
+const makeStore = (initialState, options) =>
+  createStore(storeModel, {
+    initialState,
+  });
 
-  const [recentFarms, setRecentFarms] = useState([]);
-  useEffect(() => {
-    (async () => {
-      await authenticate();
-      const id = gameState.info ? gameState.info.id : undefined;
-      const recents = await addRecentlySeenId(id);
-      setRecentFarms(recents);
-      window.json = gameState;
-    })();
-  }, []);
+class RootApp extends App {
+  static async getInitialProps({ Component, ctx }) {
+    const pageProps = Component.getInitialProps
+      ? await Component.getInitialProps()
+      : {};
+    // Fetch initial state and populate store server-side
+    if (typeof window !== 'undefined') {
+      return { pageProps };
+    }
+    const {
+      query: { id },
+    } = ctx;
+    if (id) {
+      // Fetch farmstate
+      try {
+        const state = await getFarmState(id);
+        ctx.store.dispatch.setFullState(state);
+      } catch (ex) {
+        console.error(ex);
+      }
+    }
+    return pageProps;
+  }
 
-  return (
-    <ThemeProvider theme={theme}>
-      <FileDropContainer
-        onFinished={state => {
-          setGameState(state);
-        }}
-      >
-        <Layout {...gameState} recentFarms={recentFarms}>
-          <Component {...gameState} />
-        </Layout>
-      </FileDropContainer>
-    </ThemeProvider>
-  );
+  render() {
+    const { Component, store, pageProps } = this.props;
+    return (
+      <StoreProvider store={store}>
+        <FileDropContainer>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </FileDropContainer>
+      </StoreProvider>
+    );
+  }
 }
 
-MyApp.getInitialProps = async function(context) {
-  const pageProps = {};
-  if (typeof window !== 'undefined') {
-    return { pageProps };
-  }
-  const {
-    query: { id },
-  } = context.ctx;
-  if (!id) {
-    return { pageProps };
-  }
-  try {
-    const state = await getFarmState(id);
-    return {
-      pageProps: state,
-    };
-  } catch (ex) {
-    console.error(ex);
-    return {
-      pageProps,
-    };
-  }
-};
-
-export default MyApp;
+export default withRedux(makeStore)(RootApp);

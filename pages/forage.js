@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Tooltip, Select, Divider } from 'antd';
+import { useStoreState } from 'easy-peasy';
 import { MAP_IMAGES, MAP_SIZES } from '../utils/lookups';
 
 export default function Forage(props) {
-  const { foraging = {} } = props;
+  const foraging = useStoreState(state => state.foraging);
   const [selectedMaps, setSelectedMaps] = useState(Object.keys(MAP_IMAGES));
   return (
     <div>

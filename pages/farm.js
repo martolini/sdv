@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Checkbox, Divider } from 'antd';
+import { useStoreState } from 'easy-peasy';
 import FarmOverlayView from '../components/FarmOverlayView';
 
-export default function FarmView(props) {
+export default function FarmView() {
   const [checked, setChecked] = useState([]);
   const [indeterminate, setIndeterminate] = useState(false);
-
-  const { harvestOnFarm = [] } = props;
+  const harvestOnFarm = useStoreState(state => state.harvestOnFarm);
   const mapSize = { x: 80, y: 65 };
 
   const cropsCountMap = harvestOnFarm.reduce((p, c) => {
