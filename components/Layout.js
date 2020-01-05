@@ -93,6 +93,14 @@ export default function LayoutView(props) {
                 </a>
               </KeepQueryLink>
             </Menu.Item>
+            <Menu.Item key="mines">
+              <KeepQueryLink href="/mines">
+                <a>
+                  <Icon type="alert" />
+                  <span className="nav-text">Mines</span>
+                </a>
+              </KeepQueryLink>
+            </Menu.Item>
             <Menu.Item key="user">
               <KeepQueryLink href="/user">
                 <a>
