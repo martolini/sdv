@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { groupBy, uniqBy, debounce } from 'lodash';
 import { Table, Input } from 'antd';
+import { useStoreState } from 'easy-peasy';
 import QualityIcon from '../components/QualityIcon';
 import TableWrapper from '../components/TableWrapper';
 import Wikify from '../components/Wikify';
 
 const { Search } = Input;
 
-export default function InventoryView(props) {
+export default function InventoryView() {
   const [searchTerm, setSearchTerm] = useState();
   const debouncedSetSearchTerm = debounce(setSearchTerm, 100);
-  const { deliverableItems: itemsMap = {} } = props;
+  const itemsMap = useStoreState(state => state.deliverableItems);
   const itemsArray = Object.keys(itemsMap).reduce(
     (p, c) => [...p, ...itemsMap[c]],
     []

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { uniqBy } from 'lodash';
 import Wikify from '../components/Wikify';
 import QualityIcon from '../components/QualityIcon';
+import { useStoreState } from 'easy-peasy';
 
 const WrapperDiv = styled.div`
   .green-row {
@@ -16,7 +17,7 @@ const WrapperDiv = styled.div`
 `;
 
 export default function BundleView(props) {
-  const { missingBundleItems = [] } = props;
+  const missingBundleItems = useStoreState(state => state.missingBundleItems);
   if (missingBundleItems.length === 0) {
     return <Empty />;
   }

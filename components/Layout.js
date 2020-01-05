@@ -1,4 +1,4 @@
-import { Layout, Menu, Icon, Tag } from 'antd';
+import { Layout, Menu, Icon } from 'antd';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Head from 'next/head';
@@ -36,7 +36,6 @@ const OuterDiv = styled.div`
 const { Content, Sider } = Layout;
 
 export default function LayoutView(props) {
-  const { info = {}, recentFarms = [] } = props;
   const { pathname } = useRouter();
   const [collapsed, setCollapsed] = useState(true);
   return (
@@ -102,31 +101,10 @@ export default function LayoutView(props) {
                 </a>
               </KeepQueryLink>
             </Menu.Item>
-            <Menu.SubMenu
-              key="recents"
-              title={
-                <>
-                  <Icon type="clock-circle" />
-                  <span className="nav-text">Recent farms</span>
-                </>
-              }
-            >
-              {recentFarms.map(r => (
-                <Menu.Item
-                  key={r}
-                  onClick={e => {
-                    window.location.href =
-                      window.location.href.split('?')[0] + `?id=${r}`;
-                  }}
-                >
-                  {r}
-                </Menu.Item>
-              ))}
-            </Menu.SubMenu>
           </Menu>
         </Sider>
         <Layout style={{ marginLeft: collapsed ? 80 : 200 }}>
-          <Header info={info} />
+          <Header />
           <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
             <div style={{ padding: 24, background: '#fff' }}>
               {props.children}

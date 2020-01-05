@@ -1,4 +1,5 @@
 import React from 'react';
+import { useStoreState } from 'easy-peasy';
 import { Progress, Row, Col, Empty } from 'antd';
 
 const SKILL_TABLE = {
@@ -24,7 +25,7 @@ const EXP_TABLE = {
 };
 
 export default function PlayerView(props) {
-  const { players = {} } = props;
+  const players = useStoreState(state => state.players);
   if (Object.keys(players).length === 0) {
     return <Empty />;
   }

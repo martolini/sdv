@@ -7,7 +7,7 @@ const { Footer: AntFooter } = Layout;
 export default function Footer(props) {
   const [recents, setRecents] = useState([]);
   useEffect(() => {
-    const unsubscribe = getFirestore()
+    return getFirestore()
       .collection('uploads')
       .orderBy('uploadedAtMillis', 'desc')
       .limit(5)
@@ -20,7 +20,6 @@ export default function Footer(props) {
           setRecents(saveGames);
         }
       });
-    return unsubscribe;
   }, []);
   return (
     <AntFooter style={{ textAlign: 'center' }}>

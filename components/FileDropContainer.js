@@ -2,12 +2,13 @@ import { useState } from 'react';
 import parser from 'fast-xml-parser';
 import { useRouter } from 'next/router';
 import { getStorage, getFirestore } from '../utils/firebase';
-import { uniqBy } from 'lodash';
 import { goCrazyWithJson } from '../utils/stardew';
+import { useStoreActions } from 'easy-peasy';
 
 export default function HandleFileDrop(props) {
   const [isDraggingFile, setIsDraggingFile] = useState(false);
   const router = useRouter();
+  const setGamestate = useStoreActions(actions => actions.setFullState);
   const onDrop = async ev => {
     ev.preventDefault();
     if (ev.dataTransfer.items) {
@@ -27,13 +28,6 @@ export default function HandleFileDrop(props) {
           const ref = getStorage()
             .ref()
             .child(`farms/${state.info.id}`);
-          router.push({
-            pathname: router.pathname,
-            query: {
-              id: state.info.id,
-            },
-          });
-
           const promises = [
             ref.putString(JSON.stringify(json), undefined, {
               contentType: 'application/json',
@@ -56,8 +50,15 @@ export default function HandleFileDrop(props) {
               }),
           ];
           await Promise.all(promises);
+          setGamestate(state);
+          router.push({
+            pathname: router.pathname,
+            query: {
+              id: state.info.id,
+            },
+          });
+
           setIsDraggingFile(false);
-          props.onFinished(state);
         };
         reader.readAsText(file);
       }

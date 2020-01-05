@@ -1,4 +1,5 @@
 import { Layout, Tag } from 'antd';
+import { useStoreState } from 'easy-peasy';
 const { Header: AntHeader } = Layout;
 
 const DAYS = [
@@ -12,7 +13,7 @@ const DAYS = [
 ];
 
 export default function Header(props) {
-  const { info } = props;
+  const info = useStoreState(state => state.info);
   return (
     <AntHeader style={{ background: '#fff', padding: 0, paddingLeft: '15px' }}>
       <h2>
