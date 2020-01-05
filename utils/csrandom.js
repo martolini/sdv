@@ -4,7 +4,6 @@ const MBIG = INT_MAX;
 const MSEED = 161803398;
 
 function CSRandom(Seed) {
-  'use strict';
   var ii, mj, mk, i, k, subtraction;
 
   // Alternative to default argument

@@ -1,5 +1,6 @@
 import { MAP_SIZES, ID_TABLE, REVERSE_ID_TABLE } from './lookups';
 import bundles from '../data/bundles.json';
+import CSRandom from './csrandom';
 
 const forageItems = [
   16,
@@ -100,6 +101,7 @@ export async function goCrazyWithJson(json) {
   return {
     gameState: json,
     foraging,
+    mines: findMinesInfo(json),
     info,
     harvestOnFarm: findHarvestOnFarm(json),
     missingBundleItems,
@@ -158,6 +160,78 @@ const findInBuildings = (location, building, names = []) => {
   }, []);
 
   return allObjects;
+};
+
+const findMinesInfo = json => {
+  const quarryUnlocked = !!json.player.mailReceived.string.find(
+    t => t === 'ccCraftsRoom'
+  );
+  const daysPlayed = json.player.stats.daysPlayed;
+  const gameID = json.uniqueIDForThisGame;
+  const infestedMonster = [];
+  const infestedSlime = [];
+  const quarryLevel = [];
+  const rainbowLights = [];
+  const dinoLevel = [];
+  const day = daysPlayed;
+  for (let mineLevel = 1; mineLevel < 120; mineLevel++) {
+    if (mineLevel % 5 === 0) {
+      continue;
+    }
+    let skipMushroomCheck = false;
+    var rng = new CSRandom(day + mineLevel * 100 + gameID / 2);
+    if (
+      rng.NextDouble() < 0.044 &&
+      mineLevel % 40 > 5 &&
+      mineLevel % 40 < 30 &&
+      mineLevel % 40 !== 19
+    ) {
+      if (rng.NextDouble() < 0.5) {
+        infestedMonster.push(mineLevel);
+      } else {
+        infestedSlime.push(mineLevel);
+      }
+      skipMushroomCheck = true;
+    } else if (
+      rng.NextDouble() < 0.044 &&
+      quarryUnlocked &&
+      mineLevel % 40 > 1
+    ) {
+      if (rng.NextDouble() < 0.25) {
+        quarryLevel.push(mineLevel + '*');
+      } else {
+        quarryLevel.push(mineLevel);
+      }
+      skipMushroomCheck = true;
+    }
+    if (skipMushroomCheck) {
+      continue;
+    }
+    rng = new CSRandom(day * mineLevel + 4 * mineLevel + gameID / 2);
+    if (rng.NextDouble() < 0.3 && mineLevel > 2) {
+      rng.NextDouble(); // checked vs < 0.3 again
+    }
+    rng.NextDouble(); // checked vs < 0.15
+    if (rng.NextDouble() < 0.035 && mineLevel > 80) {
+      rainbowLights.push(mineLevel);
+    }
+  }
+  for (let mineLevel = 127; mineLevel < 621; mineLevel++) {
+    rng = new CSRandom(day + mineLevel * 100 + gameID / 2);
+    if (rng.NextDouble() < 0.044) {
+      rng.NextDouble(); // Unknown data
+      if (rng.NextDouble() < 0.5) {
+        dinoLevel.push(mineLevel - 120);
+      }
+    }
+  }
+  return {
+    infestedMonster,
+    infestedSlime,
+    rainbowLights,
+    quarryLevel,
+    dinoLevel,
+  };
 };
 
 export function findHarvestOnFarm(gameState) {

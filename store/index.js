@@ -7,6 +7,9 @@ const storeModel = {
   foraging: {
     // Foraging info
   },
+  mines: {
+    // Mines info
+  },
   info: {
     // General information
   },
