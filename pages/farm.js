@@ -59,19 +59,21 @@ function FarmView(props) {
           display: 'inline-block',
         }}
       >
-        <img
-          src={mapUrl}
-          style={{ maxWidth: '100%', maxHeight: 1000, opacity: '100%' }}
-          alt="farm"
-        />
-        <FarmOverlayView
-          items={harvestOnFarm.filter(c =>
-            c.name === undefined
-              ? checked.includes('undefined')
-              : checked.includes(c.name)
-          )}
-          mapSize={mapSize}
-        />
+        <div style={{ display: 'inline-flex', position: 'relative' }}>
+          <img
+            src={mapUrl}
+            style={{ maxWidth: '100%', opacity: '100%' }}
+            alt="farm"
+          />
+          <FarmOverlayView
+            items={harvestOnFarm.filter(c =>
+              c.name === undefined
+                ? checked.includes('undefined')
+                : checked.includes(c.name)
+            )}
+            mapSize={mapSize}
+          />
+        </div>
       </div>
       <div style={{ clear: 'both' }} />
     </div>
