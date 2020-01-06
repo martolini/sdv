@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Checkbox, Divider } from 'antd';
+import { Checkbox, Divider, Tabs, Icon } from 'antd';
 import { useStoreState } from 'easy-peasy';
 import FarmOverlayView from '../components/FarmOverlayView';
+import { MAP_SIZES } from '../utils/lookups';
 
-export default function FarmView() {
+const { TabPane } = Tabs;
+
+function FarmView(props) {
+  const { mapSize, mapUrl, harvest: harvestOnFarm = [] } = props;
   const [checked, setChecked] = useState([]);
   const [indeterminate, setIndeterminate] = useState(false);
-  const harvestOnFarm = useStoreState(state => state.harvestOnFarm);
-  const mapSize = { x: 80, y: 65 };
 
   const cropsCountMap = harvestOnFarm.reduce((p, c) => {
     const existing = p[c.name] || 0;
@@ -58,8 +60,8 @@ export default function FarmView() {
         }}
       >
         <img
-          src="/img/Farm.png"
-          style={{ maxWidth: '100%', opacity: '100%' }}
+          src={mapUrl}
+          style={{ maxWidth: '100%', maxHeight: 1000, opacity: '100%' }}
           alt="farm"
         />
         <FarmOverlayView
@@ -73,5 +75,48 @@ export default function FarmView() {
       </div>
       <div style={{ clear: 'both' }} />
     </div>
+  );
+}
+
+export default function FarmContainer() {
+  const harvestOnFarm = useStoreState(state =>
+    state.harvest.itemsInLocation('Farm')
+  );
+  const harvestInGreenhouse = useStoreState(state =>
+    state.harvest.itemsInLocation('Greenhouse')
+  );
+  return (
+    <Tabs defaultActiveKey="1">
+      <TabPane
+        tab={
+          <span style={{ fontSize: 16 }}>
+            <Icon type="home" theme="twoTone" />
+            Farm
+          </span>
+        }
+        key="1"
+      >
+        <FarmView
+          mapSize={MAP_SIZES.Farm}
+          mapUrl="img/Farm.png"
+          harvest={harvestOnFarm}
+        />
+      </TabPane>
+      <TabPane
+        tab={
+          <span style={{ fontSize: 16 }}>
+            <Icon type="picture" theme="twoTone" />
+            Greenhouse
+          </span>
+        }
+        key="2"
+      >
+        <FarmView
+          mapSize={MAP_SIZES.Greenhouse}
+          mapUrl="img/Greenhouse.png"
+          harvest={harvestInGreenhouse}
+        />
+      </TabPane>
+    </Tabs>
   );
 }

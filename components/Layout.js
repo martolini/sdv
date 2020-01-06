@@ -113,8 +113,8 @@ export default function LayoutView(props) {
         </Sider>
         <Layout style={{ marginLeft: collapsed ? 80 : 200 }}>
           <Header />
-          <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-            <div style={{ padding: 24, background: '#fff' }}>
+          <Content style={{ margin: '16px 12px 0', overflow: 'initial' }}>
+            <div style={{ padding: 16, background: '#fff' }}>
               {props.children}
             </div>
           </Content>

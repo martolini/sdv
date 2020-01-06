@@ -1,4 +1,4 @@
-import { createStore, action } from 'easy-peasy';
+import { action, computed } from 'easy-peasy';
 
 const storeModel = {
   gameState: {
@@ -13,9 +13,13 @@ const storeModel = {
   info: {
     // General information
   },
-  harvestOnFarm: [
+  harvest: {
     // Data on what harvest are available on the farm. Used for the /farm route
-  ],
+    items: [],
+    itemsInLocation: computed(state => location =>
+      state.items.filter(item => item.location === location)
+    ),
+  },
   missingBundleItems: [
     // Data about the missing bundles.
   ],
