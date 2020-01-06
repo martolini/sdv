@@ -49,6 +49,21 @@ export async function goCrazyWithJson(json) {
     gameId: json.uniqueIDForThisGame,
   };
   info.id = `${info.gameId}-${info.year}-${info.currentSeason}-${info.dayOfMonth}`;
+  info.birthdays = findPaths(json.locations.GameLocation, 'NPC')
+    .map(a => a.split('/').reduce((p, c) => p[c], json.locations.GameLocation))
+    .reduce((p, c) => [...p, ...(Array.isArray(c) ? c : [c])], [])
+    .filter(
+      c =>
+        c.birthday_Season &&
+        c.birthday_Season === info.currentSeason &&
+        c.birthday_Day &&
+        c.birthday_Day === info.dayOfMonth
+    )
+    .map(c => ({
+      name: c.name,
+      season: c.birthday_Season,
+      day: c.birthday_Day,
+    }));
   // Parse locations
   const foraging = json.locations.GameLocation.filter(({ name }) =>
     isValidLocation(name)
