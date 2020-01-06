@@ -1,5 +1,6 @@
-import { Layout, Tag } from 'antd';
+import { Icon, Layout, Tag } from 'antd';
 import { useStoreState } from 'easy-peasy';
+import Wikify from './Wikify';
 const { Header: AntHeader } = Layout;
 
 const DAYS = [
@@ -35,6 +36,18 @@ export default function Header(props) {
                 💰
               </span>
             </Tag>
+            {info.birthdays.length > 0 && (
+              <Wikify name={info.birthdays[0].name}>
+                <Tag color="blue" style={{ cursor: 'pointer' }}>
+                  {info.birthdays[0].name}'s birthday{' '}
+                  <Icon
+                    theme="twoTone"
+                    type="carry-out"
+                    twoToneColor="#eb2f96"
+                  />
+                </Tag>
+              </Wikify>
+            )}
           </>
         )}
       </h2>
