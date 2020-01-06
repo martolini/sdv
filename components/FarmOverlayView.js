@@ -8,7 +8,9 @@ const PlacedDiv = styled.div.attrs(props => ({
     left: `${(props.c.x / props.mapSize.x) * 100}%`,
     top: `${(props.c.y / props.mapSize.y) * 100}%`,
     height: `${(props.tileSize * props.mapSize.x) / props.mapSize.y}%`,
+    fontSize: `${((props.tileSize * props.mapSize.x) / props.mapSize.y) * 65}%`,
     width: `${props.tileSize}%`,
+    lineHeight: 1,
     backgroundColor: props.c.dead
       ? '#111111'
       : props.c.done
@@ -16,11 +18,13 @@ const PlacedDiv = styled.div.attrs(props => ({
       : '#FF4136',
   },
 }))`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   cursor: pointer;
   position: absolute;
   color: white;
-  font-size: 0.7rem;
   font-weight: 800;
   &:hover {
     opacity: 0.5;

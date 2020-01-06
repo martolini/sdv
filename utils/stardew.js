@@ -104,7 +104,9 @@ export async function goCrazyWithJson(json) {
     foraging,
     mines: findMinesInfo(json),
     info,
-    harvestOnFarm: findHarvestOnFarm(json),
+    harvest: {
+      items: findHarvestInLocations(json, ['Farm', 'Greenhouse']),
+    },
     missingBundleItems,
     deliverableItems,
     players: getPlayers(json),
@@ -131,10 +133,14 @@ const filterObjectsByName = (location, name) =>
         done: minutesUntilReady === 0,
         hoursUntilReady: Math.round(minutesUntilReady / 60),
         minutesUntilReady,
+        location: location.name,
       };
     });
 
 const findInBuildings = (location, building, names = []) => {
+  if (!location.buildings) {
+    return [];
+  }
   const buildings = location.buildings.Building.filter(
     b => building === b['@_xsi:type']
   );
@@ -155,6 +161,7 @@ const findInBuildings = (location, building, names = []) => {
           done: minutesUntilReady === 0,
           hoursUntilReady: Math.round(minutesUntilReady / 60),
           minutesUntilReady,
+          location: location.name,
         };
       });
     return [...p, ...objects];
@@ -235,80 +242,85 @@ const findMinesInfo = json => {
   };
 };
 
-export function findHarvestOnFarm(gameState) {
-  const location = gameState.locations.GameLocation.find(
-    ({ name }) => name === 'Farm'
+export function findHarvestInLocations(gameState, names = []) {
+  const locations = gameState.locations.GameLocation.filter(({ name }) =>
+    names.includes(name)
   );
-  const tappers = filterObjectsByName(location, 'Tapper');
-  const preservesJars = filterObjectsByName(location, 'Preserves Jar');
-  const beeHouses = filterObjectsByName(location, 'Bee House');
-  const eggs = findInBuildings(location, 'Coop', ['Egg']);
-  const kegs = findInBuildings(location, 'Barn', ['Keg']);
-  const trees = location.terrainFeatures.item
-    .filter(o => o.value.TerrainFeature['@_xsi:type'] === 'FruitTree')
-    .map(o => ({
-      ...o,
-      name: `${REVERSE_ID_TABLE[o.value.TerrainFeature.indexOfFruit]} Tree`,
-      daysToHarvest: Math.max(o.value.TerrainFeature.daysUntilMature, 0),
-      done: o.value.TerrainFeature.fruitsOnTree > 0,
-      x: o.key.Vector2.X,
-      y: o.key.Vector2.Y,
-    }));
 
-  let crops = location.terrainFeatures.item
-    .filter(feature => feature.value.TerrainFeature.crop)
-    .map(feature => {
-      const phaseDays = feature.value.TerrainFeature.crop.phaseDays.int;
-      const currentPhase = feature.value.TerrainFeature.crop.currentPhase;
-      const dayOfCurrentPhase =
-        feature.value.TerrainFeature.crop.dayOfCurrentPhase;
-      const regrowAfterHarvest =
-        feature.value.TerrainFeature.crop.regrowAfterHarvest;
-      let daysToHarvest =
-        phaseDays.slice(currentPhase + 1, -1).reduce((p, c) => p + c, 0) +
-        phaseDays[currentPhase] -
-        dayOfCurrentPhase;
-      let done = false;
-      if (currentPhase === phaseDays.length - 1) {
-        // Check if done
-        if (regrowAfterHarvest > 0) {
-          if (
-            dayOfCurrentPhase === -1 ||
-            dayOfCurrentPhase === 0 ||
-            dayOfCurrentPhase === regrowAfterHarvest
-          ) {
-            daysToHarvest = 0;
-            done = true;
+  return locations.reduce((p, location) => {
+    const tappers = filterObjectsByName(location, 'Tapper');
+    const preservesJars = filterObjectsByName(location, 'Preserves Jar');
+    const beeHouses = filterObjectsByName(location, 'Bee House');
+    const eggs = findInBuildings(location, 'Coop', ['Egg']);
+    const kegs = findInBuildings(location, 'Barn', ['Keg']);
+    const trees = location.terrainFeatures.item
+      .filter(o => o.value.TerrainFeature['@_xsi:type'] === 'FruitTree')
+      .map(o => ({
+        ...o,
+        name: `${REVERSE_ID_TABLE[o.value.TerrainFeature.indexOfFruit]} Tree`,
+        daysToHarvest: Math.max(o.value.TerrainFeature.daysUntilMature, 0),
+        done: o.value.TerrainFeature.fruitsOnTree > 0,
+        x: o.key.Vector2.X,
+        y: o.key.Vector2.Y,
+        location: location.name,
+      }));
+
+    const crops = location.terrainFeatures.item
+      .filter(feature => feature.value.TerrainFeature.crop)
+      .map(feature => {
+        const phaseDays = feature.value.TerrainFeature.crop.phaseDays.int;
+        const currentPhase = feature.value.TerrainFeature.crop.currentPhase;
+        const dayOfCurrentPhase =
+          feature.value.TerrainFeature.crop.dayOfCurrentPhase;
+        const regrowAfterHarvest =
+          feature.value.TerrainFeature.crop.regrowAfterHarvest;
+        let daysToHarvest =
+          phaseDays.slice(currentPhase + 1, -1).reduce((p, c) => p + c, 0) +
+          phaseDays[currentPhase] -
+          dayOfCurrentPhase;
+        let done = false;
+        if (currentPhase === phaseDays.length - 1) {
+          // Check if done
+          if (regrowAfterHarvest > 0) {
+            if (
+              dayOfCurrentPhase === -1 ||
+              dayOfCurrentPhase === 0 ||
+              dayOfCurrentPhase === regrowAfterHarvest
+            ) {
+              daysToHarvest = 0;
+              done = true;
+            } else {
+              daysToHarvest = regrowAfterHarvest - dayOfCurrentPhase;
+            }
           } else {
-            daysToHarvest = regrowAfterHarvest - dayOfCurrentPhase;
+            done = true;
+            daysToHarvest = 0;
           }
-        } else {
-          done = true;
-          daysToHarvest = 0;
         }
-      }
-
-      return {
-        ...feature,
-        name:
-          REVERSE_ID_TABLE[feature.value.TerrainFeature.crop.indexOfHarvest],
-        superName: feature.value.TerrainFeature['@_xsi:type'],
-        daysToHarvest,
-        done,
-        dead: feature.value.TerrainFeature.crop.dead,
-        x: feature.key.Vector2.X,
-        y: feature.key.Vector2.Y,
-      };
-    });
-  return [
-    ...crops,
-    ...tappers,
-    ...preservesJars,
-    ...beeHouses,
-    ...eggs,
-    ...trees,
-    ...kegs,
-  ];
+        return {
+          ...feature,
+          name:
+            REVERSE_ID_TABLE[feature.value.TerrainFeature.crop.indexOfHarvest],
+          superName: feature.value.TerrainFeature['@_xsi:type'],
+          daysToHarvest,
+          done,
+          dead: feature.value.TerrainFeature.crop.dead,
+          x: feature.key.Vector2.X,
+          y: feature.key.Vector2.Y,
+          location: location.name,
+        };
+      });
+    return [
+      ...p,
+      ...tappers,
+      ...preservesJars,
+      ...beeHouses,
+      ...eggs,
+      ...kegs,
+      ...trees,
+      ...crops,
+    ];
+  }, []);
 }
 
 const findPaths = (
