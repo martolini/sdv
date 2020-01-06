@@ -77,10 +77,10 @@ export default function InventoryView() {
       width: '20%',
       render: record => (
         <div>
-          {record.chestColors.map(color => (
+          {record.chestColors.map((color, i) => (
             <Icon
               type="wallet"
-              key={color}
+              key={i}
               theme="filled"
               style={{
                 fontSize: 24,
