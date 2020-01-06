@@ -1,6 +1,9 @@
-import { Icon, Layout, Tag } from 'antd';
 import { useStoreState } from 'easy-peasy';
+import { Layout, Tag, Icon, Badge, Popover } from 'antd';
+import styled from 'styled-components';
+import QuestList from './QuestList';
 import Wikify from './Wikify';
+
 const { Header: AntHeader } = Layout;
 
 const DAYS = [
@@ -13,10 +16,46 @@ const DAYS = [
   'Sunday',
 ];
 
+const StyledHeader = styled(AntHeader)`
+  display: flex;
+  width: 100%;
+  .notification-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 2%;
+
+    i {
+      font-size: 24px;
+      cursor: pointer;
+      transition: color 0.3s;
+      &:hover {
+        color: #1890ff;
+      }
+    }
+  }
+`;
+
 export default function Header(props) {
   const info = useStoreState(state => state.info);
+  const players = useStoreState(state => state.players);
+
+  const notifications = Object.keys(players).reduce((p, c) => {
+    p[c] = players[c].questLog.Quest || [];
+    return p;
+  }, {});
+
+  const randomNotificationCount =
+    Object.values(notifications).reduce(
+      (p, c) => (c.length > p ? c.length : p),
+      0
+    ) || 0;
+
   return (
-    <AntHeader style={{ background: '#fff', padding: 0, paddingLeft: '15px' }}>
+    <StyledHeader
+      style={{ background: '#fff', padding: 0, paddingLeft: '15px' }}
+    >
       <h2>
         {!info.farmName ? (
           'No farm uploaded.'
@@ -51,6 +90,17 @@ export default function Header(props) {
           </>
         )}
       </h2>
-    </AntHeader>
+      <div className="notification-icon">
+        <Badge count={randomNotificationCount} style={{ fontSize: 18 }}>
+          <Popover
+            content={<QuestList notifications={notifications} />}
+            trigger="click"
+            placement="bottomLeft"
+          >
+            <Icon type="bell" />
+          </Popover>
+        </Badge>
+      </div>
+    </StyledHeader>
   );
 }
