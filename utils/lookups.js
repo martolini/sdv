@@ -887,7 +887,7 @@ export const MAP_SIZES = {
   'generated/Trailer-5-5': { x: 25, y: 25 },
   'generated/Trailer-6-5': { x: 25, y: 25 },
   'generated/Trailer-9-7': { x: 25, y: 25 },
-  Greenhouse: { x: 19, y: 23 },
+  Greenhouse: { x: 20, y: 24 },
   HaleyHouse: { x: 25, y: 25 },
   HarveyRoom: { x: 24, y: 13 },
   Hospital: { x: 24, y: 20 },
