@@ -8,7 +8,6 @@ const { TabPane } = Tabs;
 
 function FarmView(props) {
   const { mapSize, mapUrl, harvest: harvestOnFarm = [] } = props;
-  const [checked, setChecked] = useState([]);
   const [indeterminate, setIndeterminate] = useState(false);
 
   const cropsCountMap = harvestOnFarm.reduce((p, c) => {
@@ -22,6 +21,8 @@ function FarmView(props) {
     value: key,
   }));
 
+  const [checked, setChecked] = useState(cropsOptions.map(v => v.value));
+
   return (
     <div>
       <div
@@ -31,6 +32,7 @@ function FarmView(props) {
         }}
       >
         <Checkbox
+          checked={checked.length === cropsOptions.length}
           onChange={e => {
             setIndeterminate(false);
             setChecked(e.target.checked ? cropsOptions.map(o => o.value) : []);
