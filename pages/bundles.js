@@ -27,8 +27,12 @@ export default function BundleView(props) {
       title: 'Room',
       dataIndex: 'roomName',
       sorter: (a, b) => a.roomName.localeCompare(b.roomName),
+      render: name => <Wikify name={`Bundle#${name}`}>{name}</Wikify>,
     },
-    { title: 'Bundle', dataIndex: 'bundleName' },
+    {
+      title: 'Bundle',
+      dataIndex: 'bundleName',
+    },
     {
       title: 'Reward',
       dataIndex: 'reward',
