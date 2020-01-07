@@ -26,15 +26,24 @@ const forageItems = [
   406,
   408,
   410,
-  420,
+  412,
   414,
+  416,
   418,
+  420,
+  422,
   718,
   719,
   723,
 ];
 
-export const isForageItem = item => forageItems.includes(item);
+export const isForageItem = item => {
+  if (typeof item === 'number') {
+    return forageItems.includes(item);
+  } else {
+    return forageItems.includes(item.parentSheetIndex) && !item.bigCraftable;
+  }
+};
 
 export const isValidLocation = name => Object.keys(MAP_SIZES).includes(name);
 
@@ -286,6 +295,18 @@ export function findHarvestInLocations(gameState, names = []) {
         location: location.name,
       }));
 
+    const forages = location.objects.item
+      .filter(feature => isForageItem(feature.value.Object))
+      .map(forage => ({
+        ...forage,
+        daysToHarvest: 0,
+        location: location.name,
+        x: forage.key.Vector2.X,
+        y: forage.key.Vector2.Y,
+        done: true,
+        name: forage.value.Object.name,
+      }));
+
     const crops = location.terrainFeatures.item
       .filter(feature => feature.value.TerrainFeature.crop)
       .map(feature => {
@@ -340,6 +361,7 @@ export function findHarvestInLocations(gameState, names = []) {
       ...kegs,
       ...trees,
       ...crops,
+      ...forages,
     ];
   }, []);
 }
