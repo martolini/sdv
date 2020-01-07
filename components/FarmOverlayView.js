@@ -44,7 +44,7 @@ export default function FarmOverlayView(props) {
             collapsed={1}
             displayDataTypes={false}
             displayObjectSize={false}
-            window={window || {}}
+            window={typeof window === 'undefined' ? null : window}
           />
         }
         title={c.name}
