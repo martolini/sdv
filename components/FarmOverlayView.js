@@ -17,7 +17,7 @@ const PlacedDiv = styled.div.attrs(props => ({
       ? '#2ECC40'
       : typeof props.c.hoursUntilReady === 'number' &&
         props.c.hoursUntilReady !== 0 &&
-        props.c.hoursUntilReady < 33
+        props.c.hoursUntilReady < 18
       ? '#EE8900'
       : '#FF4136',
   },
