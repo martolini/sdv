@@ -283,6 +283,32 @@ export function findHarvestInLocations(gameState, names = []) {
       ...findInBuildings(location, 'Barn', ['Keg']),
       ...filterObjectsByName(location, 'Keg'),
     ];
+
+    // Find fishponds
+
+    const fishponds = (location.buildings
+      ? location.buildings.Building
+      : []
+    ).filter(loc => loc['@_xsi:type'] === 'FishPond');
+    const roes = fishponds.reduce(
+      (p, c) => [
+        ...p,
+        {
+          x: c.tileX,
+          y: c.tileY,
+          dx: c.tilesWide,
+          dy: c.tilesHigh,
+          name: `Fish pond ${
+            c.output.Item['@_xsi:nil'] === true ? '' : `(${c.output.Item.name})`
+          }`,
+          location: location.name,
+          done: !c.output.Item['@_xsi:nil'],
+          daysToHarvest: c.output.Item['@_xsi:nil'] ? '?' : 0,
+          ...c,
+        },
+      ],
+      []
+    );
     const trees = location.terrainFeatures.item
       .filter(o => o.value.TerrainFeature['@_xsi:type'] === 'FruitTree')
       .map(o => ({
@@ -362,6 +388,7 @@ export function findHarvestInLocations(gameState, names = []) {
       ...trees,
       ...crops,
       ...forages,
+      ...roes,
     ];
   }, []);
 }
