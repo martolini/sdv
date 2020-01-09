@@ -7,6 +7,8 @@ import KeepQueryLink from './KeepQueryLink';
 import Header from './Header';
 import Footer from './Footer';
 
+const { Content, Sider } = Layout;
+
 const OuterDiv = styled.div`
   font-family: VT323;
   line-height: 1;
@@ -32,8 +34,6 @@ const OuterDiv = styled.div`
     font-size: 18px !important;
   }
 `;
-
-const { Content, Sider } = Layout;
 
 export default function LayoutView(props) {
   const { pathname } = useRouter();

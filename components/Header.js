@@ -3,6 +3,7 @@ import { Layout, Tag, Icon, Badge, Popover } from 'antd';
 import styled from 'styled-components';
 import QuestList from './QuestList';
 import Wikify from './Wikify';
+import StardewSearch from './StardewSearch';
 
 const { Header: AntHeader } = Layout;
 
@@ -34,6 +35,15 @@ const StyledHeader = styled(AntHeader)`
         color: #1890ff;
       }
     }
+  }
+
+  .search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 2%;
+    width: 30%;
   }
 `;
 
@@ -90,6 +100,9 @@ export default function Header(props) {
           </>
         )}
       </h2>
+      <div className="search-bar">
+        <StardewSearch />
+      </div>
       <div className="notification-icon">
         <Badge count={randomNotificationCount} style={{ fontSize: 18 }}>
           <Popover
