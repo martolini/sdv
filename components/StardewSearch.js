@@ -1,5 +1,5 @@
 import { Select, Spin } from 'antd';
-import { useState, useCallback } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { debounce } from 'lodash';
 import axios from 'axios';
 
@@ -9,6 +9,17 @@ export default function StardewSearch() {
   const [fetching, setFetching] = useState(false);
   const [data, setData] = useState([]);
   const [value, setValue] = useState();
+
+  const searchRef = useRef(null);
+  useEffect(() => {
+    const listener = e => {
+      if (e.code === 'KeyF' && !searchRef.current.rcSelect._focused) {
+        setTimeout(() => searchRef.current.focus(), 50);
+      }
+    };
+    document.addEventListener('keydown', listener);
+    return () => document.removeEventListener('keydown', listener);
+  }, []);
 
   const fetchSearchResults = useCallback(
     debounce(async q => {
@@ -28,6 +39,8 @@ export default function StardewSearch() {
 
   return (
     <Select
+      ref={searchRef}
+      showAction={['focus', 'click']}
       value={value}
       onSearch={value => {
         setValue(value);
