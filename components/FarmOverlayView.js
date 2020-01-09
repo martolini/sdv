@@ -7,9 +7,10 @@ const PlacedDiv = styled.div.attrs(props => ({
   style: {
     left: `${(props.c.x / props.mapSize.x) * 100}%`,
     top: `${(props.c.y / props.mapSize.y) * 100}%`,
-    height: `${(props.tileSize * props.mapSize.x) / props.mapSize.y}%`,
+    height: `${(props.tileSize * (props.c.dy || 1) * props.mapSize.x) /
+      props.mapSize.y}%`,
     fontSize: `${((props.tileSize * props.mapSize.x) / props.mapSize.y) * 65}%`,
-    width: `${props.tileSize}%`,
+    width: `${props.tileSize * (props.c.dx || 1)}%`,
     lineHeight: 1,
     backgroundColor: props.c.dead
       ? '#111111'
