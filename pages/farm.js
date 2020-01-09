@@ -16,10 +16,16 @@ function FarmView(props) {
     return p;
   }, {});
 
-  const cropsOptions = Object.keys(cropsCountMap).map(key => ({
-    label: `${key} (${cropsCountMap[key]})`,
-    value: key,
-  }));
+  const cropsOptions = Object.keys(cropsCountMap)
+    .map(key => ({
+      label: `${key} (${cropsCountMap[key]})`,
+      value: key,
+    }))
+    .sort(
+      (a, b) =>
+        cropsCountMap[b.value] - cropsCountMap[a.value] ||
+        a.value.localeCompare(b.value)
+    );
 
   const [checked, setChecked] = useState(cropsOptions.map(v => v.value));
 
