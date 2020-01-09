@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Layout, Tag } from 'antd';
+import { Layout, Tag, notification } from 'antd';
 import { getFirestore } from '../utils/firebase';
 
 const { Footer: AntFooter } = Layout;
@@ -12,6 +12,19 @@ export default function Footer(props) {
       .orderBy('uploadedAtMillis', 'desc')
       .limit(5)
       .onSnapshot(snapshot => {
+        snapshot.docChanges().forEach(function(change) {
+          if (change.type === 'added') {
+            if (recents.length) {
+              // Assume non-first run
+              const d = change.doc.data();
+              const [id, year, season, day] = d.id.split('-');
+              notification.success({
+                message: `New upload from ${d.farmName}`,
+                description: `Day ${day} in ${season}, year ${year}`,
+              });
+            }
+          }
+        });
         if (!snapshot.empty) {
           const saveGames = [];
           snapshot.forEach(doc => {
