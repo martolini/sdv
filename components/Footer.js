@@ -26,6 +26,10 @@ export default function Footer(props) {
                     window.location.href.split('?')[0]
                   }?id=${d.id}`;
                 },
+                duration: 10,
+                style: {
+                  cursor: 'pointer',
+                },
               });
             }
           }
