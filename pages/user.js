@@ -141,8 +141,16 @@ export default function PlayerView(props) {
           </Tooltip>
         ));
       return (
-        <Col span={4} key={skillKey}>
-          <div style={{ display: 'inline-block' }}>
+        <Col
+          span={4}
+          key={skillKey}
+          style={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+          }}
+        >
+          <div>
             {skillName}: {level}
             {chosenProfessions}
           </div>
