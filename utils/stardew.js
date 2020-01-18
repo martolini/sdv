@@ -1,7 +1,8 @@
-import { MAP_SIZES, ID_TABLE, REVERSE_ID_TABLE } from './lookups';
+/* eslint-disable no-continue */
+import rgbhex from 'rgb-hex';
+import { MAP_SIZES, REVERSE_ID_TABLE } from './lookups';
 import bundles from '../data/bundles.json';
 import CSRandom from './csrandom';
-import rgbhex from 'rgb-hex';
 
 const forageItems = [
   16,
@@ -40,109 +41,54 @@ const forageItems = [
 export const isForageItem = item => {
   if (typeof item === 'number') {
     return forageItems.includes(item);
-  } else {
-    return forageItems.includes(item.parentSheetIndex) && !item.bigCraftable;
   }
+  return forageItems.includes(item.parentSheetIndex) && !item.bigCraftable;
 };
 
 export const isValidLocation = name => Object.keys(MAP_SIZES).includes(name);
 
-export async function goCrazyWithJson(json) {
-  const info = {
-    currentSeason: json.currentSeason,
-    dayOfMonth: json.dayOfMonth,
-    dailyLuck: json.dailyLuck,
-    year: json.year,
-    farmName: json.player.farmName,
-    money: json.player.money,
-    gameId: json.uniqueIDForThisGame,
-  };
-  info.id = `${info.gameId}-${info.year}-${info.currentSeason}-${info.dayOfMonth}`;
-  info.birthdays = findPaths(json.locations.GameLocation, 'NPC')
-    .map(a => a.split('/').reduce((p, c) => p[c], json.locations.GameLocation))
-    .reduce((p, c) => [...p, ...(Array.isArray(c) ? c : [c])], [])
-    .filter(
-      c =>
-        c.birthday_Season &&
-        c.birthday_Season === info.currentSeason &&
-        c.birthday_Day &&
-        c.birthday_Day === info.dayOfMonth
-    )
-    .map(c => ({
-      name: c.name,
-      season: c.birthday_Season,
-      day: c.birthday_Day,
-    }));
-  // Parse locations
-  const foraging = json.locations.GameLocation.filter(({ name }) =>
-    isValidLocation(name)
-  ).reduce((p, location) => {
-    const name = location.name;
-    location.objects = location.objects || { item: [] };
-    location.objects = Array.isArray(location.objects.item)
-      ? location.objects
-      : { item: [location.objects.item] };
-    p[name] = location.objects.item
-      .map(item => {
-        const itemId = item.value.Object.parentSheetIndex;
-        if (!isForageItem(itemId)) {
-          return null;
+const findPaths = (
+  rootObject,
+  searchValue,
+  { searchKeys = typeof searchValue === 'string', rootMaxDepth = 20 } = {}
+) => {
+  const paths = [];
+  const notObject = typeof searchValue !== 'object';
+  const gvpio = (obj, maxDepth, prefix) => {
+    if (!maxDepth) return;
+
+    Object.entries(obj).forEach(([curr, currElem]) => {
+      if (searchKeys && curr === searchValue) {
+        // To search for property name too ...
+        paths.push(prefix + curr);
+      }
+
+      if (typeof currElem === 'object') {
+        // object is "object" and "array" is also in the eyes of "typeof"
+        // search again :D
+        gvpio(currElem, maxDepth - 1, `${prefix + curr}/`);
+        if (notObject) {
+          return;
         }
-        return {
-          name: item.value.Object.name,
-          x: item.key.Vector2.X,
-          y: item.key.Vector2.Y,
-        };
-      })
-      .filter(l => !!l);
-    return p;
-  }, {});
-  if (typeof window !== 'undefined') {
-    window.json = json;
-  }
-  // Generate bundle status
-  const deliverableItems = getDeliverableItems(json);
-  const bundleStatus = getBundleStatus(json);
-  const missingBundleItems = Object.keys(bundles)
-    .map(bundleKey => {
-      const dataBundle = bundles[bundleKey];
-      return {
-        ...dataBundle,
-        ...bundleStatus[dataBundle.id],
-        missingIngredients: bundleStatus[dataBundle.id].missingIngredients.map(
-          i => ({
-            ...i,
-            deliverable: canDeliverItem(
-              deliverableItems,
-              i.itemId,
-              i.stack,
-              i.quality
-            ),
-          })
-        ),
-      };
-    })
-    .filter(({ nMissing }) => nMissing > 0);
-  return {
-    gameState: json,
-    foraging,
-    mines: findMinesInfo(json),
-    info,
-    harvest: {
-      items: findHarvestInLocations(json, ['Farm', 'Greenhouse']),
-    },
-    missingBundleItems,
-    deliverableItems,
-    players: getPlayers(json),
+      }
+      // it's something else... probably the value we are looking for
+      // compares with "searchValue"
+      if (currElem === searchValue) {
+        // return index AND/OR property name
+        paths.push(prefix + curr);
+      }
+    });
   };
-}
+  gvpio(rootObject, rootMaxDepth, '');
+  return paths;
+};
 
 const filterObjectsByName = (location, name) =>
   location.objects.item
     .filter(feature => feature.value.Object.name === name)
     .map(feature => {
       const {
-        name,
+        name: featureName,
         heldObject = { name: 'empty' },
         minutesUntilReady,
       } = feature.value.Object;
@@ -150,7 +96,7 @@ const filterObjectsByName = (location, name) =>
       const daysToHarvest = Math.round(minutesUntilReady / 60 / 24);
       return {
         ...feature,
-        name: `${name} (${type})`,
+        name: `${featureName} (${type})`,
         daysToHarvest,
         x: feature.key.Vector2.X,
         y: feature.key.Vector2.Y,
@@ -168,8 +114,8 @@ const findInBuildings = (location, building, names = []) => {
   const buildings = location.buildings.Building.filter(
     b => building === b['@_xsi:type']
   );
-  const allObjects = buildings.reduce((p, building) => {
-    const objects = building.indoors.objects.item
+  const allObjects = buildings.reduce((p, b) => {
+    const objects = b.indoors.objects.item
       .filter(
         item => names.length === 0 || names.includes(item.value.Object.name)
       )
@@ -198,7 +144,7 @@ const findMinesInfo = json => {
   const quarryUnlocked = !!json.player.mailReceived.string.find(
     t => t === 'ccCraftsRoom'
   );
-  const daysPlayed = json.player.stats.daysPlayed;
+  const { daysPlayed } = json.player.stats;
   const gameID = json.uniqueIDForThisGame;
   const infestedMonster = [];
   const infestedSlime = [];
@@ -206,12 +152,15 @@ const findMinesInfo = json => {
   const rainbowLights = [];
   const dinoLevel = [];
   const day = daysPlayed;
-  for (let mineLevel = 1; mineLevel < 120; mineLevel++) {
+  let rng;
+
+  for (let mineLevel = 1; mineLevel < 120; mineLevel += 1) {
     if (mineLevel % 5 === 0) {
       continue;
     }
     let skipMushroomCheck = false;
-    var rng = new CSRandom(day + mineLevel * 100 + gameID / 2);
+    // eslint-disable-next-line vars-on-top,no-var
+    rng = new CSRandom(day + mineLevel * 100 + gameID / 2);
     if (
       rng.NextDouble() < 0.044 &&
       mineLevel % 40 > 5 &&
@@ -230,7 +179,7 @@ const findMinesInfo = json => {
       mineLevel % 40 > 1
     ) {
       if (rng.NextDouble() < 0.25) {
-        quarryLevel.push(mineLevel + '*');
+        quarryLevel.push(`${mineLevel}*`);
       } else {
         quarryLevel.push(mineLevel);
       }
@@ -248,7 +197,7 @@ const findMinesInfo = json => {
       rainbowLights.push(mineLevel);
     }
   }
-  for (let mineLevel = 127; mineLevel < 621; mineLevel++) {
+  for (let mineLevel = 127; mineLevel < 621; mineLevel += 1) {
     rng = new CSRandom(day + mineLevel * 100 + gameID / 2);
     if (rng.NextDouble() < 0.044) {
       rng.NextDouble(); // Unknown data
@@ -291,8 +240,8 @@ export function findHarvestInLocations(gameState, names = []) {
       : []
     ).filter(loc => loc['@_xsi:type'] === 'FishPond');
     const roes = fishponds.reduce(
-      (p, c) => [
-        ...p,
+      (pp, c) => [
+        ...pp,
         {
           x: c.tileX,
           y: c.tileY,
@@ -337,13 +286,11 @@ export function findHarvestInLocations(gameState, names = []) {
       .filter(feature => feature.value.TerrainFeature.crop)
       .map(feature => {
         const phaseDays = feature.value.TerrainFeature.crop.phaseDays.int;
-        const currentPhase = feature.value.TerrainFeature.crop.currentPhase;
-        const dayOfCurrentPhase =
-          feature.value.TerrainFeature.crop.dayOfCurrentPhase;
-        const regrowAfterHarvest =
-          feature.value.TerrainFeature.crop.regrowAfterHarvest;
+        const { currentPhase } = feature.value.TerrainFeature.crop;
+        const { dayOfCurrentPhase } = feature.value.TerrainFeature.crop;
+        const { regrowAfterHarvest } = feature.value.TerrainFeature.crop;
         let daysToHarvest =
-          phaseDays.slice(currentPhase + 1, -1).reduce((p, c) => p + c, 0) +
+          phaseDays.slice(currentPhase + 1, -1).reduce((pp, c) => pp + c, 0) +
           phaseDays[currentPhase] -
           dayOfCurrentPhase;
         let done = false;
@@ -393,40 +340,6 @@ export function findHarvestInLocations(gameState, names = []) {
   }, []);
 }
 
-const findPaths = (
-  obj,
-  searchValue,
-  { searchKeys = typeof searchValue === 'string', maxDepth = 20 } = {}
-) => {
-  const paths = [];
-  const notObject = typeof searchValue !== 'object';
-  const gvpio = (obj, maxDepth, prefix) => {
-    if (!maxDepth) return;
-
-    for (const [curr, currElem] of Object.entries(obj)) {
-      if (searchKeys && curr === searchValue) {
-        // To search for property name too ...
-        paths.push(prefix + curr);
-      }
-
-      if (typeof currElem === 'object') {
-        // object is "object" and "array" is also in the eyes of "typeof"
-        // search again :D
-        gvpio(currElem, maxDepth - 1, prefix + curr + '/');
-        if (notObject) continue;
-      }
-      // it's something else... probably the value we are looking for
-      // compares with "searchValue"
-      if (currElem === searchValue) {
-        // return index AND/OR property name
-        paths.push(prefix + curr);
-      }
-    }
-  };
-  gvpio(obj, maxDepth, '');
-  return paths;
-};
-
 function calculatePrice(item) {
   switch (item.quality) {
     case 1:
@@ -438,6 +351,94 @@ function calculatePrice(item) {
     default:
       return item.price;
   }
+}
+
+const BUNDLE_COUNT = {
+  // number of items in each bundle
+  0: 4,
+  1: 4,
+  2: 4,
+  3: 3,
+  4: 5,
+  5: 6,
+  6: 4,
+  7: 4,
+  8: 4,
+  9: 3,
+  10: 4,
+  11: 5,
+  13: 4,
+  14: 3,
+  15: 4,
+  16: 4,
+  17: 4,
+  19: 5,
+  20: 3,
+  21: 4,
+  22: 2,
+  23: 1,
+  24: 1,
+  25: 1,
+  26: 1,
+  31: 6,
+  32: 4,
+  33: 4,
+  34: 6,
+  35: 3,
+};
+
+export const getBundleStatus = gameState => {
+  const ccLoc = gameState.locations.GameLocation.find(
+    c => c.name === 'CommunityCenter'
+  );
+
+  const bundlesHave = ccLoc.bundles.item.reduce((p, item) => {
+    const id = item.key.int;
+    const count = item.value.ArrayOfBoolean.boolean.reduce(
+      (pp, c) => pp + c,
+      0
+    );
+    return {
+      ...p,
+      [id]: count,
+    };
+  }, {});
+
+  const stateBundles = ccLoc.bundles.item;
+  const missing = Object.keys(bundles).reduce((p, bundleKey) => {
+    const rawBundle = bundles[bundleKey];
+    const bundle = stateBundles.find(b => +b.key.int === +rawBundle.id);
+    const booleanArray = bundle.value.ArrayOfBoolean.boolean;
+    const missingIngredients = rawBundle.ingredients.reduce((pp, c, i) => {
+      if (booleanArray[i]) {
+        return pp;
+      }
+      return [...pp, c];
+    }, []);
+    return {
+      ...p,
+      [bundleKey]: {
+        missingIngredients,
+        nMissing: Math.max(BUNDLE_COUNT[bundleKey] - bundlesHave[bundleKey], 0),
+      },
+    };
+  }, {});
+  return missing;
+};
+
+export function getPlayers(gameState) {
+  const players = [
+    gameState.player,
+    ...findPaths(gameState, 'farmhand')
+      .map(path => path.split('/').reduce((p, c) => p[c], gameState))
+      .filter(t => t.name),
+  ];
+  return players.reduce((p, player) => {
+    return {
+      ...p,
+      [player.name]: player,
+    };
+  }, {});
 }
 
 function parseItem(item) {
@@ -497,11 +498,15 @@ export const getDeliverableItems = gameState => {
     const key = c.id;
     const current = p[key];
     if (!current || current.length === 0) {
-      p[key] = [c];
-    } else {
-      p[key] = [...p[key], c];
+      return {
+        ...p,
+        [key]: [c],
+      };
     }
-    return p;
+    return {
+      ...p,
+      [key]: [...p[key], c],
+    };
   }, {});
 };
 
@@ -520,81 +525,94 @@ export const canDeliverItem = (deliverableItems, itemId, stack, quality) => {
   return false;
 };
 
-const BUNDLE_COUNT = {
-  // number of items in each bundle
-  0: 4,
-  1: 4,
-  2: 4,
-  3: 3,
-  4: 5,
-  5: 6,
-  6: 4,
-  7: 4,
-  8: 4,
-  9: 3,
-  10: 4,
-  11: 5,
-  13: 4,
-  14: 3,
-  15: 4,
-  16: 4,
-  17: 4,
-  19: 5,
-  20: 3,
-  21: 4,
-  22: 2,
-  23: 1,
-  24: 1,
-  25: 1,
-  26: 1,
-  31: 6,
-  32: 4,
-  33: 4,
-  34: 6,
-  35: 3,
-};
-
-export const getBundleStatus = gameState => {
-  const ccLoc = gameState.locations.GameLocation.find(
-    c => c.name === 'CommunityCenter'
-  );
-
-  const bundlesHave = ccLoc.bundles.item.reduce((p, item) => {
-    const id = item.key.int;
-    const count = item.value.ArrayOfBoolean.boolean.reduce((p, c) => p + c, 0);
-    p[id] = count;
-    return p;
-  }, {});
-
-  const stateBundles = ccLoc.bundles.item;
-  const missing = Object.keys(bundles).reduce((p, bundleKey) => {
-    const rawBundle = bundles[bundleKey];
-    const bundle = stateBundles.find(b => +b.key.int === +rawBundle.id);
-    const booleanArray = bundle.value.ArrayOfBoolean.boolean;
-    const missingIngredients = rawBundle.ingredients.reduce((p, c, i) => {
-      if (booleanArray[i]) {
-        return p;
-      }
-      return [...p, c];
-    }, []);
-    p[bundleKey] = {
-      missingIngredients,
-      nMissing: Math.max(BUNDLE_COUNT[bundleKey] - bundlesHave[bundleKey], 0),
+export async function goCrazyWithJson(json) {
+  const info = {
+    currentSeason: json.currentSeason,
+    dayOfMonth: json.dayOfMonth,
+    dailyLuck: json.dailyLuck,
+    year: json.year,
+    farmName: json.player.farmName,
+    money: json.player.money,
+    gameId: json.uniqueIDForThisGame,
+  };
+  info.id = `${info.gameId}-${info.year}-${info.currentSeason}-${info.dayOfMonth}`;
+  info.birthdays = findPaths(json.locations.GameLocation, 'NPC')
+    .map(a => a.split('/').reduce((p, c) => p[c], json.locations.GameLocation))
+    .reduce((p, c) => [...p, ...(Array.isArray(c) ? c : [c])], [])
+    .filter(
+      c =>
+        c.birthday_Season &&
+        c.birthday_Season === info.currentSeason &&
+        c.birthday_Day &&
+        c.birthday_Day === info.dayOfMonth
+    )
+    .map(c => ({
+      name: c.name,
+      season: c.birthday_Season,
+      day: c.birthday_Day,
+    }));
+  // Parse locations
+  const foraging = json.locations.GameLocation.filter(({ name }) =>
+    isValidLocation(name)
+  ).reduce((p, location) => {
+    const { name } = location;
+    const items = (Array.isArray(location.objects.item)
+      ? location.objects.item
+      : [location.objects.item]
+    ).filter(a => !!a);
+    return {
+      ...p,
+      [name]: items
+        .map(item => {
+          const itemId = item.value.Object.parentSheetIndex;
+          if (!isForageItem(itemId)) {
+            return null;
+          }
+          return {
+            name: item.value.Object.name,
+            x: item.key.Vector2.X,
+            y: item.key.Vector2.Y,
+          };
+        })
+        .filter(l => !!l),
     };
-    return p;
   }, {});
-  return missing;
-};
-
-export function getPlayers(gameState) {
-  const players = [
-    gameState.player,
-    ...findPaths(gameState, 'farmhand')
-      .map(path => path.split('/').reduce((p, c) => p[c], gameState))
-      .filter(t => t.name),
-  ];
-  return players.reduce((p, player) => {
-    p[player.name] = player;
-    return p;
-  }, {});
+  if (typeof window !== 'undefined') {
+    window.json = json;
+  }
+  // Generate bundle status
+  const deliverableItems = getDeliverableItems(json);
+  const bundleStatus = getBundleStatus(json);
+  const missingBundleItems = Object.keys(bundles)
+    .map(bundleKey => {
+      const dataBundle = bundles[bundleKey];
+      return {
+        ...dataBundle,
+        ...bundleStatus[dataBundle.id],
+        missingIngredients: bundleStatus[dataBundle.id].missingIngredients.map(
+          i => ({
+            ...i,
+            deliverable: canDeliverItem(
+              deliverableItems,
+              i.itemId,
+              i.stack,
+              i.quality
+            ),
+          })
+        ),
+      };
+    })
+    .filter(({ nMissing }) => nMissing > 0);
+  return {
+    gameState: json,
+    foraging,
+    mines: findMinesInfo(json),
+    info,
+    harvest: {
+      items: findHarvestInLocations(json, ['Farm', 'Greenhouse']),
+    },
+    missingBundleItems,
+    deliverableItems,
+    players: getPlayers(json),
+  };
 }

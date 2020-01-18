@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-export default function KeepQueryLink(props) {
+export default function KeepQueryLink({ href, children }) {
   const { query } = useRouter();
-  return <Link href={{ pathname: props.href, query }}>{props.children}</Link>;
+  return <Link href={{ pathname: href, query }}>{children}</Link>;
 }

@@ -12,8 +12,11 @@ function FarmView(props) {
 
   const cropsCountMap = harvestOnFarm.reduce((p, c) => {
     const existing = p[c.name] || 0;
-    p[c.name] = existing + 1;
-    return p;
+    const acc = {
+      ...p,
+      [c.name]: existing + 1,
+    };
+    return acc;
   }, {});
 
   const cropsOptions = Object.keys(cropsCountMap)

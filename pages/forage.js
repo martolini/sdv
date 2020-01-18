@@ -3,7 +3,59 @@ import { Tooltip, Select, Divider } from 'antd';
 import { useStoreState } from 'easy-peasy';
 import { MAP_IMAGES, MAP_SIZES } from '../utils/lookups';
 
-export default function Forage(props) {
+const createMapElements = (maps, foraging) => {
+  const mapElements = maps.map(key => {
+    const mapSize = MAP_SIZES[key];
+    const mapUrl = MAP_IMAGES[key];
+    const markers = (foraging[key] || []).map(({ x, y, name }) => {
+      const top = (y / mapSize.y) * 100;
+      const left = (x / mapSize.x) * 100;
+      return (
+        <Tooltip title={name} key={`${x}_${y}_${name}`}>
+          <img
+            src="https://stardew.djomp.co.uk/images/marker.png"
+            style={{
+              position: 'absolute',
+              top: `${top}%`,
+              left: `${left}%`,
+            }}
+            alt={name}
+          />
+        </Tooltip>
+      );
+    });
+    return (
+      <div key={key}>
+        <div>
+          <h3>
+            <a name={key} href={`#${key}`}>
+              {key} ({markers.length})
+            </a>
+          </h3>
+        </div>
+        <div
+          style={{
+            display: 'inline-block',
+            top: 0,
+            left: 0,
+            position: 'relative',
+          }}
+        >
+          <img
+            alt={mapUrl}
+            style={{ maxWidth: '100%', opacity: '50%' }}
+            src={mapUrl}
+            key={key}
+          />
+          {markers}
+        </div>
+      </div>
+    );
+  });
+  return mapElements;
+};
+
+export default function Forage() {
   const foraging = useStoreState(state => state.foraging);
   const [selectedMaps, setSelectedMaps] = useState(Object.keys(MAP_IMAGES));
   return (
@@ -49,55 +101,3 @@ export default function Forage(props) {
     </div>
   );
 }
-
-const createMapElements = (maps, foraging) => {
-  const mapElements = maps.map(key => {
-    const mapSize = MAP_SIZES[key];
-    const mapUrl = MAP_IMAGES[key];
-    const markers = (foraging[key] || []).map(({ x, y, name }, idx) => {
-      const top = (y / mapSize.y) * 100;
-      const left = (x / mapSize.x) * 100;
-      return (
-        <Tooltip title={name} key={idx}>
-          <img
-            src="https://stardew.djomp.co.uk/images/marker.png"
-            style={{
-              position: 'absolute',
-              top: `${top}%`,
-              left: `${left}%`,
-            }}
-            alt={name}
-          />
-        </Tooltip>
-      );
-    });
-    return (
-      <div key={key}>
-        <div>
-          <h3>
-            <a name={key} href={`#${key}`}>
-              {key} ({markers.length})
-            </a>
-          </h3>
-        </div>
-        <div
-          style={{
-            display: 'inline-block',
-            top: 0,
-            left: 0,
-            position: 'relative',
-          }}
-        >
-          <img
-            alt={mapUrl}
-            style={{ maxWidth: '100%', opacity: '50%' }}
-            src={mapUrl}
-            key={key}
-          />
-          {markers}
-        </div>
-      </div>
-    );
-  });
-  return mapElements;
-};

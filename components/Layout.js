@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { Layout, Menu, Icon } from 'antd';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -35,7 +36,7 @@ const OuterDiv = styled.div`
   }
 `;
 
-export default function LayoutView(props) {
+export default function LayoutView({ children }) {
   const { pathname } = useRouter();
   const [collapsed, setCollapsed] = useState(true);
   return (
@@ -43,7 +44,7 @@ export default function LayoutView(props) {
       <Head>
         <title>Stardew guide</title>
         <link
-          href={`https://fonts.googleapis.com/css?family=VT323&display=swap`}
+          href="https://fonts.googleapis.com/css?family=VT323&display=swap"
           rel="stylesheet"
         />
       </Head>
@@ -59,8 +60,11 @@ export default function LayoutView(props) {
             left: 0,
           }}
         >
-          <div className="logo" />
-          <Menu theme="dark" mode="inline" selectedKeys={[pathname.slice(1)]}>
+          <Menu
+            theme="dark"
+            mode="inline"
+            selectedKeys={[pathname.split('/').slice(-1)[0]]}
+          >
             <Menu.Item key="farm">
               <KeepQueryLink href="/farm">
                 <a>
@@ -105,7 +109,7 @@ export default function LayoutView(props) {
               <KeepQueryLink href="/farmer">
                 <a>
                   <Icon type="usergroup-add" />
-                  <span className="nav-text">{`Farmer & farmhands`}</span>
+                  <span className="nav-text">Farmer & farmhands</span>
                 </a>
               </KeepQueryLink>
             </Menu.Item>
@@ -114,6 +118,7 @@ export default function LayoutView(props) {
               <a
                 href="https://github.com/martolini/sdv/issues/new/choose"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 <Icon type="form" />
                 <span className="nav-text">Feedback</span>
@@ -124,9 +129,7 @@ export default function LayoutView(props) {
         <Layout style={{ marginLeft: collapsed ? 80 : 200 }}>
           <Header />
           <Content style={{ margin: '16px 12px 0', overflow: 'initial' }}>
-            <div style={{ padding: 16, background: '#fff' }}>
-              {props.children}
-            </div>
+            <div style={{ padding: 16, background: '#fff' }}>{children}</div>
           </Content>
           <Footer />
         </Layout>

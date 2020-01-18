@@ -1,11 +1,12 @@
+/* eslint-disable jsx-a11y/mouse-events-have-key-events */
 import { useState } from 'react';
 import parser from 'fast-xml-parser';
 import { useRouter } from 'next/router';
+import { useStoreActions } from 'easy-peasy';
 import { getStorage, getFirestore } from '../utils/firebase';
 import { goCrazyWithJson } from '../utils/stardew';
-import { useStoreActions } from 'easy-peasy';
 
-export default function HandleFileDrop(props) {
+export default function HandleFileDrop({ children }) {
   const [isDraggingFile, setIsDraggingFile] = useState(false);
   const router = useRouter();
   const setGamestate = useStoreActions(actions => actions.setFullState);
@@ -14,7 +15,7 @@ export default function HandleFileDrop(props) {
     if (ev.dataTransfer.items) {
       const item = ev.dataTransfer.items[0];
       if (item.kind === 'file') {
-        var file = item.getAsFile();
+        const file = item.getAsFile();
         const reader = new FileReader();
         reader.onload = async theFile => {
           const { result } = theFile.currentTarget;
@@ -62,14 +63,13 @@ export default function HandleFileDrop(props) {
         };
         reader.readAsText(file);
       }
-    } else {
-      // Use DataTransfer interface to access the file(s)
-      for (var i = 0; i < ev.dataTransfer.files.length; i++) {}
     }
   };
 
   return (
     <div
+      role="button"
+      tabIndex="0"
       onDrop={onDrop}
       onDragOver={event => {
         if (event.dataTransfer.items.length) {
@@ -91,7 +91,7 @@ export default function HandleFileDrop(props) {
         background: isDraggingFile ? '#ccc' : '#fff',
       }}
     >
-      {isDraggingFile ? <h1>Drop file anywhere</h1> : props.children}
+      {isDraggingFile ? <h1>Drop file anywhere</h1> : children}
     </div>
   );
 }

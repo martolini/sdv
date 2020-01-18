@@ -2,9 +2,9 @@ import React from 'react';
 import { Tag, Table, Empty } from 'antd';
 import styled from 'styled-components';
 import { uniqBy } from 'lodash';
+import { useStoreState } from 'easy-peasy';
 import Wikify from '../components/Wikify';
 import QualityIcon from '../components/QualityIcon';
-import { useStoreState } from 'easy-peasy';
 
 const WrapperDiv = styled.div`
   .green-row {
@@ -16,7 +16,7 @@ const WrapperDiv = styled.div`
   }
 `;
 
-export default function BundleView(props) {
+export default function BundleView() {
   const missingBundleItems = useStoreState(state => state.missingBundleItems);
   if (missingBundleItems.length === 0) {
     return <Empty />;
@@ -27,6 +27,7 @@ export default function BundleView(props) {
       title: 'Room',
       dataIndex: 'roomName',
       sorter: (a, b) => a.roomName.localeCompare(b.roomName),
+      // eslint-disable-next-line react/display-name
       render: name => <Wikify name={`Bundle#${name}`}>{name}</Wikify>,
     },
     {
@@ -96,6 +97,7 @@ export default function BundleView(props) {
           ) {
             return 'green-row';
           }
+          return '';
         }}
       />
     </WrapperDiv>

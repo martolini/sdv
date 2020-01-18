@@ -1,21 +1,37 @@
 import { useEffect, useState } from 'react';
-import { Layout, Tag, notification } from 'antd';
+import { Layout, notification, Icon, Divider, Tag } from 'antd';
+import styled from 'styled-components';
 import { getFirestore } from '../utils/firebase';
 import pkg from '../package.json';
-import styled from 'styled-components';
 
 const { Footer: AntFooter } = Layout;
 
 const CenteredSpacing = styled.div`
   display: flex;
-  justify-content: center;
-  * {
-    padding-left: 5px;
-    padding-right: 5px;
+  align-items: center;
+  font-size: 18px;
+
+  .ant-tag {
+    cursor: pointer;
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  ul {
+    list-style: none;
+    flex-wrap: wrap;
+    display: flex;
+    padding-inline-start: 0;
+    margin-bottom: 0;
+    * {
+      display: flex;
+      margin-right: 20px;
+    }
   }
 `;
 
-export default function Footer(props) {
+export default function Footer() {
   const [recents, setRecents] = useState([]);
   useEffect(() => {
     return getFirestore()
@@ -23,17 +39,17 @@ export default function Footer(props) {
       .orderBy('uploadedAtMillis', 'desc')
       .limit(5)
       .onSnapshot(snapshot => {
-        snapshot.docChanges().forEach(function(change) {
+        snapshot.docChanges().forEach(change => {
           if (change.type === 'added' || change.type === 'modified') {
             // Assume non-first run
             const d = change.doc.data();
             if (d.uploadedAtMillis > Date.now() - 10 * 1000) {
-              const [_, year, season, day] = d.id.split('-');
+              const [, year, season, day] = d.id.split('-');
               notification.success({
                 message: `New upload from ${d.farmName}`,
                 description: `Day ${day} in ${season}, year ${year}, click to see it!`,
                 onClick: () => {
-                  window.location.href = window.location.href = `${
+                  window.location.href = `${
                     window.location.href.split('?')[0]
                   }?id=${d.id}`;
                 },
@@ -55,33 +71,49 @@ export default function Footer(props) {
       });
   }, []);
   return (
-    <AntFooter style={{ textAlign: 'center' }}>
-      <p>
-        {recents.map(r => (
-          <Tag
-            style={{ cursor: 'pointer' }}
-            onClick={() => {
-              window.location.href = `${
-                window.location.href.split('?')[0]
-              }?id=${r.id}`;
-            }}
-            key={r.id}
-            color="geekblue"
-          >{`${r.farmName} // ${r.id
-            .split('-')
-            .slice(1)
-            .join(' ')}`}</Tag>
-        ))}
-      </p>
-      <p>{'martolini <3 stardew'}</p>
+    <AntFooter>
       <CenteredSpacing>
-        {`Version ${pkg.version} `}
-        <a
-          href={`https://github.com/martolini/sdv/blob/v${pkg.version}/CHANGELOG.md`}
-          target="_blank"
-        >
-          changelog
-        </a>
+        <ul style={{ width: '100%', justifyContent: 'center' }}>
+          {recents.map(r => (
+            <li key={r.id}>
+              <a
+                href={`${window.location.href.split('?')[0]}?id=${r.id}`}
+                key={r.id}
+              >
+                <Tag color="geekblue" style={{ cursor: 'pointere' }}>{`${
+                  r.farmName
+                } // ${r.id
+                  .split('-')
+                  .slice(1)
+                  .join(' ')}`}</Tag>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </CenteredSpacing>
+      <Divider />
+      <CenteredSpacing>
+        <ul style={{ width: '100%' }}>
+          <li>{`Version ${pkg.version} `}</li>
+          <li>
+            <a
+              href={`https://github.com/martolini/sdv/blob/v${pkg.version}/CHANGELOG.md`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              See changelog
+            </a>
+          </li>
+          <li>All credits in the world to ConcernedApe</li>
+          <li style={{ marginLeft: 'auto', marginRight: 5 }}>
+            {/* <Tooltip title=""> */}
+            <a href="https://github.com/martolini/sdv">
+              Check out the project on github
+              <Icon type="github" style={{ fontSize: 24, marginLeft: 5 }} />
+            </a>
+            {/* </Tooltip> */}
+          </li>
+        </ul>
       </CenteredSpacing>
     </AntFooter>
   );

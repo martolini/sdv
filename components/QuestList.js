@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { List, Icon, Tabs, Badge } from 'antd';
 
 const { TabPane } = Tabs;
@@ -25,7 +26,7 @@ export default function QuestList(props) {
               tab={
                 <>
                   <span style={{ marginRight: 10 }}>{name}</span>
-                  <Badge count={quests.length}></Badge>
+                  <Badge count={quests.length} />
                 </>
               }
               key={name}

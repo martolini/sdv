@@ -47,13 +47,16 @@ const StyledHeader = styled(AntHeader)`
   }
 `;
 
-export default function Header(props) {
+export default function Header() {
   const info = useStoreState(state => state.info);
   const players = useStoreState(state => state.players);
 
   const notifications = Object.keys(players).reduce((p, c) => {
-    p[c] = players[c].questLog.Quest || [];
-    return p;
+    const acc = {
+      ...p,
+      [c]: players[c].questLog.Quest || [],
+    };
+    return acc;
   }, {});
 
   const randomNotificationCount =
@@ -88,7 +91,7 @@ export default function Header(props) {
             {info.birthdays.length > 0 && (
               <Wikify name={info.birthdays[0].name}>
                 <Tag color="blue" style={{ cursor: 'pointer' }}>
-                  {info.birthdays[0].name}'s birthday{' '}
+                  {`${info.birthdays[0].name}'s birthday `}
                   <Icon
                     theme="twoTone"
                     type="carry-out"

@@ -107,7 +107,7 @@ const PROFESSIONS_TABLE = {
   },
 };
 
-export default function PlayerView(props) {
+export default function PlayerView() {
   const players = useStoreState(state => state.players);
   if (Object.keys(players).length === 0) {
     return <Empty />;
@@ -131,7 +131,7 @@ export default function PlayerView(props) {
         .filter(prof => !!PROFESSIONS_TABLE[skillName][prof])
         .map((prof, idx) => (
           <Tooltip
-            key={idx}
+            key={prof}
             placement="right"
             title={PROFESSIONS_TABLE[skillName][prof].description}
           >
