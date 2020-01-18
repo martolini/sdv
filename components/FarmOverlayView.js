@@ -1,7 +1,24 @@
 import React from 'react';
 import { Popover, Tooltip } from 'antd';
-import ReactJsonView from './JsonView';
 import styled from 'styled-components';
+import ReactJsonView from './JsonView';
+
+const getColorForTile = c => {
+  if (c.dead) {
+    return '#111111';
+  }
+  if (c.done) {
+    return '#2ECC40';
+  }
+  if (
+    typeof c.hoursUntilReady === 'number' &&
+    c.minutesUntilReady !== 0 &&
+    c.hoursUntilReady < 18
+  ) {
+    return 'EE8900';
+  }
+  return 'FF4136';
+};
 
 const PlacedDiv = styled.div.attrs(props => ({
   style: {
@@ -12,15 +29,7 @@ const PlacedDiv = styled.div.attrs(props => ({
     fontSize: `${((props.tileSize * props.mapSize.x) / props.mapSize.y) * 65}%`,
     width: `${props.tileSize * (props.c.dx || 1)}%`,
     lineHeight: 1,
-    backgroundColor: props.c.dead
-      ? '#111111'
-      : props.c.done
-      ? '#2ECC40'
-      : typeof props.c.hoursUntilReady === 'number' &&
-        props.c.minutesUntilReady !== 0 &&
-        props.c.hoursUntilReady < 18
-      ? '#EE8900'
-      : '#FF4136',
+    backgroundColor: getColorForTile(props.c),
   },
 }))`
   display: flex;
@@ -39,8 +48,8 @@ const PlacedDiv = styled.div.attrs(props => ({
 export default function FarmOverlayView(props) {
   const { items, mapSize } = props;
   const tileSize = 100 / mapSize.x;
-  return items.map((c, i) => (
-    <Tooltip title={`${c.name} [${c.daysToHarvest}]`} key={i}>
+  return items.map(c => (
+    <Tooltip title={`${c.name} [${c.daysToHarvest}]`} key={`${c.x}_${c.y}`}>
       <Popover
         content={
           <ReactJsonView

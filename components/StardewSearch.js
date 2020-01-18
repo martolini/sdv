@@ -13,6 +13,7 @@ export default function StardewSearch() {
   const searchRef = useRef(null);
   useEffect(() => {
     const listener = e => {
+      // eslint-disable-next-line no-underscore-dangle
       if (e.code === 'KeyF' && !searchRef.current.rcSelect._focused) {
         setTimeout(() => searchRef.current.focus(), 50);
       }
@@ -42,9 +43,9 @@ export default function StardewSearch() {
       ref={searchRef}
       showAction={['focus', 'click']}
       value={value}
-      onSearch={value => {
-        setValue(value);
-        fetchSearchResults(value);
+      onSearch={val => {
+        setValue(val);
+        fetchSearchResults(val);
       }}
       placeholder="Search stardewwiki"
       notFoundContent={fetching ? <Spin size="small" /> : null}
@@ -53,8 +54,8 @@ export default function StardewSearch() {
       defaultActiveFirstOption={false}
       showArrow={false}
       style={{ width: '100%' }}
-      onChange={value => {
-        window.open(value, '_blank');
+      onChange={val => {
+        window.open(val, '_blank');
       }}
     >
       {data.map(d => (

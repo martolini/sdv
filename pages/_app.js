@@ -1,18 +1,14 @@
 import 'antd/dist/antd.css';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import App from 'next/app';
 import withRedux from 'next-redux-wrapper';
-import { ThemeProvider } from 'styled-components';
 import { createStore, StoreProvider } from 'easy-peasy';
 import { getFarmState } from '../utils/firebase-admin';
 import storeModel from '../store';
 import Layout from '../components/Layout';
 import FileDropContainer from '../components/FileDropContainer';
-import { authenticate, addRecentlySeenId } from '../utils/firebase';
 
-const theme = {};
-
-const makeStore = (initialState, options) =>
+const makeStore = initialState =>
   createStore(storeModel, {
     initialState,
   });
@@ -51,6 +47,7 @@ class RootApp extends App {
       <StoreProvider store={store}>
         <FileDropContainer>
           <Layout>
+            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
             <Component {...pageProps} />
           </Layout>
         </FileDropContainer>

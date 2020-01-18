@@ -1,8 +1,11 @@
-import { goCrazyWithJson } from '../utils/stardew';
+import { goCrazyWithJson } from './stardew';
+
+// eslint-disable-next-line import/no-mutable-exports
 let admin;
 let config = {};
 
 if (typeof window === 'undefined') {
+  // eslint-disable-next-line global-require
   admin = require('firebase-admin');
   config = {
     credential: admin.credential.applicationDefault(),

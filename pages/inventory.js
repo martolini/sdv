@@ -45,7 +45,7 @@ export default function InventoryView() {
     {
       title: 'Name',
       render: row => (
-        <Wikify {...row}>
+        <Wikify name={row.name} id={row.id}>
           {row.name}{' '}
           <QualityIcon style={{ float: 'right' }} quality={row.quality} />
         </Wikify>
@@ -80,7 +80,8 @@ export default function InventoryView() {
           {record.chestColors.map((color, i) => (
             <Icon
               type="wallet"
-              key={i}
+              // eslint-disable-next-line react/no-array-index-key
+              key={`${color}_${i}`}
               theme="filled"
               style={{
                 fontSize: 24,

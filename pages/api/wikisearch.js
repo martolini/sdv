@@ -22,7 +22,7 @@ export default async function wikisearch(req, res) {
       )}&namespace=0&limit=10&suggest=`
     );
     if (data.data && data.data.length) {
-      const [_, labels, __, urls] = data.data;
+      const [, labels, , urls] = data.data;
       const results = labels.map((label, i) => ({
         text: label,
         value: urls[i],
@@ -36,4 +36,5 @@ export default async function wikisearch(req, res) {
     console.error(err);
     res.status(500).json({ error: err.message });
   }
+  return res.status(500).json({ error: 'humzz' });
 }

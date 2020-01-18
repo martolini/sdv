@@ -36,7 +36,7 @@ export const getFirestore = withInitializedFirebase(() => firebase.firestore());
 let currentUser = null;
 
 export const authenticate = withInitializedFirebase(() => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         currentUser = user;
@@ -47,7 +47,7 @@ export const authenticate = withInitializedFirebase(() => {
       }
     });
 
-    await firebase.auth().signInAnonymously();
+    firebase.auth().signInAnonymously();
   });
 });
 
