@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/martolini/sdv/compare/v1.8.0...v1.8.1) (2020-01-18)
+
+
+### Bug Fixes
+
+* 🐛 Runtime error in Antd menu ([#32](https://github.com/martolini/sdv/issues/32)) ([e432336](https://github.com/martolini/sdv/commit/e432336b256ff18e0c548c5c2412865a60235cdb))
+
 # [1.8.0](https://github.com/martolini/sdv/compare/v1.7.1...v1.8.0) (2020-01-18)
 
 
