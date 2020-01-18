@@ -1,16 +1,13 @@
 import 'antd/dist/antd.css';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import App from 'next/app';
 import withRedux from 'next-redux-wrapper';
-import { ThemeProvider } from 'styled-components';
 import { createStore, StoreProvider } from 'easy-peasy';
 import { getFarmState } from '../utils/firebase-admin';
 import storeModel from '../store';
 import Layout from '../components/Layout';
+import { Button, Modal } from 'antd';
 import FileDropContainer from '../components/FileDropContainer';
-import { authenticate, addRecentlySeenId } from '../utils/firebase';
-
-const theme = {};
 
 const makeStore = (initialState, options) =>
   createStore(storeModel, {
@@ -18,6 +15,10 @@ const makeStore = (initialState, options) =>
   });
 
 class RootApp extends App {
+  state = {
+    modalOpen: true,
+  };
+
   static async getInitialProps({ Component, ctx }) {
     const pageProps = Component.getInitialProps
       ? await Component.getInitialProps()
@@ -32,8 +33,8 @@ class RootApp extends App {
     if (id) {
       // Fetch farmstate
       try {
-        const state = await getFarmState(id);
-        ctx.store.dispatch.setFullState(state);
+        const farmState = await getFarmState(id);
+        ctx.store.dispatch.setFullState(farmState);
       } catch (ex) {
         console.error(ex);
       }
@@ -45,7 +46,12 @@ class RootApp extends App {
     window.json = this.props.store.getState().gameState;
   }
 
+  closeModal = () => {
+    this.setState({ modalOpen: false });
+  };
+
   render() {
+    const { modalOpen } = this.state;
     const { Component, store, pageProps } = this.props;
     return (
       <StoreProvider store={store}>
@@ -53,6 +59,38 @@ class RootApp extends App {
           <Layout>
             <Component {...pageProps} />
           </Layout>
+          <Modal
+            title="Welcome to the amazing Stardew Valley Tool"
+            visible={modalOpen}
+            footer={[
+              <Button key="submit" type="primary" onClick={this.closeModal}>
+                Have fun!
+              </Button>,
+            ]}
+            onCancel={this.closeModal}
+          >
+            <p>
+              This tool is simply designed to help you plan a new day on your
+              farm, to get the most out of your time playing the game. You can
+              preview planted crops, artisan equipment, animals, player
+              progress, and much more..
+            </p>
+            <p>
+              Take a look at one the latest uploaded farms, or drop a save file
+              anywhere on this site to upload and preview your own farm. The
+              save file (e.g. named Player_123456789) is located under:
+            </p>
+            <p>
+              <ul>
+                <li>
+                  Windows: <code>%AppData%\StardewValley\Saves\</code>
+                </li>
+                <li>
+                  Mac OSX & Linux: <code>~/.config/StardewValley/Saves/</code>
+                </li>
+              </ul>
+            </p>
+          </Modal>
         </FileDropContainer>
       </StoreProvider>
     );
