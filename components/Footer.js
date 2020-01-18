@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Layout, Tag, notification } from 'antd';
 import { getFirestore } from '../utils/firebase';
+import pkg from '../package.json';
 
 const { Footer: AntFooter } = Layout;
 
@@ -63,6 +64,15 @@ export default function Footer(props) {
         ))}
       </p>
       <p>{'martolini <3 stardew'}</p>
+      <p>
+        {`Version ${pkg.version} `}
+        <a
+          href={`https://github.com/martolini/sdv/blob/v${pkg.version}/CHANGELOG.md`}
+          target="_blank"
+        >
+          (changelog)
+        </a>
+      </p>
     </AntFooter>
   );
 }
