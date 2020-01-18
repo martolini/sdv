@@ -556,23 +556,26 @@ export async function goCrazyWithJson(json) {
     isValidLocation(name)
   ).reduce((p, location) => {
     const { name } = location;
-    const items = Array.isArray((location.objects || { item: [] }).item)
-      ? location.objects
-      : { item: [location.objects.item] };
+    const items = (Array.isArray(location.objects.item)
+      ? location.objects.item
+      : [location.objects.item]
+    ).filter(a => !!a);
     return {
       ...p,
-      [name]: items.map(item => {
-        const itemId = item.value.Object.parentSheetIndex;
-        if (!isForageItem(itemId)) {
-          return null;
-        }
-        return {
-          name: item.value.Object.name,
-          x: item.key.Vector2.X,
-          y: item.key.Vector2.Y,
-        };
-      }),
-    }.filter(l => !!l);
+      [name]: items
+        .map(item => {
+          const itemId = item.value.Object.parentSheetIndex;
+          if (!isForageItem(itemId)) {
+            return null;
+          }
+          return {
+            name: item.value.Object.name,
+            x: item.key.Vector2.X,
+            y: item.key.Vector2.Y,
+          };
+        })
+        .filter(l => !!l),
+    };
   }, {});
   if (typeof window !== 'undefined') {
     window.json = json;

@@ -16,17 +16,10 @@ const CenteredSpacing = styled.div`
     flex-wrap: wrap;
     display: flex;
     padding-inline-start: 0;
-    li {
+    margin-bottom: 0;
+    * {
       display: flex;
       margin-right: 20px;
-    }
-  }
-`;
-
-const TagDiv = styled.div`
-  .ant-tag {
-    &:hover {
-      color: black;
     }
   }
 `;
@@ -72,19 +65,23 @@ export default function Footer() {
   }, []);
   return (
     <AntFooter>
-      <TagDiv>
-        {recents.map(r => (
-          <a
-            href={`${window.location.href.split('?')[0]}?id=${r.id}`}
-            key={r.id}
-          >
-            <Button>{`${r.farmName} // ${r.id
-              .split('-')
-              .slice(1)
-              .join(' ')}`}</Button>
-          </a>
-        ))}
-      </TagDiv>
+      <CenteredSpacing>
+        <ul style={{ width: '100%' }}>
+          {recents.map(r => (
+            <li key={r.id}>
+              <a
+                href={`${window.location.href.split('?')[0]}?id=${r.id}`}
+                key={r.id}
+              >
+                <Button>{`${r.farmName} // ${r.id
+                  .split('-')
+                  .slice(1)
+                  .join(' ')}`}</Button>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </CenteredSpacing>
       <Divider />
       <CenteredSpacing>
         <ul style={{ width: '100%' }}>
