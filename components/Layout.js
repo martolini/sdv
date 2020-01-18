@@ -1,4 +1,4 @@
-import { Layout, Menu, Icon, Divider } from 'antd';
+import { Layout, Menu, Icon } from 'antd';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Head from 'next/head';
@@ -109,7 +109,7 @@ export default function LayoutView(props) {
                 </a>
               </KeepQueryLink>
             </Menu.Item>
-            <Divider />
+            <Menu.Divider />
             <Menu.Item key="feedback">
               <a
                 href="https://github.com/martolini/sdv/issues/new/choose"
