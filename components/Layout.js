@@ -1,4 +1,4 @@
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu, Icon, Divider } from 'antd';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Head from 'next/head';
@@ -108,6 +108,16 @@ export default function LayoutView(props) {
                   <span className="nav-text">User</span>
                 </a>
               </KeepQueryLink>
+            </Menu.Item>
+            <Divider />
+            <Menu.Item key="feedback">
+              <a
+                href="https://github.com/martolini/sdv/issues/new/choose"
+                target="_blank"
+              >
+                <Icon type="form" />
+                <span className="nav-text">Feedback</span>
+              </a>
             </Menu.Item>
           </Menu>
         </Sider>
