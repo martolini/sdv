@@ -15,9 +15,9 @@ const getColorForTile = c => {
     c.minutesUntilReady !== 0 &&
     c.hoursUntilReady < 18
   ) {
-    return 'EE8900';
+    return '#EE8900';
   }
-  return 'FF4136';
+  return '#FF4136';
 };
 
 const PlacedDiv = styled.div.attrs(props => ({
