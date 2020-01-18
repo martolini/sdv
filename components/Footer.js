@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Layout, notification, Icon, Divider, Button } from 'antd';
+import { Layout, notification, Icon, Divider, Tag } from 'antd';
 import styled from 'styled-components';
 import { getFirestore } from '../utils/firebase';
 import pkg from '../package.json';
@@ -10,6 +10,13 @@ const CenteredSpacing = styled.div`
   display: flex;
   align-items: center;
   font-size: 18px;
+
+  .ant-tag {
+    cursor: pointer;
+    &:hover {
+      opacity: 0.7;
+    }
+  }
 
   ul {
     list-style: none;
@@ -66,17 +73,19 @@ export default function Footer() {
   return (
     <AntFooter>
       <CenteredSpacing>
-        <ul style={{ width: '100%' }}>
+        <ul style={{ width: '100%', justifyContent: 'center' }}>
           {recents.map(r => (
             <li key={r.id}>
               <a
                 href={`${window.location.href.split('?')[0]}?id=${r.id}`}
                 key={r.id}
               >
-                <Button>{`${r.farmName} // ${r.id
+                <Tag color="geekblue" style={{ cursor: 'pointere' }}>{`${
+                  r.farmName
+                } // ${r.id
                   .split('-')
                   .slice(1)
-                  .join(' ')}`}</Button>
+                  .join(' ')}`}</Tag>
               </a>
             </li>
           ))}
