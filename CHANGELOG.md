@@ -1,3 +1,11 @@
+# [1.8.0](https://github.com/martolini/sdv/compare/v1.7.1...v1.8.0) (2020-01-18)
+
+
+### Features
+
+* 🎸 Add feedback to menubar ([#29](https://github.com/martolini/sdv/issues/29)) ([6a4f461](https://github.com/martolini/sdv/commit/6a4f461ec34b98525be13e01a8d00ccef7173cfe))
+* 🎸 Change /user to /farmer ([#28](https://github.com/martolini/sdv/issues/28)) ([892fd9b](https://github.com/martolini/sdv/commit/892fd9b4e81387a0146889de56d12dfa826fc694))
+
 ## [1.7.1](https://github.com/martolini/sdv/compare/v1.7.0...v1.7.1) (2020-01-18)
 
 
