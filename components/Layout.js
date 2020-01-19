@@ -57,12 +57,16 @@ export default function LayoutView({ children }) {
         />
         <meta property="og:url" content="https://sdv.msroed.now.sh" />
         <meta property="og:type" content="website" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="668" />
         <meta
           property="og:image"
           content="https://storage.cloud.google.com/stardew-help.appspot.com/meta/farm.jpg"
         />
+        <meta
+          property="image"
+          content="https://storage.cloud.google.com/stardew-help.appspot.com/meta/farm.jpg"
+        />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="668" />
         <meta property="og:title" content="sdv dayplanner" />
         <meta
           property="og:description"
