@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/martolini/sdv/compare/v1.11.2...v1.12.0) (2020-01-19)
+
+
+### Features
+
+* 🎸 Removed mixpanel in favor of segment ([dfa3a03](https://github.com/martolini/sdv/commit/dfa3a03c50996d6313dba88d82edcbf4e15f7239))
+
 ## [1.11.2](https://github.com/martolini/sdv/compare/v1.11.1...v1.11.2) (2020-01-19)
 
 
