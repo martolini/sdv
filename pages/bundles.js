@@ -57,8 +57,12 @@ export default function BundleView() {
         <div>
           {bundle.missingIngredients
             .filter(i => i.name)
-            .map(ing => (
-              <Tag key={ing.itemId} color={ing.deliverable ? 'green' : 'red'}>
+            .map((ing, i) => (
+              <Tag
+                // eslint-disable-next-line react/no-array-index-key
+                key={`${ing.itemId}_${ing.quality}_${i}`}
+                color={ing.deliverable ? 'green' : 'red'}
+              >
                 <Wikify name={ing.name}>
                   {ing.name} ({ing.stack})
                 </Wikify>

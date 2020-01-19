@@ -1,6 +1,7 @@
 import React from 'react';
 import { useStoreState } from 'easy-peasy';
 import { Progress, Row, Col, Empty, Tooltip } from 'antd';
+import { forceAsArray } from '../utils/stardew';
 
 const SKILL_TABLE = {
   0: 'Farming',
@@ -127,7 +128,7 @@ export default function PlayerView() {
         level === 10
           ? 100
           : ((experiencePoints[skillKey] - exp) / (nextExp - exp)) * 100;
-      const chosenProfessions = player.professions.int
+      const chosenProfessions = forceAsArray(player.professions.int)
         .filter(prof => !!PROFESSIONS_TABLE[skillName][prof])
         .map((prof, idx) => (
           <Tooltip

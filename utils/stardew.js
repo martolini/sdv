@@ -38,6 +38,16 @@ const forageItems = [
   723,
 ];
 
+export const forceAsArray = obj => {
+  if (Array.isArray(obj)) {
+    return obj;
+  }
+  if (typeof obj !== 'undefined') {
+    return [obj];
+  }
+  return [];
+};
+
 export const isForageItem = item => {
   if (typeof item === 'number') {
     return forageItems.includes(item);
@@ -84,7 +94,7 @@ const findPaths = (
 };
 
 const filterObjectsByName = (location, name) =>
-  (location.objects.item || [])
+  forceAsArray(location.objects.item)
     .filter(feature => feature.value.Object.name === name)
     .map(feature => {
       const {
@@ -141,7 +151,7 @@ const findInBuildings = (location, building, names = []) => {
 };
 
 const findMinesInfo = json => {
-  const quarryUnlocked = !!json.player.mailReceived.string.find(
+  const quarryUnlocked = !!forceAsArray(json.player.mailReceived.string).find(
     t => t === 'ccCraftsRoom'
   );
   const { daysPlayed } = json.player.stats;
@@ -258,7 +268,7 @@ export function findHarvestInLocations(gameState, names = []) {
       ],
       []
     );
-    const trees = location.terrainFeatures.item
+    const trees = forceAsArray(location.terrainFeatures.item)
       .filter(o => o.value.TerrainFeature['@_xsi:type'] === 'FruitTree')
       .map(o => ({
         ...o,
@@ -270,7 +280,7 @@ export function findHarvestInLocations(gameState, names = []) {
         location: location.name,
       }));
 
-    const forages = location.objects.item
+    const forages = forceAsArray(location.objects.item)
       .filter(feature => isForageItem(feature.value.Object))
       .map(forage => ({
         ...forage,
@@ -282,7 +292,7 @@ export function findHarvestInLocations(gameState, names = []) {
         name: forage.value.Object.name,
       }));
 
-    const crops = location.terrainFeatures.item
+    const crops = forceAsArray(location.terrainFeatures.item)
       .filter(feature => feature.value.TerrainFeature.crop)
       .map(feature => {
         const phaseDays = feature.value.TerrainFeature.crop.phaseDays.int;
