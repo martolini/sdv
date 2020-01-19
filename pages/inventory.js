@@ -113,7 +113,7 @@ export default function InventoryView() {
           setSearchTerm(value);
         }}
       />
-      <TableWrapper>
+      <TableWrapper style={{ overflowX: 'scroll' }}>
         <Table
           rowKey={row => `${row.id}_${row.quality}`}
           dataSource={filteredData}
