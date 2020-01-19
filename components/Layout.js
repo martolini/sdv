@@ -55,6 +55,8 @@ export default function LayoutView({ children }) {
           property="title"
           content="A plan-your-day app for Stardew Valley"
         />
+        <meta property="og:url" content="https://sdv.msroed.now.sh" />
+        <meta property="og:type" content="website" />
         <meta
           property="og:image"
           content="https://storage.cloud.google.com/stardew-help.appspot.com/meta/example.jpg"
