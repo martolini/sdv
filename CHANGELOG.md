@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/martolini/sdv/compare/v1.10.0...v1.11.0) (2020-01-19)
+
+
+### Features
+
+* 🎸 Add meta tags ([#38](https://github.com/martolini/sdv/issues/38)) ([1af80e8](https://github.com/martolini/sdv/commit/1af80e8348b84676812aaa339ea10bb3e894b9b5))
+
 # [1.10.0](https://github.com/martolini/sdv/compare/v1.9.1...v1.10.0) (2020-01-19)
 
 
