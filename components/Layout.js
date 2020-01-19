@@ -59,6 +59,8 @@ export default function LayoutView({ children }) {
           property="og:image"
           content="https://storage.cloud.google.com/stardew-help.appspot.com/meta/example.jpg"
         />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="668" />
         <meta
           property="og:image"
           content="https://storage.cloud.google.com/stardew-help.appspot.com/meta/example.jpg"
