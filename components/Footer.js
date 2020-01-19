@@ -106,12 +106,14 @@ export default function Footer() {
           </li>
           <li>All credits in the world to ConcernedApe</li>
           <li style={{ marginLeft: 'auto', marginRight: 5 }}>
-            {/* <Tooltip title=""> */}
-            <a href="https://github.com/martolini/sdv">
+            <a
+              href="https://github.com/martolini/sdv"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Check out the project on github
               <Icon type="github" style={{ fontSize: 24, marginLeft: 5 }} />
             </a>
-            {/* </Tooltip> */}
           </li>
         </ul>
       </CenteredSpacing>
