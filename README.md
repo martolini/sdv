@@ -26,7 +26,7 @@ https://sdv.msroed.now.sh
 
 ### Style and formatting
 
-`yarn format` will run `prettier` on all the staged files.
+`yarn lint` will run `ESLint` on all the staged files.
 
 ## Deployment
 
