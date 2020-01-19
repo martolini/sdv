@@ -24,3 +24,4 @@ jobs:
         run: npx semantic-release
         env:
           GH_TOKEN: ${{secrets.GH_TOKEN}}
+          ZEIT_TOKEN: ${{secrets.ZEIT_TOKEN}}
