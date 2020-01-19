@@ -1,3 +1,11 @@
+## [1.12.1](https://github.com/martolini/sdv/compare/v1.12.0...v1.12.1) (2020-01-19)
+
+
+### Bug Fixes
+
+* 🐛 Safeguard location.item in findHarvestOnFarm ([28a65f3](https://github.com/martolini/sdv/commit/28a65f3388dcf46ec90a6e8c4b0014aaed60c745))
+* 🐛 Upload the xml before trying to parse it ([731ad56](https://github.com/martolini/sdv/commit/731ad56d000b5c77a999839643a5866a2b520952))
+
 # [1.12.0](https://github.com/martolini/sdv/compare/v1.11.2...v1.12.0) (2020-01-19)
 
 
