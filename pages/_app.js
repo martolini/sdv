@@ -3,10 +3,13 @@ import React from 'react';
 import App from 'next/app';
 import withRedux from 'next-redux-wrapper';
 import { createStore, StoreProvider } from 'easy-peasy';
+import Router from 'next/router';
+import mixpanel from 'mixpanel-browser';
 import { getFarmState } from '../utils/firebase-admin';
 import storeModel from '../store';
 import Layout from '../components/Layout';
 import FileDropContainer from '../components/FileDropContainer';
+import { authenticate, getCurrentUser } from '../utils/firebase';
 
 const makeStore = initialState =>
   createStore(storeModel, {
@@ -35,7 +38,18 @@ class RootApp extends App {
     return pageProps;
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    await authenticate();
+    mixpanel.init('b0b488df44f7e7e3a9bb3d3933485e7e');
+    mixpanel.identify(getCurrentUser().uid);
+    mixpanel.track('Visited page', {
+      url: window.location.pathname,
+    });
+    Router.events.on('routeChangeStart', url => {
+      mixpanel.track('Visited page', {
+        url,
+      });
+    });
     window.json = this.props.store.getState().gameState;
   }
 

@@ -70,3 +70,7 @@ export const addRecentlySeenId = withInitializedFirebase(async farmId => {
   );
   return newRecents;
 });
+
+export const getCurrentUser = withInitializedFirebase(
+  () => firebase.auth().currentUser
+);
