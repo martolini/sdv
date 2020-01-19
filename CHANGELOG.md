@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/martolini/sdv/compare/v1.9.1...v1.10.0) (2020-01-19)
+
+
+### Features
+
+* 🎸 Add mixpanel ([#37](https://github.com/martolini/sdv/issues/37)) ([21aeb25](https://github.com/martolini/sdv/commit/21aeb2508deecd30049c30993c23ae7808af8f5f))
+
 ## [1.9.1](https://github.com/martolini/sdv/compare/v1.9.0...v1.9.1) (2020-01-19)
 
 
