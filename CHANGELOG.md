@@ -1,3 +1,11 @@
+## [1.12.2](https://github.com/martolini/sdv/compare/v1.12.1...v1.12.2) (2020-01-19)
+
+
+### Bug Fixes
+
+* 🐛 Disable press f to search ([76da8ce](https://github.com/martolini/sdv/commit/76da8ce01b76fb8f02f7e0e17eb11def5e5633c7))
+* 🐛 Fix resilience in uploads and parser ([c86e298](https://github.com/martolini/sdv/commit/c86e29811b5ecd1bbb8fb5836d0abaa1d999aff2))
+
 ## [1.12.1](https://github.com/martolini/sdv/compare/v1.12.0...v1.12.1) (2020-01-19)
 
 
