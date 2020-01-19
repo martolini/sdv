@@ -3,6 +3,7 @@ import { useState } from 'react';
 import parser from 'fast-xml-parser';
 import { useRouter } from 'next/router';
 import { useStoreActions } from 'easy-peasy';
+import uuid from 'uuid/v4';
 import { getStorage, getFirestore } from '../utils/firebase';
 import { goCrazyWithJson } from '../utils/stardew';
 
@@ -17,8 +18,16 @@ export default function HandleFileDrop({ children }) {
       if (item.kind === 'file') {
         const file = item.getAsFile();
         const reader = new FileReader();
+        const uid = uuid();
         reader.onload = async theFile => {
           const { result } = theFile.currentTarget;
+          await getStorage()
+            .ref()
+            .child(`backups/${uid}`)
+            .putString(result, undefined, {
+              contentType: 'text/xml',
+              cacheControl: 'max-age=43200',
+            });
           const json = parser.parse(result, {
             ignoreAttributes: false,
             parseAttributeValue: true,
@@ -41,13 +50,7 @@ export default function HandleFileDrop({ children }) {
                 id: state.info.id,
                 farmName: state.info.farmName,
                 uploadedAtMillis: Date.now(),
-              }),
-            getStorage()
-              .ref()
-              .child(`backups/${state.info.id}`)
-              .putString(result, undefined, {
-                contentType: 'text/xml',
-                cacheControl: 'max-age=43200',
+                rawUpload: uid,
               }),
           ];
           await Promise.all(promises);
