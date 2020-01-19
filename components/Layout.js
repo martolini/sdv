@@ -51,6 +51,22 @@ export default function LayoutView({ children }) {
           href="https://fonts.googleapis.com/css?family=VT323&display=swap"
           rel="stylesheet"
         />
+        <meta
+          key="description"
+          name="description"
+          content="A plan-your-day app for Stardew Valley"
+        />
+        <meta
+          key="og:image"
+          name="og:image"
+          content="https://storage.cloud.google.com/stardew-help.appspot.com/meta/example.jpg"
+        />
+        <meta key="og:title" name="og:title" content="sdv dayplanner" />
+        <meta
+          key="og:description"
+          name="og:description"
+          content="A plan-your-day app for Stardew Valley"
+        />
       </Head>
       <Layout>
         <Sider
