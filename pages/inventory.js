@@ -118,7 +118,6 @@ export default function InventoryView() {
           rowKey={row => `${row.id}_${row.quality}`}
           dataSource={filteredData}
           columns={columns}
-          pagination={false}
         />
       </TableWrapper>
     </div>
