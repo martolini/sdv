@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/martolini/sdv/compare/v1.9.0...v1.9.1) (2020-01-19)
+
+
+### Bug Fixes
+
+* 🐛 Fix build workflows ([471c9c7](https://github.com/martolini/sdv/commit/471c9c7c861660d486e51fd562030f72fd8f42b1))
+
 # [1.9.0](https://github.com/martolini/sdv/compare/v1.8.1...v1.9.0) (2020-01-19)
 
 
