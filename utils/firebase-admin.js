@@ -16,19 +16,23 @@ if (typeof window === 'undefined') {
 
 const fileCache = {};
 
-export const getFarmState = async farm => {
+export const getFarmState = async farmId => {
+  const farmname = farmId || '123456789-2-spring-22'; // Show sample file if no ID is requested
   if (admin.apps.length === 0) {
     admin.initializeApp(config);
   }
-  if (fileCache[farm]) {
+  if (fileCache[farmname]) {
     console.log('Using cache');
-    return fileCache[farm];
+    return fileCache[farmname];
   }
   const bucket = admin.storage().bucket();
-  const f = await bucket.file(`farms/${farm}`).download();
+  const f = await bucket.file(`farms/${farmname}`).download();
   const output = JSON.parse(f.toString());
   const state = await goCrazyWithJson(output.SaveGame);
-  fileCache[farm] = state;
+  fileCache[farmname] = state;
+  if (!farmId) {
+    state.showFirstTimeUse = true;
+  }
   return state;
 };
 
