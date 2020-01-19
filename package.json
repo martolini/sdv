@@ -65,7 +65,7 @@
   },
   "private": true,
   "lint-staged": {
-    "src/**/*.{js,jsx}": [
+    "**/*.{js,jsx}": [
       "eslint",
       "pretty-quick — staged",
       "git add"
