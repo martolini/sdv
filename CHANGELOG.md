@@ -1,3 +1,10 @@
+## [1.11.2](https://github.com/martolini/sdv/compare/v1.11.1...v1.11.2) (2020-01-19)
+
+
+### Reverts
+
+* Revert "fix: 🐛 Let now github app deploy to production prematurely" ([84bfd76](https://github.com/martolini/sdv/commit/84bfd76b5825c232fe32ecbb1aa9b3d0e414e9a2))
+
 ## [1.11.1](https://github.com/martolini/sdv/compare/v1.11.0...v1.11.1) (2020-01-19)
 
 
