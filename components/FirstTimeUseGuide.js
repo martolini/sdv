@@ -36,7 +36,7 @@ const FirstTimeUseGuide = () => {
         <animated.div key={key} style={props}>
           <Wrapper>
             <Row gutter={16}>
-              <Col span={12}>
+              <Col xs={24} md={12}>
                 <p>
                   Welcome to the ultimate Stardew Valley Tool!&nbsp;
                   <Icon type="rocket" theme="twoTone" twoToneColor="blue" />
@@ -52,14 +52,15 @@ const FirstTimeUseGuide = () => {
                   file here to upload and preview your own farm.
                 </p>
                 <p>
-                  If you have any suggestions or feedback, please leave it{' '}
+                  Visit on laptop for the best experience. If you have any
+                  suggestions or feedback, please leave it&nbsp;
                   <ExternalLink href="https://github.com/martolini/sdv/issues/new/choose">
                     here
                   </ExternalLink>
                   . Enjoy :)
                 </p>
               </Col>
-              <Col span={12}>
+              <Col xs={24} md={12}>
                 <UploadZone />
               </Col>
             </Row>

@@ -3,6 +3,7 @@ import { Layout, notification, Icon, Divider, Tag } from 'antd';
 import styled from 'styled-components';
 import { getFirestore } from '../utils/firebase';
 import pkg from '../package.json';
+import ExternalLink from './ExternalLink';
 
 const { Footer: AntFooter } = Layout;
 
@@ -96,24 +97,18 @@ export default function Footer() {
         <ul style={{ width: '100%' }}>
           <li>{`Version ${pkg.version} `}</li>
           <li>
-            <a
+            <ExternalLink
               href={`https://github.com/martolini/sdv/blob/v${pkg.version}/CHANGELOG.md`}
-              target="_blank"
-              rel="noopener noreferrer"
             >
               See changelog
-            </a>
+            </ExternalLink>
           </li>
           <li>All credits in the world to ConcernedApe</li>
           <li style={{ marginLeft: 'auto', marginRight: 5 }}>
-            <a
-              href="https://github.com/martolini/sdv"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <ExternalLink href="https://github.com/martolini/sdv">
               Check out the project on github
               <Icon type="github" style={{ fontSize: 24, marginLeft: 5 }} />
-            </a>
+            </ExternalLink>
           </li>
         </ul>
       </CenteredSpacing>
