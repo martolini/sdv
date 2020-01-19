@@ -1,6 +1,11 @@
 import { action, computed } from 'easy-peasy';
 
 const storeModel = {
+  showFirstTimeUse: false,
+  setShowFirstTimeUse: action((state, payload) => {
+    state.showFirstTimeUse = payload;
+    return state;
+  }),
   gameState: {
     // Full gamestate
   },

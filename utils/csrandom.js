@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 const INT_MIN = -2147483648;
 const INT_MAX = 2147483647;
 const MBIG = INT_MAX;
