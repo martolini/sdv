@@ -84,7 +84,7 @@ const findPaths = (
 };
 
 const filterObjectsByName = (location, name) =>
-  location.objects.item
+  (location.objects.item || [])
     .filter(feature => feature.value.Object.name === name)
     .map(feature => {
       const {
