@@ -4,9 +4,12 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useStoreState } from 'easy-peasy';
 import KeepQueryLink from './KeepQueryLink';
 import Header from './Header';
 import Footer from './Footer';
+import ExternalLink from './ExternalLink';
+import FirstTimeUseGuide from './FirstTimeUseGuide';
 
 const { Content, Sider } = Layout;
 
@@ -39,6 +42,7 @@ const OuterDiv = styled.div`
 export default function LayoutView({ children }) {
   const { pathname } = useRouter();
   const [collapsed, setCollapsed] = useState(true);
+  const showFirstTimeUse = useStoreState(state => state.showFirstTimeUse);
   return (
     <OuterDiv>
       <Head>
@@ -115,19 +119,16 @@ export default function LayoutView({ children }) {
             </Menu.Item>
             <Menu.Divider />
             <Menu.Item key="feedback">
-              <a
-                href="https://github.com/martolini/sdv/issues/new/choose"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <ExternalLink href="https://github.com/martolini/sdv/issues/new/choose">
                 <Icon type="form" />
                 <span className="nav-text">Feedback</span>
-              </a>
+              </ExternalLink>
             </Menu.Item>
           </Menu>
         </Sider>
         <Layout style={{ marginLeft: collapsed ? 80 : 200 }}>
           <Header />
+          {showFirstTimeUse && <FirstTimeUseGuide />}
           <Content style={{ margin: '16px 12px 0', overflow: 'initial' }}>
             <div style={{ padding: 16, background: '#fff' }}>{children}</div>
           </Content>

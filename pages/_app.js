@@ -25,14 +25,12 @@ class RootApp extends App {
     const {
       query: { id },
     } = ctx;
-    if (id) {
-      // Fetch farmstate
-      try {
-        const state = await getFarmState(id);
-        ctx.store.dispatch.setFullState(state);
-      } catch (ex) {
-        console.error(ex);
-      }
+    // Fetch farmstate
+    try {
+      const state = await getFarmState(id);
+      ctx.store.dispatch.setFullState(state);
+    } catch (ex) {
+      console.error(ex);
     }
     return pageProps;
   }

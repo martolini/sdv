@@ -1,5 +1,6 @@
 import React from 'react';
 import { REVERSE_ID_TABLE } from '../utils/lookups';
+import ExternalLink from './ExternalLink';
 
 export default function Wikify({ id, name, children }) {
   const slug = name || REVERSE_ID_TABLE[id];
@@ -7,11 +8,10 @@ export default function Wikify({ id, name, children }) {
     return children;
   }
   return (
-    <a
-      target="blank"
+    <ExternalLink
       href={`https://stardewvalleywiki.com/${slug.replace(' ', '_')}`}
     >
       {children}
-    </a>
+    </ExternalLink>
   );
 }
