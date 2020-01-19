@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/martolini/sdv/compare/v1.11.0...v1.11.1) (2020-01-19)
+
+
+### Bug Fixes
+
+* 🐛 Let now github app deploy to production prematurely ([7604efe](https://github.com/martolini/sdv/commit/7604efe8d7590ae11a2467f9a528459da351a2ed))
+
 # [1.11.0](https://github.com/martolini/sdv/compare/v1.10.0...v1.11.0) (2020-01-19)
 
 
