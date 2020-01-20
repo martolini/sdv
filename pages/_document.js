@@ -1,5 +1,14 @@
 import Document from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
+import Sentry from '../utils/sentry';
+
+process.on('unhandledRejection', err => {
+  Sentry.captureException(err);
+});
+
+process.on('uncaughtException', err => {
+  Sentry.captureException(err);
+});
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
