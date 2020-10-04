@@ -1,3 +1,15 @@
+## [1.12.3](https://github.com/martolini/sdv/compare/v1.12.2...v1.12.3) (2020-10-04)
+
+
+### Bug Fixes
+
+* 🐛 Add error reporting ([7815c8e](https://github.com/martolini/sdv/commit/7815c8efe9e66795b3122fb87eb1cc0ee0f94d79))
+
+
+### Reverts
+
+* Revert "fix: 🐛 Add error reporting" (#47) ([0b711b7](https://github.com/martolini/sdv/commit/0b711b7a6a0e447857b6e40d0ead5e8fea3364a2)), closes [#47](https://github.com/martolini/sdv/issues/47)
+
 ## [1.12.2](https://github.com/martolini/sdv/compare/v1.12.1...v1.12.2) (2020-01-19)
 
 
