@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/martolini/sdv/compare/v1.12.3...v1.13.0) (2020-10-04)
+
+
+### Features
+
+* Force release ([0fea55f](https://github.com/martolini/sdv/commit/0fea55f0d91c4403d75174dfc7d3da1bdb2e648e))
+
 ## [1.12.3](https://github.com/martolini/sdv/compare/v1.12.2...v1.12.3) (2020-10-04)
 
 
