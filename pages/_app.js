@@ -4,7 +4,6 @@ import App from 'next/app';
 import withRedux from 'next-redux-wrapper';
 import { createStore, StoreProvider } from 'easy-peasy';
 import Router from 'next/router';
-import Sentry from '../utils/sentry';
 import { getFarmState } from '../utils/firebase-admin';
 import storeModel from '../store';
 import Layout from '../components/Layout';
@@ -49,19 +48,6 @@ class RootApp extends App {
       window.analytics.page(url);
     });
     window.json = this.props.store.getState().gameState;
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.log(error, errorInfo);
-    Sentry.withScope(scope => {
-      Object.keys(errorInfo).forEach(key => {
-        scope.setExtra(key, errorInfo[key]);
-      });
-
-      Sentry.captureException(error);
-    });
-
-    super.componentDidCatch(error, errorInfo);
   }
 
   render() {
