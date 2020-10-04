@@ -38,7 +38,7 @@ Feel free to send a pull request. The repository is commitizen-friendly.
 
 Running `yarn commit`
 
-will guide you in creating a nice commit.
+will guide you in creating a nice commit -- this is a commitizen friendly repo.
 
 ## Acknowledgments
 
