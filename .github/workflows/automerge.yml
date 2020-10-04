@@ -24,3 +24,4 @@ jobs:
           GITHUB_TOKEN: '${{ secrets.GH_TOKEN }}'
           MERGE_METHOD: 'squash'
           UPDATE_METHOD: 'rebase'
+          MERGE_LABELS: 'automerge,dependencies'
