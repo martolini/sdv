@@ -3438,21 +3438,20 @@ duplexify@^4.1.1:
     readable-stream "^3.1.1"
     stream-shift "^1.0.0"
 
-easy-peasy@^3.2.6:
-  version "3.2.6"
-  resolved "https://registry.yarnpkg.com/easy-peasy/-/easy-peasy-3.2.6.tgz#634e2300f1b8196aa6aee80880fb5379846446fd"
-  integrity sha512-6KcpBRVb2tD/MOVIspsFZA62WuTIGtS1hV/AQHzaGFKltPZru454ykVOJl2kkTVUcfmEbtvXXCTMVCu0Znqf+Q==
+easy-peasy@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/easy-peasy/-/easy-peasy-3.3.1.tgz#46525c31d75e7b4bac2c48e4a09f340df5ff524f"
+  integrity sha512-c1M6xrMQyOl3JCwUdZCMcAMAuKQAxG76n2OydBTpvCPS7OSK7ZVseJL96KeCB3fpvKEvIQC8h8nShObtVPrzaA==
   dependencies:
     debounce "^1.2.0"
     immer-peasy "3.1.3"
     is-plain-object "^3.0.0"
     memoizerific "^1.11.3"
     prop-types "^15.6.2"
-    redux "^4.0.4"
+    redux "^4.0.5"
     redux-thunk "^2.3.0"
-    shallowequal "^1.1.0"
     symbol-observable "^1.2.0"
-    ts-toolbelt "^6.0.1"
+    ts-toolbelt "^6.1.6"
 
 ecdsa-sig-formatter@1.0.11:
   version "1.0.11"
@@ -8237,7 +8236,7 @@ redux-thunk@^2.3.0:
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"
   integrity sha512-km6dclyFnmcvxhAcrQV2AkZmPQjzPDjgVlQtR0EQjxZPyJ0BnMf3in1ryuR8A2qU0HldVRfxYXbFSKlI3N7Slw==
 
-redux@^4.0.4:
+redux@^4.0.5:
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.5.tgz#4db5de5816e17891de8a80c424232d06f051d93f"
   integrity sha512-VSz1uMAH24DM6MF72vcojpYPtrTUu3ByVWfPL1nPfVRb5mZVTve5GnNCUV53QM/BZ66xfWrm0CTWoM+Xlz8V1w==
@@ -9326,10 +9325,10 @@ ts-pnp@^1.1.2:
   resolved "https://registry.yarnpkg.com/ts-pnp/-/ts-pnp-1.1.5.tgz#840e0739c89fce5f3abd9037bb091dbff16d9dec"
   integrity sha512-ti7OGMOUOzo66wLF3liskw6YQIaSsBgc4GOAlWRnIEj8htCxJUxskanMUoJOD6MDCRAXo36goXJZch+nOS0VMA==
 
-ts-toolbelt@^6.0.1:
-  version "6.1.5"
-  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.1.5.tgz#78c159d34cd4a22a256c0a053f66ac63ab317ad9"
-  integrity sha512-KXvqFhGie7NS8XKX+6/JypeG7caJaKzXo16eOkGCGxLa2OX44xbmWeuDAkBpIRfEE1XcxVt9H/WmgI2bAlvbIg==
+ts-toolbelt@^6.1.6:
+  version "6.15.5"
+  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.15.5.tgz#cb3b43ed725cb63644782c64fbcad7d8f28c0a83"
+  integrity sha512-FZIXf1ksVyLcfr7M317jbB67XFJhOO1YqdTcuGaq9q5jLUoTikukZ+98TPjKiP2jC5CgmYdWWYs0s2nLSU0/1A==
 
 tslib@1.10.0, tslib@^1.9.0:
   version "1.10.0"
