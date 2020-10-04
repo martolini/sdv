@@ -121,6 +121,9 @@ const findInBuildings = (location, building, names = []) => {
   if (!location.buildings) {
     return [];
   }
+  if (!Array.isArray(location.buildings.Building)) {
+    location.buildings.Building = [location.buildings.Building];
+  }
   const buildings = location.buildings.Building.filter(
     b => building === b['@_xsi:type']
   );
