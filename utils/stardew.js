@@ -128,6 +128,9 @@ const findInBuildings = (location, building, names = []) => {
     b => building === b['@_xsi:type']
   );
   const allObjects = buildings.reduce((p, b) => {
+    if (!b.indoors.objects.item) {
+      return p;
+    }
     const objects = b.indoors.objects.item
       .filter(
         item => names.length === 0 || names.includes(item.value.Object.name)
