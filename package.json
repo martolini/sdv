@@ -18,7 +18,7 @@
     "@zeit/next-css": "^1.0.1",
     "antd": "^3.26.5",
     "axios": "^0.19.0",
-    "easy-peasy": "^3.3.1",
+    "easy-peasy": "^5.0.1",
     "fast-xml-parser": "^3.17.4",
     "firebase": "^7.6.1",
     "firebase-admin": "^8.9.0",
