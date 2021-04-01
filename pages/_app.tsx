@@ -1,6 +1,5 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
-
-const theme = extendTheme({});
+import theme from './theme';
 
 function MyApp({ Component, pageProps }) {
   return (
