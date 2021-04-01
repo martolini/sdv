@@ -1,11 +1,13 @@
-import { ChakraProvider } from '@chakra-ui/react';
-import theme from './theme';
+import React from 'react';
+import { ThemeProvider, defaultTheme, Pane } from 'evergreen-ui';
+import { merge } from 'lodash';
+import '@fontsource/vt323';
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ChakraProvider theme={theme}>
+    <Pane fontFamily="VT323">
       <Component {...pageProps} />
-    </ChakraProvider>
+    </Pane>
   );
 }
 export default MyApp;

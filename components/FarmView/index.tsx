@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { FarmItem } from 'typings/stardew';
 import FarmOverlayView from '../FarmOverlawView';
 import '@fontsource/vt323';

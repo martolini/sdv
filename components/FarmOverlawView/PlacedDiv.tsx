@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/layout';
+import { Pane } from 'evergreen-ui';
 import { FarmItem, Point } from 'typings/stardew';
 
 const getColorForTile = (
@@ -27,7 +27,7 @@ export default function PlacedDiv({
 }: React.PropsWithChildren<PlacedDivProps>) {
   const tileSize = 100 / mapSize.x;
   return (
-    <Box
+    <Pane
       display="flex"
       justifyContent="center"
       alignItems="center"
@@ -36,7 +36,6 @@ export default function PlacedDiv({
       position="absolute"
       color="white"
       fontWeight={800}
-      _hover={{ opacity: 0.5 }}
       left={`${(farmItem.x / mapSize.x) * 100}%`}
       top={`${(farmItem.y / mapSize.y) * 100}%`}
       height={`${(tileSize * (farmItem.height || 1) * mapSize.x) / mapSize.y}%`}
@@ -50,6 +49,6 @@ export default function PlacedDiv({
       )}
     >
       {children}
-    </Box>
+    </Pane>
   );
 }

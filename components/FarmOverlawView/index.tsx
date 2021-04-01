@@ -1,5 +1,5 @@
+import { Tooltip } from 'evergreen-ui';
 import React from 'react';
-import { Box, Tooltip } from '@chakra-ui/react';
 import { FarmItem, Point } from 'typings/stardew';
 import PlacedDiv from './PlacedDiv';
 
@@ -12,17 +12,17 @@ export default function FarmOverlayView(props: FarmOverlayViewProps) {
   const { items, mapSize } = props;
 
   return (
-    <Box>
+    <div>
       {items.map((farmItem) => {
         const key = `${farmItem.x}_${farmItem.y}`;
         return (
           <PlacedDiv key={key} farmItem={farmItem} mapSize={mapSize}>
-            <Tooltip hasArrow label={farmItem.name} placement="top">
+            <Tooltip content={farmItem.name}>
               <span>{farmItem.dead ? 'X' : farmItem.daysToHarvest}</span>
             </Tooltip>
           </PlacedDiv>
         );
       })}
-    </Box>
+    </div>
   );
 }
