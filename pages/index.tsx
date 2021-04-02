@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { Heading, toaster } from 'evergreen-ui';
 import FileUploader from 'components/FileUploader';
 import { useParsedGame } from 'hooks/useParsedGame';
+import Link from 'next/link';
 
 export default function Home() {
   const { setParsedGame } = useParsedGame();
@@ -16,7 +17,12 @@ export default function Home() {
         onFinished={(game) => {
           setParsedGame(game);
           toaster.success(
-            `Successfully uploaded farm ${game.gameInfo.farmName}`
+            `Successfully uploaded farm ${game.gameInfo.farmName}`,
+            {
+              description: `Click ${(
+                <Link href="farm">here</Link>
+              )} to check it out!`,
+            }
           );
         }}
       />

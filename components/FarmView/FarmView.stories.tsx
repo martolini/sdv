@@ -12,6 +12,7 @@ const testData = [
     y: 28,
     done: false,
     dead: false,
+    location: 'Farm',
   },
   {
     name: 'Strawberry',
@@ -20,12 +21,14 @@ const testData = [
     y: 31,
     done: false,
     dead: false,
+    location: 'Farm',
   },
   {
     name: 'Strawberry',
     daysToHarvest: 0,
     done: true,
     dead: false,
+    location: 'Farm',
     x: 66,
     y: 31,
   },
