@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Heading } from 'evergreen-ui';
+import { Heading, toaster } from 'evergreen-ui';
 import FileUploader from 'components/FileUploader';
 import { useParsedGame } from 'hooks/useParsedGame';
 
@@ -15,6 +15,9 @@ export default function Home() {
       <FileUploader
         onFinished={(game) => {
           setParsedGame(game);
+          toaster.success(
+            `Successfully uploaded farm ${game.gameInfo.farmName}`
+          );
         }}
       />
     </div>

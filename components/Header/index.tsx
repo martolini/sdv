@@ -10,20 +10,13 @@ type NavTabProps = {
   isSelected: boolean;
 };
 const NavTab = ({ text, link, isSelected }: NavTabProps) => (
-  <Link href={link} key={link}>
-    <Tab
-      fontSize={16}
-      key={link}
-      is="a"
-      href={link}
-      id={link}
-      isSelected={isSelected}
-    >
+  <Tab fontSize={16} key={link} id={link} isSelected={isSelected}>
+    <Link href={link}>
       <Text fontSize="1.1rem" letterSpacing="1.1px" paddingX={8}>
         {text}
       </Text>
-    </Tab>
-  </Link>
+    </Link>
+  </Tab>
 );
 
 const LINKS = [

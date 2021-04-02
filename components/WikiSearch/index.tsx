@@ -13,6 +13,8 @@ export default function WikiSearch() {
 
   return (
     <AsyncSelect
+      id="wiki-search"
+      instanceId="wiki-search"
       loadOptions={loadOptions}
       styles={{
         option: (styles) => ({ ...styles, fontFamily: 'VT323', fontSize: 14 }),

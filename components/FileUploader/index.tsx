@@ -31,9 +31,16 @@ export default function FileUploader({ onFinished }: FileUploaderProps) {
       reader.onload = () => {
         // Do whatever you want with the file contents
         console.time('Parsing');
-        const parsedGame = parseXml(reader.result as string);
-        console.timeEnd('Parsing');
-        onFinished(parsedGame);
+        try {
+          const parsedGame = parseXml(reader.result as string);
+          onFinished(parsedGame);
+        } catch (ex) {
+          toaster.danger('Error parsing file', {
+            description: ex.message,
+          });
+        } finally {
+          console.timeEnd('Parsing');
+        }
       };
       reader.readAsText(file);
     });
