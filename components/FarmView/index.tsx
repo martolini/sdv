@@ -1,6 +1,5 @@
 import { FarmItem } from 'typings/stardew';
 import FarmOverlayView from '../FarmOverlawView';
-import '@fontsource/vt323';
 
 const MAP_SIZES = {
   Farm: { x: 80, y: 65 },

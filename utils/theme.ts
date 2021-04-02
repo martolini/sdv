@@ -4,9 +4,9 @@ import { merge } from 'lodash';
 const theme = merge(defaultTheme, {
   typography: {
     fontFamilies: {
-      display: 'VT323',
-      ui: 'VT323',
-      mono: 'VT323',
+      display: 'VT323, monospace',
+      ui: 'VT323, monospace',
+      mono: 'VT323, monospace',
     },
   },
 });

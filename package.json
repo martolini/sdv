@@ -13,7 +13,6 @@
   "dependencies": {
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
-    "@fontsource/vt323": "^4.2.2",
     "axios": "^0.21.1",
     "easy-peasy": "^5.0.3",
     "evergreen-ui": "^5.1.2",

@@ -2,7 +2,6 @@ import React from 'react';
 import { ThemeProvider } from 'evergreen-ui';
 import SiteLayout from 'components/SiteLayout';
 import theme from 'utils/theme';
-import '@fontsource/vt323/400.css';
 
 function MyApp({ Component, pageProps, ...props }) {
   const { withLayout = true } = props;
