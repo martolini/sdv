@@ -17,12 +17,7 @@ export default function Home() {
         onFinished={(game) => {
           setParsedGame(game);
           toaster.success(
-            `Successfully uploaded farm ${game.gameInfo.farmName}`,
-            {
-              description: `Click ${(
-                <Link href="farm">here</Link>
-              )} to check it out!`,
-            }
+            `Successfully uploaded farm ${game.gameInfo.farmName}`
           );
         }}
       />

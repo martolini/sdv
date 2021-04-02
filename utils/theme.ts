@@ -1,6 +1,5 @@
 import { defaultTheme } from 'evergreen-ui';
 import { merge } from 'lodash';
-import '@fontsource/vt323';
 
 const theme = merge(defaultTheme, {
   typography: {
