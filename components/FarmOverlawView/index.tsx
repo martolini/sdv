@@ -1,4 +1,4 @@
-import { Tooltip } from 'evergreen-ui';
+import { Tooltip, Text } from 'evergreen-ui';
 import React from 'react';
 import { FarmItem, Point } from 'typings/stardew';
 import PlacedDiv from './PlacedDiv';
@@ -18,7 +18,9 @@ export default function FarmOverlayView(props: FarmOverlayViewProps) {
         return (
           <PlacedDiv key={key} farmItem={farmItem} mapSize={mapSize}>
             <Tooltip content={farmItem.name}>
-              <span>{farmItem.dead ? 'X' : farmItem.daysToHarvest}</span>
+              <Text color="white" fontSize="110%">
+                {farmItem.dead ? 'X' : farmItem.daysToHarvest}
+              </Text>
             </Tooltip>
           </PlacedDiv>
         );

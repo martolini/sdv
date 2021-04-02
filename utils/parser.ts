@@ -135,7 +135,7 @@ export const isForageItem = (item) => {
 export function findHarvestInLocations(
   gameState: RawGame,
   names: string[] = []
-) {
+): FarmItem[] {
   const locations = gameState.locations.GameLocation.filter(({ name }) =>
     names.includes(name)
   );
@@ -165,23 +165,21 @@ export function findHarvestInLocations(
         {
           x: c.tileX,
           y: c.tileY,
-          dx: c.tilesWide,
-          dy: c.tilesHigh,
+          width: c.tilesWide,
+          height: c.tilesHigh,
           name: `Fish pond ${
             c.output.Item['@_xsi:nil'] === true ? '' : `(${c.output.Item.name})`
           }`,
           location: location.name,
           done: !c.output.Item['@_xsi:nil'],
           daysToHarvest: c.output.Item['@_xsi:nil'] ? '?' : 0,
-          ...c,
-        },
+        } as FarmItem,
       ],
       []
     );
     const trees = forceAsArray(location.terrainFeatures.item)
       .filter((o) => o.value.TerrainFeature['@_xsi:type'] === 'FruitTree')
       .map((o) => ({
-        ...o,
         name: `${REVERSE_ID_TABLE[o.value.TerrainFeature.indexOfFruit]} Tree`,
         daysToHarvest: Math.max(o.value.TerrainFeature.daysUntilMature, 0),
         done: o.value.TerrainFeature.fruitsOnTree > 0,
@@ -193,16 +191,17 @@ export function findHarvestInLocations(
     const forages = forceAsArray(location.objects.item)
       .filter((feature) => isForageItem(feature.value.Object))
       .map((forage) => ({
-        ...forage,
         daysToHarvest: 0,
         location: location.name,
         x: forage.key.Vector2.X,
         y: forage.key.Vector2.Y,
         done: true,
         name: forage.value.Object.name,
+        width: forage.tilesWide,
+        height: forage.tilesHigh,
       }));
 
-    const crops = forceAsArray(location.terrainFeatures.item)
+    const crops: FarmItem[] = forceAsArray(location.terrainFeatures.item)
       .filter((feature) => feature.value.TerrainFeature.crop)
       .map((feature) => {
         const phaseDays = feature.value.TerrainFeature.crop.phaseDays.int;
@@ -233,7 +232,6 @@ export function findHarvestInLocations(
           }
         }
         return {
-          ...feature,
           name:
             REVERSE_ID_TABLE[feature.value.TerrainFeature.crop.indexOfHarvest],
           superName: feature.value.TerrainFeature['@_xsi:type'],
@@ -242,6 +240,8 @@ export function findHarvestInLocations(
           dead: feature.value.TerrainFeature.crop.dead,
           x: feature.key.Vector2.X,
           y: feature.key.Vector2.Y,
+          width: feature.tilesWide,
+          height: feature.tilesHigh,
           location: location.name,
         };
       });

@@ -17,4 +17,5 @@ function MyApp({ Component, pageProps, ...props }) {
     </ThemeProvider>
   );
 }
+
 export default MyApp;
