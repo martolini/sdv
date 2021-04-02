@@ -44,7 +44,7 @@ export default function FileUploader({ onFinished }: FileUploaderProps) {
     isDragActive,
     isDragAccept,
     isDragReject,
-  } = useDropzone({ onDrop, accept: 'text/xml' });
+  } = useDropzone({ onDrop });
 
   const borderColor = useMemo(() => {
     if (isDragAccept) {
