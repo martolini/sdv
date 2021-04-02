@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider, defaultTheme, Pane } from 'evergreen-ui';
+import { ThemeProvider, defaultTheme } from 'evergreen-ui';
 import { merge } from 'lodash';
 import SiteLayout from 'components/SiteLayout';
 import '@fontsource/vt323';

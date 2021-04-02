@@ -22,6 +22,7 @@
     "next": "10.1.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-select": "^4.3.0",
     "rgb-hex": "^3.0.0"
   },
   "devDependencies": {
@@ -35,6 +36,7 @@
     "@testing-library/react": "^11.2.6",
     "@types/lodash": "^4.14.168",
     "@types/react": "^17.0.3",
+    "@types/react-select": "^4.0.13",
     "ava": "^3.15.0",
     "babel-jest": "^26.6.3",
     "babel-loader": "^8.2.2",

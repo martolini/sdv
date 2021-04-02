@@ -5,7 +5,9 @@ const SiteLayout: React.FC = ({ children }) => {
   return (
     <Pane padding={5}>
       <Header />
-      {children}
+      <Pane marginX={16} marginY={24}>
+        {children}
+      </Pane>
     </Pane>
   );
 };
