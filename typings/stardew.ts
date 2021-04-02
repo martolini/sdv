@@ -3,6 +3,7 @@ export type FarmItem = {
   daysToHarvest: number;
   dead: boolean;
   done: boolean;
+  location: string;
 } & Rect;
 
 export type Point = {

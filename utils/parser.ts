@@ -1,6 +1,7 @@
 import parser from 'fast-xml-parser';
 import { findObjects } from './object-search';
 import rgbhex from 'rgb-hex';
+import { forageItems, REVERSE_ID_TABLE } from './lookups';
 
 type SaveGame = {
   id: string;
@@ -56,6 +57,7 @@ export const parseXml = (xmlString: string): ParsedGame => {
     return {
       gameInfo,
       items,
+      harvest: findHarvestInLocations(data, ['Farm', 'Greenhouse']),
     };
   } catch (ex) {
     throw new Error(ex);
@@ -128,7 +130,10 @@ export const isForageItem = (item) => {
   return forageItems.includes(item.parentSheetIndex) && !item.bigCraftable;
 };
 
-export function findHarvestInLocations(gameState, names = []) {
+export function findHarvestInLocations(
+  gameState: RawGame,
+  names: string[] = []
+) {
   const locations = gameState.locations.GameLocation.filter(({ name }) =>
     names.includes(name)
   );
@@ -252,37 +257,65 @@ export function findHarvestInLocations(gameState, names = []) {
     ];
   }, []);
 }
+const filterObjectsByName = (location, name) =>
+  forceAsArray(location.objects.item)
+    .filter((feature) => feature.value.Object.name === name)
+    .map((feature) => {
+      const {
+        name: featureName,
+        heldObject = { name: 'empty' },
+        minutesUntilReady,
+      } = feature.value.Object;
+      const type = heldObject.name;
+      const daysToHarvest = Math.round(minutesUntilReady / 60 / 24);
+      return {
+        ...feature,
+        name: `${featureName} (${type})`,
+        daysToHarvest,
+        x: feature.key.Vector2.X,
+        y: feature.key.Vector2.Y,
+        done: minutesUntilReady === 0,
+        hoursUntilReady: Math.round(minutesUntilReady / 60),
+        minutesUntilReady,
+        location: location.name,
+      };
+    });
 
-const forageItems = [
-  16,
-  18,
-  20,
-  22,
-  88,
-  90,
-  257,
-  259,
-  281,
-  283,
-  372,
-  392,
-  393,
-  394,
-  396,
-  397,
-  398,
-  402,
-  404,
-  406,
-  408,
-  410,
-  412,
-  414,
-  416,
-  418,
-  420,
-  422,
-  718,
-  719,
-  723,
-];
+const findInBuildings = (location, building, names = []) => {
+  if (!location.buildings) {
+    return [];
+  }
+  if (!Array.isArray(location.buildings.Building)) {
+    location.buildings.Building = [location.buildings.Building];
+  }
+  const buildings = location.buildings.Building.filter(
+    (b) => building === b['@_xsi:type']
+  );
+  const allObjects = buildings.reduce((p, b) => {
+    if (!b.indoors.objects.item) {
+      return p;
+    }
+    const objects = b.indoors.objects.item
+      .filter(
+        (item) => names.length === 0 || names.includes(item.value.Object.name)
+      )
+      .map((item) => {
+        const { name, minutesUntilReady, heldObject } = item.value.Object;
+        const daysToHarvest = Math.round(minutesUntilReady / 60 / 24);
+        return {
+          ...item,
+          name: heldObject ? `${name} (${heldObject.name})` : name,
+          daysToHarvest,
+          x: item.key.Vector2.X,
+          y: item.key.Vector2.Y,
+          done: minutesUntilReady === 0,
+          hoursUntilReady: Math.round(minutesUntilReady / 60),
+          minutesUntilReady,
+          location: location.name,
+        };
+      });
+    return [...p, ...objects];
+  }, []);
+
+  return allObjects;
+};
