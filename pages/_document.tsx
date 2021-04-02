@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import Document, { Head, Main, NextScript, Html } from 'next/document';
 import { extractStyles } from 'evergreen-ui';
+import '@fontsource/vt323';
 
 type Props = {
   css: string;
