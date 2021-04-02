@@ -60,7 +60,7 @@ export default function FileUploader({ onFinished }: FileUploaderProps) {
 
   return (
     <Pane width="600px">
-      <div {...getRootProps({ borderColor })}>
+      <div {...getRootProps()}>
         <Card
           elevation={3}
           hoverElevation={4}
@@ -87,7 +87,7 @@ export default function FileUploader({ onFinished }: FileUploaderProps) {
               <span>Windows: %AppData%\StardewValley\Saves\</span>
               <CopyToClipboard
                 text="%AppData%\StardewValley\Saves\"
-                onCopy={(e) => {
+                onCopy={() => {
                   toaster.success(
                     'Copied %AppData%StardewValleySaves to clipboard'
                   );
