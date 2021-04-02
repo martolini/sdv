@@ -2,6 +2,7 @@ import parser from 'fast-xml-parser';
 import { findObjects } from './object-search';
 import rgbhex from 'rgb-hex';
 import { forageItems, REVERSE_ID_TABLE } from './lookups';
+import { FarmItem } from 'typings/stardew';
 
 type SaveGame = {
   id: string;
@@ -34,6 +35,7 @@ type RawGame = {
 export type ParsedGame = {
   gameInfo: SaveGame;
   items: Item[];
+  harvest: FarmItem[];
 };
 
 export const parseXml = (xmlString: string): ParsedGame => {
