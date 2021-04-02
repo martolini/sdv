@@ -11,10 +11,10 @@
     "test": "yarn jest"
   },
   "dependencies": {
-    "@chakra-ui/react": "^1.4.2",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@fontsource/vt323": "^4.2.2",
+    "axios": "^0.21.1",
     "evergreen-ui": "^5.1.2",
     "fast-xml-parser": "^3.19.0",
     "framer-motion": "^4",

@@ -1,5 +1,13 @@
+import Header from 'components/Header';
+import { Pane } from 'evergreen-ui';
+
 const SiteLayout: React.FC = ({ children }) => {
-  return <div>{children}</div>;
+  return (
+    <Pane padding={5}>
+      <Header />
+      {children}
+    </Pane>
+  );
 };
 
 export default SiteLayout;
