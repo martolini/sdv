@@ -1,25 +1,19 @@
 import React from 'react';
-import { ThemeProvider, defaultTheme } from 'evergreen-ui';
-import { merge } from 'lodash';
+import { ThemeProvider } from 'evergreen-ui';
 import SiteLayout from 'components/SiteLayout';
-import '@fontsource/vt323';
+import theme from 'utils/theme';
 
-const theme = merge(defaultTheme, {
-  typography: {
-    fontFamilies: {
-      display: 'VT323',
-      ui: 'VT323',
-      mono: 'VT323',
-    },
-  },
-});
-
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, ...props }) {
+  const { withLayout = true } = props;
   return (
     <ThemeProvider value={theme}>
-      <SiteLayout>
+      {withLayout ? (
+        <SiteLayout>
+          <Component {...pageProps} />{' '}
+        </SiteLayout>
+      ) : (
         <Component {...pageProps} />
-      </SiteLayout>
+      )}
     </ThemeProvider>
   );
 }

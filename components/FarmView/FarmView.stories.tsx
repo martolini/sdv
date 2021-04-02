@@ -1,5 +1,5 @@
 import { Meta } from '@storybook/react';
-import FarmView from '.';
+import FarmView from './index';
 export default {
   title: 'FarmView',
 } as Meta;

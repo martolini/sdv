@@ -15,10 +15,10 @@ type SaveGame = {
 
 type Item = {
   name: string;
-  stack: number;
-  itemId: string;
-  quality: number;
-  basePrice: number;
+  stack?: number;
+  itemId?: string;
+  quality?: number;
+  basePrice?: number;
   chestColor?: string;
 };
 
@@ -30,7 +30,12 @@ type RawGame = {
   };
 };
 
-export const parseXml = (xmlString: string) => {
+export type ParsedGame = {
+  gameInfo: SaveGame;
+  items: Item[];
+};
+
+export const parseXml = (xmlString: string): ParsedGame => {
   try {
     const data = parser.parse(xmlString, {
       parseAttributeValue: true,
@@ -47,13 +52,13 @@ export const parseXml = (xmlString: string) => {
       gameId: data.uniqueIDForThisGame,
     };
 
-    const items = findItems(data);
+    const items: Item[] = findItems(data);
     return {
       gameInfo,
       items,
     };
   } catch (ex) {
-    console.error(ex);
+    throw new Error(ex);
   }
 };
 
