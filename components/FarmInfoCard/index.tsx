@@ -61,7 +61,6 @@ export default function FarmInfoCard() {
       elevation={2}
       padding={16}
       borderRadius={15}
-      width="50%"
       margin={8}
     >
       <Pane flexDirection="row" display="flex">

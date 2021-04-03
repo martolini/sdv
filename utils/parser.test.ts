@@ -1,5 +1,6 @@
 import { parseXml } from './parser';
 import fs from 'fs';
+import { calculateRecommendedSellables } from 'components/RecommendedSellables/utils';
 
 describe('Parser tests', () => {
   const file = fs.readFileSync('tests/fixtures/testdata.xml').toString();
@@ -17,6 +18,7 @@ describe('Parser tests', () => {
     expect(missingIngredients[1].itemId).toBe(266);
     expect(missingIngredients[1].deliverableInBundle).toBe(false);
   });
+
   it('Can parse Bundles', () => {
     const {
       missingIngredients,
@@ -33,7 +35,7 @@ describe('Parser tests', () => {
     expect(missingIngredients[1].deliverableInBundle).toBe(false);
   });
 
-  it('Can parsep players', () => {
+  it('Can parse players', () => {
     const { players } = parsed;
     expect(players).toHaveLength(2);
     expect(players[0].name).toBe('Linnk');
@@ -41,5 +43,10 @@ describe('Parser tests', () => {
     expect(players[0].skills[0].percentageToNextLevel).toBe(24.3);
     expect(players[0].skills[0].professions).toHaveLength(1);
     expect(players[0].skills[0].professions[0].name).toBe('Rancher');
+  });
+
+  it('Can find recommended sales items', () => {
+    const recommended = calculateRecommendedSellables(parsed);
+    expect(recommended).toHaveLength(280);
   });
 });

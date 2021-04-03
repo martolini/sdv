@@ -71,7 +71,13 @@ export default function Header() {
               );
             }}
           >
-            <Button marginRight={10} appearance="primary" intent="success">
+            <Button
+              marginRight={10}
+              size={500}
+              appearance="primary"
+              intent="success"
+              letterSpacing=".7px"
+            >
               Share farm
             </Button>
           </CopyToClipboard>
