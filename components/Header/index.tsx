@@ -39,9 +39,11 @@ const LINKS = [
 
 export default function Header() {
   const router = useRouter();
-  const { asPath } = router;
+  const { pathname, query } = router;
   const { setParsedGame, parsedGame } = useParsedGame();
-
+  const queryParamLink = Object.keys(query)
+    .map((key) => `${key}=${query[key]}`)
+    .join('&');
   return (
     <Pane display="flex" padding={5} borderBottom>
       <Pane width="30%">
@@ -50,8 +52,8 @@ export default function Header() {
             <NavTab
               key={link}
               text={text.toUpperCase()}
-              link={link}
-              isSelected={asPath === link}
+              link={`${link}${queryParamLink ? `?${queryParamLink}` : ''}`}
+              isSelected={pathname === link}
             />
           ))}
         </TabNavigation>
