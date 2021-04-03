@@ -1,10 +1,11 @@
 import Header from 'components/Header';
-import { Pane } from 'evergreen-ui';
+import { Pane, useTheme } from 'evergreen-ui';
 import Head from 'next/head';
 
 const SiteLayout: React.FC = ({ children }) => {
+  const theme = useTheme();
   return (
-    <Pane padding={5}>
+    <Pane>
       <Head>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
@@ -13,7 +14,11 @@ const SiteLayout: React.FC = ({ children }) => {
         />
       </Head>
       <Header />
-      <Pane marginX={16} marginY={24}>
+      <Pane
+        paddingX={16}
+        paddingY={24}
+        backgroundColor={theme.palette.neutral.lightest}
+      >
         {children}
       </Pane>
     </Pane>

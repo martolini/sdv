@@ -2,7 +2,6 @@ import {
   Card,
   CloudUploadIcon,
   Pane,
-  ParagraphProps,
   Paragraph,
   ClipboardIcon,
   toaster,
@@ -15,11 +14,6 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 type FileUploaderProps = {
   onFinished: (parsedGame: ParsedGame) => void;
 };
-
-const ParagraphWithFont = (props: ParagraphProps & { fontFamily: string }) => (
-  // @ts-ignore
-  <Paragraph {...props} fontFamily="VT323" />
-);
 
 export default function FileUploader({ onFinished }: FileUploaderProps) {
   const onDrop = useCallback((acceptedFiles) => {

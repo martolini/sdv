@@ -2,6 +2,7 @@ import React from 'react';
 import { ThemeProvider } from 'evergreen-ui';
 import SiteLayout from 'components/SiteLayout';
 import theme from 'utils/theme';
+import 'react-circular-progressbar/dist/styles.css';
 
 function MyApp({ Component, pageProps, ...props }) {
   const { withLayout = true } = props;
