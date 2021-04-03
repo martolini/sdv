@@ -3,7 +3,7 @@ import { useParsedGame } from 'hooks/useParsedGame';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import { FaSeedling } from '@react-icons/all-files/fa/FaSeedling';
 import { GiFishing } from '@react-icons/all-files/gi/GiFishing';
-import { GiStrawberry } from '@react-icons/all-files/gi/GiStrawberry';
+import { GiMushroomGills } from '@react-icons/all-files/gi/GiMushroomGills';
 import { GiMiner } from '@react-icons/all-files/gi/GiMiner';
 import { GiBroadsword } from '@react-icons/all-files/gi/GiBroadsword';
 
@@ -17,7 +17,7 @@ const icons = {
     color: '#1070CA',
   },
   Foraging: {
-    icon: GiStrawberry,
+    icon: GiMushroomGills,
     color: '#BF0E08',
   },
   Mining: {
