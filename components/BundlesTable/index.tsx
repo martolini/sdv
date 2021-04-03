@@ -1,4 +1,4 @@
-import { Badge, StarIcon, Table } from 'evergreen-ui';
+import { Badge, Pane, StarIcon, Table } from 'evergreen-ui';
 import { Bundle } from 'typings/stardew';
 
 type BundlesTableProps = {
@@ -7,15 +7,15 @@ type BundlesTableProps = {
 
 export default function BundlesTable({ bundleInfo }: BundlesTableProps) {
   return (
-    <Table>
+    <Table width="100%">
       <Table.Head>
         <Table.TextHeaderCell>Room name</Table.TextHeaderCell>
         <Table.TextHeaderCell>Bundle name</Table.TextHeaderCell>
         <Table.TextHeaderCell>Reward</Table.TextHeaderCell>
         <Table.TextHeaderCell># of missing</Table.TextHeaderCell>
-        <Table.TextHeaderCell>Missing</Table.TextHeaderCell>
+        <Table.TextHeaderCell flexBasis={580}>Missing</Table.TextHeaderCell>
       </Table.Head>
-      <Table.Body height={240}>
+      <Table.Body height={520}>
         {bundleInfo &&
           bundleInfo
             .filter((b) => b.missingIngredients.length > 0 && b.id !== '36')
@@ -28,25 +28,30 @@ export default function BundlesTable({ bundleInfo }: BundlesTableProps) {
                     {bundle.reward.name} ({bundle.reward.stack})
                   </Table.TextCell>
                   <Table.TextCell isNumber>{bundle.nMissing}</Table.TextCell>
-                  <Table.TextCell>
-                    {bundle.missingIngredients
-                      .filter((elem) => elem.name)
-                      .map((elem) => (
-                        <Badge
-                          key={elem.itemId}
-                          color={elem.deliverableInBundle ? 'green' : 'neutral'}
-                          marginRight={8}
-                        >
-                          {elem.name}
-                          {elem.quality > 0 && (
-                            <StarIcon
-                              size={9}
-                              color={elem.quality === 1 ? 'silver' : 'gold'}
-                            />
-                          )}
-                          ({elem.stack})
-                        </Badge>
-                      ))}
+                  <Table.TextCell flexBasis={580}>
+                    <Pane display="flex" flexWrap="wrap">
+                      {bundle.missingIngredients
+                        .filter((elem) => elem.name)
+                        .map((elem) => (
+                          <Badge
+                            marginBottom={3}
+                            key={elem.itemId}
+                            color={
+                              elem.deliverableInBundle ? 'green' : 'neutral'
+                            }
+                            marginRight={8}
+                          >
+                            {elem.name}
+                            {elem.quality > 0 && (
+                              <StarIcon
+                                size={9}
+                                color={elem.quality === 1 ? 'silver' : 'gold'}
+                              />
+                            )}
+                            ({elem.stack})
+                          </Badge>
+                        ))}
+                    </Pane>
                   </Table.TextCell>
                 </Table.Row>
               );
