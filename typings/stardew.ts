@@ -6,6 +6,33 @@ export type FarmItem = {
   location: string;
 } & Rect;
 
+type BundleReward = {
+  id: number;
+  name: string;
+  stack: number;
+};
+
+export type Item = {
+  name: string;
+  stack?: number;
+  itemId?: string;
+  quality?: number;
+  basePrice?: number;
+  chestColor?: string;
+  deliverableInBundle?: boolean;
+};
+
+export type Bundle = {
+  id: string;
+  roomName: string;
+  bundleName: string;
+  reward: BundleReward;
+  ingredients: Item[];
+  missingIngredients: Item[];
+  itemCount: number;
+  nMissing: number;
+};
+
 export type Point = {
   x: number;
   y: number;
