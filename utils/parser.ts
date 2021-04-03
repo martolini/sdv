@@ -90,7 +90,7 @@ export const parseXml = (xmlString: string): ParsedGame => {
       id: `${data.uniqueIDForThisGame}-${data.year}-${data.currentSeason}-${data.dayOfMonth}`,
       currentSeason: data.currentSeason,
       dayOfMonth: data.dayOfMonth,
-      dailyLuck: data.dailyLuck,
+      dailyLuck: Math.round(((+data.dailyLuck + 0.1) / 0.2) * 100),
       year: data.year,
       farmName: data.player.farmName,
       money: data.player.money,
