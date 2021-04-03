@@ -7,15 +7,15 @@ type BundlesTableProps = {
 
 export default function BundlesTable({ bundleInfo }: BundlesTableProps) {
   return (
-    <Table>
+    <Table width="100%">
       <Table.Head>
         <Table.TextHeaderCell>Room name</Table.TextHeaderCell>
         <Table.TextHeaderCell>Bundle name</Table.TextHeaderCell>
         <Table.TextHeaderCell>Reward</Table.TextHeaderCell>
         <Table.TextHeaderCell># of missing</Table.TextHeaderCell>
-        <Table.TextHeaderCell>Missing</Table.TextHeaderCell>
+        <Table.TextHeaderCell flexBasis={560}>Missing</Table.TextHeaderCell>
       </Table.Head>
-      <Table.Body height={240}>
+      <Table.Body height={520}>
         {bundleInfo &&
           bundleInfo
             .filter((b) => b.missingIngredients.length > 0 && b.id !== '36')
@@ -28,7 +28,7 @@ export default function BundlesTable({ bundleInfo }: BundlesTableProps) {
                     {bundle.reward.name} ({bundle.reward.stack})
                   </Table.TextCell>
                   <Table.TextCell isNumber>{bundle.nMissing}</Table.TextCell>
-                  <Table.TextCell>
+                  <Table.TextCell flexBasis={560} overflowY="auto">
                     {bundle.missingIngredients
                       .filter((elem) => elem.name)
                       .map((elem) => (
