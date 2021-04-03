@@ -8,7 +8,7 @@ import {
   EXP_TABLE,
   PROFESSIONS_TABLE,
 } from './lookups';
-import { FarmItem } from 'typings/stardew';
+import { FarmItem, Item, Bundle } from 'typings/stardew';
 import bundles from 'data/bundles';
 
 type SaveGame = {
@@ -20,33 +20,6 @@ type SaveGame = {
   year: number;
   farmName: string;
   money: number;
-};
-
-type Item = {
-  name: string;
-  stack?: number;
-  itemId?: string;
-  quality?: number;
-  basePrice?: number;
-  chestColor?: string;
-  deliverableInBundle?: boolean;
-};
-
-type BundleReward = {
-  id: number;
-  name: string;
-  stack: number;
-};
-
-type Bundle = {
-  id: string;
-  roomName: string;
-  bundleName: string;
-  reward: BundleReward;
-  ingredients: Item[];
-  missingIngredients: Item[];
-  itemCount: number;
-  nMissing: number;
 };
 
 type RawGame = {
