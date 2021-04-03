@@ -15,7 +15,7 @@ type BundleReward = {
 export type Item = {
   name: string;
   stack?: number;
-  itemId?: string;
+  itemId?: number;
   quality?: number;
   basePrice?: number;
   chestColor?: string;
