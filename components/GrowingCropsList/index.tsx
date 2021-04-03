@@ -2,11 +2,10 @@ import CardTitle from 'components/CardTitle';
 import { Table, Pane } from 'evergreen-ui';
 import { useParsedGame } from 'hooks/useParsedGame';
 import { groupBy } from 'lodash';
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 const GrowingCropsList: React.FC<{ width?: number }> = (props) => {
   const { parsedGame } = useParsedGame();
-  const [searchQuery, setSearchQuery] = useState('');
   const thingsInTheGround = useMemo(() => {
     if (!parsedGame) return [];
     const crops = Object.entries(groupBy(parsedGame.harvest, 'name'))
@@ -15,12 +14,8 @@ const GrowingCropsList: React.FC<{ width?: number }> = (props) => {
         amount: items.length,
       }))
       .sort((a, b) => b.amount - a.amount);
-    if (searchQuery.length > 0) {
-      const regexp = new RegExp(searchQuery, 'gi');
-      return crops.filter((crop) => crop.name.match(regexp));
-    }
     return crops;
-  }, [parsedGame, searchQuery]);
+  }, [parsedGame]);
   if (!parsedGame) {
     return null;
   }
@@ -29,13 +24,7 @@ const GrowingCropsList: React.FC<{ width?: number }> = (props) => {
       <CardTitle>What are you growing?</CardTitle>
       <Table marginTop={5}>
         <Table.Head>
-          <Table.SearchHeaderCell
-            fontSize="1.1rem"
-            onChange={(val) => {
-              setSearchQuery(val);
-            }}
-            value={searchQuery}
-          />
+          <Table.TextHeaderCell fontSize="1.1rem">Name</Table.TextHeaderCell>
           <Table.TextHeaderCell fontSize="1.1rem">Amount</Table.TextHeaderCell>
         </Table.Head>
         <Table.Body height={240}>

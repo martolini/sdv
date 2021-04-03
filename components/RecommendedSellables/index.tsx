@@ -6,16 +6,17 @@ import { calculateRecommendedSellables } from './utils';
 
 const RecommendedSellables: React.FC = () => {
   const { parsedGame } = useParsedGame();
-  const recommended = useMemo(() => calculateRecommendedSellables(parsedGame), [
-    parsedGame,
-  ]);
+  const recommended = useMemo(
+    () => calculateRecommendedSellables(parsedGame).slice(0, 10),
+    [parsedGame]
+  );
   return (
     <Pane width="100%">
       <CardTitle>Recommended sellables</CardTitle>
       <Table marginTop={5}>
         <Table.Body maxHeight={240}>
-          {recommended.slice(0, 10).map(({ name, stack, price }) => (
-            <Table.Row key={name}>
+          {recommended.map(({ name, stack, price, quality }) => (
+            <Table.Row defaultValue="" key={`${name}_${quality}`}>
               <Table.TextCell textProps={{ fontSize: '1.1rem' }}>
                 {name} x {stack}
               </Table.TextCell>

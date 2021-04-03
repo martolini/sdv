@@ -63,7 +63,7 @@ export default function FarmerStats() {
                         </Paragraph>
                       )}
                       {skill.professions.map((prof, i) => (
-                        <Paragraph color="white">
+                        <Paragraph color="white" key={prof.name}>
                           #{i} {prof.name}
                         </Paragraph>
                       ))}
