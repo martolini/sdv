@@ -34,18 +34,19 @@ export default function FarmerStats() {
   const { parsedGame } = useParsedGame();
   const players = parsedGame ? parsedGame.players : [];
   return (
-    <Pane display="flex" flexDirection="row">
+    <Card
+      backgroundColor="white"
+      elevation={2}
+      padding={16}
+      width="25%"
+      borderRadius={15}
+      margin={8}
+      cursor="help"
+      alignItems="center"
+      justifyContent="center"
+    >
       {players.map((player) => (
-        <Card
-          backgroundColor="white"
-          elevation={2}
-          padding={16}
-          width="25%"
-          key={player.name}
-          borderRadius={15}
-          margin={8}
-          cursor="help"
-        >
+        <Pane key={player.name}>
           <Paragraph
             fontSize="1.8rem"
             letterSpacing="1px"
@@ -80,7 +81,6 @@ export default function FarmerStats() {
                   }
                 >
                   <Pane
-                    width="100%"
                     display="flex"
                     flexDirection="column"
                     alignItems="center"
@@ -104,8 +104,8 @@ export default function FarmerStats() {
               );
             })}
           </Pane>
-        </Card>
+        </Pane>
       ))}
-    </Pane>
+    </Card>
   );
 }

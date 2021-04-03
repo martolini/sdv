@@ -4,29 +4,33 @@ import FileUploader from 'components/FileUploader';
 import { useParsedGame } from 'hooks/useParsedGame';
 import FarmerStats from 'components/FarmerStats';
 import FarmInfoCard from 'components/FarmInfoCard';
+import RecommendedSellables from 'components/RecommendedSellables';
 
 export default function Home() {
   const { setParsedGame, parsedGame } = useParsedGame();
+  const content = parsedGame ? (
+    <>
+      <FarmerStats />
+      <FarmInfoCard />
+      <RecommendedSellables />
+    </>
+  ) : (
+    <FileUploader
+      onFinished={(game) => {
+        setParsedGame(game);
+        toaster.success(`Successfully uploaded farm ${game.gameInfo.farmName}`);
+      }}
+    />
+  );
   return (
-    <div>
+    <>
       <Head>
         <title>Stardew Guide 2.0</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <FarmInfoCard />
-      <FarmerStats />
-      {!parsedGame && (
-        <Pane marginTop={30}>
-          <FileUploader
-            onFinished={(game) => {
-              setParsedGame(game);
-              toaster.success(
-                `Successfully uploaded farm ${game.gameInfo.farmName}`
-              );
-            }}
-          />
-        </Pane>
-      )}
-    </div>
+      <Pane flexDirection="row" display="flex" justifyContent="space-between">
+        {content}
+      </Pane>
+    </>
   );
 }

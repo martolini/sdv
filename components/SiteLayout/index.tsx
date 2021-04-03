@@ -18,6 +18,8 @@ const SiteLayout: React.FC = ({ children }) => {
         paddingX={16}
         paddingY={24}
         backgroundColor={theme.palette.neutral.lightest}
+        display="flex"
+        justifyContent="center"
       >
         {children}
       </Pane>
