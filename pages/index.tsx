@@ -7,6 +7,7 @@ import FarmInfoCard from 'components/FarmInfoCard';
 import RecommendedSellables from 'components/RecommendedSellables';
 import GrowingCropsList from 'components/GrowingCropsList';
 import DashboardCard from 'components/DashboardCard';
+import MissingIngredientsCard from 'components/MissingIngredientsCard';
 
 export default function Home() {
   const { setParsedGame, parsedGame } = useParsedGame();
@@ -23,6 +24,9 @@ export default function Home() {
       </DashboardCard>
       <DashboardCard minWidth="40%">
         <GrowingCropsList />
+      </DashboardCard>
+      <DashboardCard minWidth="40%">
+        <MissingIngredientsCard />
       </DashboardCard>
     </Pane>
   ) : (
