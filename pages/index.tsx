@@ -6,7 +6,7 @@ import FarmerStats from 'components/FarmerStats';
 import FarmInfoCard from 'components/FarmInfoCard';
 
 export default function Home() {
-  const { setParsedGame } = useParsedGame();
+  const { setParsedGame, parsedGame } = useParsedGame();
   return (
     <div>
       <Head>
@@ -15,16 +15,18 @@ export default function Home() {
       </Head>
       <FarmInfoCard />
       <FarmerStats />
-      <Pane marginTop={30}>
-        <FileUploader
-          onFinished={(game) => {
-            setParsedGame(game);
-            toaster.success(
-              `Successfully uploaded farm ${game.gameInfo.farmName}`
-            );
-          }}
-        />
-      </Pane>
+      {!parsedGame && (
+        <Pane marginTop={30}>
+          <FileUploader
+            onFinished={(game) => {
+              setParsedGame(game);
+              toaster.success(
+                `Successfully uploaded farm ${game.gameInfo.farmName}`
+              );
+            }}
+          />
+        </Pane>
+      )}
     </div>
   );
 }

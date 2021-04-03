@@ -66,10 +66,12 @@ export default function FarmerStats() {
                       <Paragraph color="white" fontSize="1.5rem">
                         {skill.name}
                       </Paragraph>
-                      <Paragraph color="white">
-                        {100 - Math.round(skill.percentageToNextLevel)}% to next
-                        level
-                      </Paragraph>
+                      {skill.percentageToNextLevel !== 100 && (
+                        <Paragraph color="white">
+                          {100 - Math.round(skill.percentageToNextLevel)}% to
+                          next level
+                        </Paragraph>
+                      )}
                       {skill.professions.map((prof, i) => (
                         <Paragraph color="white">
                           #{i} {prof.name}
