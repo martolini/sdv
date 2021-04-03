@@ -3,7 +3,6 @@ import {
   Card,
   Pane,
   Paragraph,
-  Heading,
   Badge,
   BadgeProps,
   Table,
@@ -11,7 +10,6 @@ import {
 import { useParsedGame } from 'hooks/useParsedGame';
 import { groupBy } from 'lodash';
 import { useMemo, useState } from 'react';
-import { FarmItem } from 'typings/stardew';
 
 const DAYS = [
   'Monday',

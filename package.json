@@ -19,6 +19,7 @@
     "easy-peasy": "^5.0.3",
     "evergreen-ui": "^5.1.2",
     "fast-xml-parser": "^3.19.0",
+    "firebase": "^8.3.2",
     "framer-motion": "^4",
     "lodash": "^4.17.21",
     "next": "10.1.2",
@@ -31,6 +32,7 @@
     "react-hooks-global-state": "^1.0.1",
     "react-redux": "^7.2.3",
     "react-select": "^4.3.0",
+    "reactfire": "^3.0.0-rc.0",
     "rgb-hex": "^3.0.0",
     "storybook-addon-next-router": "^2.0.4"
   },

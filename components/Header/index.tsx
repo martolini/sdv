@@ -1,10 +1,11 @@
-import { Pane, Tab, TabNavigation, Text, toaster } from 'evergreen-ui';
+import { Button, Pane, Tab, TabNavigation, Text, toaster } from 'evergreen-ui';
 import React from 'react';
 import { useRouter } from 'next/router';
 import WikiSearch from 'components/WikiSearch';
 import Link from 'next/link';
 import { useParsedGame } from 'hooks/useParsedGame';
 import FileUploader from 'components/FileUploader';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 type NavTabProps = {
   text: string;
@@ -39,7 +40,7 @@ const LINKS = [
 export default function Header() {
   const router = useRouter();
   const { asPath } = router;
-  const { setParsedGame } = useParsedGame();
+  const { setParsedGame, parsedGame } = useParsedGame();
 
   return (
     <Pane display="flex" padding={5} borderBottom>
@@ -59,6 +60,20 @@ export default function Header() {
         <WikiSearch />
       </Pane>
       <Pane width="30%" display="flex" justifyContent="flex-end">
+        {parsedGame && (
+          <CopyToClipboard
+            text={`${window.location.origin}${window.location.pathname}?farm=${parsedGame.gameInfo.gameId}`}
+            onCopy={() => {
+              toaster.success(
+                `Copied ${window.location.origin}${window.location.pathname}?farm=${parsedGame.gameInfo.gameId} to clipboard`
+              );
+            }}
+          >
+            <Button marginRight={10} appearance="primary" intent="success">
+              Share farm
+            </Button>
+          </CopyToClipboard>
+        )}
         <FileUploader
           small
           onFinished={(game) => {
