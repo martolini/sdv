@@ -14,9 +14,6 @@ export default function FileUploader({ onFinished, small }: FileUploaderProps) {
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
-
-      reader.onabort = () => console.log('file reading was aborted');
-      reader.onerror = () => console.log('file reading has failed');
       reader.onload = () => {
         // Do whatever you want with the file contents
         console.time('Parsing');

@@ -1,15 +1,20 @@
 import { ParsedGame } from 'utils/parser';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
+import { createGlobalState } from 'react-hooks-global-state';
 
 const LOCALSTORAGE_KEY = '__SDV__SAVE';
 
-export function useParsedGame() {
-  const [parsedGame, setParsedGame] = useState<ParsedGame | null>(null);
+const { useGlobalState } = createGlobalState<{
+  parsedGame: ParsedGame | null;
+}>({
+  parsedGame: null,
+});
 
+export function useParsedGame() {
+  const [parsedGame, setParsedGame] = useGlobalState('parsedGame');
   const _setParsedGame = useCallback((game: ParsedGame) => {
     localStorage.setItem(
       LOCALSTORAGE_KEY,
-
       JSON.stringify({
         parsedGame: game,
         version: 1,
@@ -17,7 +22,6 @@ export function useParsedGame() {
     );
     setParsedGame(game);
   }, []);
-
   useEffect(() => {
     // Fetch initial state
     const data = localStorage.getItem(LOCALSTORAGE_KEY);

@@ -6,6 +6,7 @@ import { GiFishing } from '@react-icons/all-files/gi/GiFishing';
 import { GiMushroomGills } from '@react-icons/all-files/gi/GiMushroomGills';
 import { GiMiner } from '@react-icons/all-files/gi/GiMiner';
 import { GiBroadsword } from '@react-icons/all-files/gi/GiBroadsword';
+import { useEffect } from 'react';
 
 const icons = {
   Farming: {

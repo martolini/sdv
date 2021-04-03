@@ -7,7 +7,6 @@ import FarmInfoCard from 'components/FarmInfoCard';
 
 export default function Home() {
   const { setParsedGame } = useParsedGame();
-
   return (
     <div>
       <Head>
