@@ -29,8 +29,8 @@ const LINKS = [
     link: '/farm',
   },
   {
-    text: 'Inventory',
-    link: '/inventory',
+    text: 'Bundles',
+    link: '/bundles',
   },
 ];
 

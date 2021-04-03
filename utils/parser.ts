@@ -3,6 +3,7 @@ import { findObjects } from './object-search';
 import rgbhex from 'rgb-hex';
 import { forageItems, REVERSE_ID_TABLE } from './lookups';
 import { FarmItem } from 'typings/stardew';
+import bundles from '../data/bundles.json';
 
 type SaveGame = {
   id: string;
@@ -22,6 +23,24 @@ type Item = {
   quality?: number;
   basePrice?: number;
   chestColor?: string;
+  deliverableInBundle?: boolean;
+};
+
+type BundleReward = {
+  id: number;
+  name: string;
+  stack: number;
+};
+
+type Bundle = {
+  id: number;
+  roomName: string;
+  bundleName: string;
+  reward: BundleReward;
+  ingredients: Item[];
+  missingIngredients: Item[];
+  itemCount: number;
+  nMissing: number;
 };
 
 type RawGame = {
@@ -36,6 +55,49 @@ export type ParsedGame = {
   gameInfo: SaveGame;
   items: Item[];
   harvest: FarmItem[];
+  bundleInfo: Bundle[];
+};
+
+const getBundleStatus = (gameState: RawGame) => {
+  const ccLoc = gameState.locations.GameLocation.find(
+    (c) => c.name === 'CommunityCenter'
+  );
+
+  const bundlesHave = ccLoc.bundles.item.reduce((p, item) => {
+    const id = item.key.int;
+    const count = item.value.ArrayOfBoolean.boolean.reduce(
+      (pp, c) => pp + c,
+      0
+    );
+    return {
+      ...p,
+      [id]: count,
+    };
+  }, {});
+
+  const stateBundles = ccLoc.bundles.item;
+  const missing = Object.keys(bundles).reduce((p, bundleKey) => {
+    const rawBundle: Bundle = bundles[bundleKey];
+    const bundle = stateBundles.find((b) => +b.key.int === +bundleKey);
+    const booleanArray = bundle.value.ArrayOfBoolean.boolean;
+    const missingIngredients: Item[] = rawBundle.ingredients.reduce(
+      (pp, c, i) => {
+        if (booleanArray[i]) {
+          return pp;
+        }
+        return [...pp, c];
+      },
+      []
+    );
+    return {
+      ...p,
+      [bundleKey]: {
+        missingIngredients,
+        nMissing: Math.max(+rawBundle.itemCount - bundlesHave[bundleKey], 0),
+      },
+    };
+  }, {});
+  return missing;
 };
 
 export const parseXml = (xmlString: string): ParsedGame => {
@@ -56,10 +118,30 @@ export const parseXml = (xmlString: string): ParsedGame => {
     };
 
     const items: Item[] = findItems(data);
+    const bundleStatus = getBundleStatus(data);
+    const missingBundleItems = Object.keys(bundles).map((bundleKey) => {
+      const dataBundle = bundles[bundleKey];
+      return {
+        missingIngredients: bundleStatus[bundleKey].missingIngredients.map(
+          (i) => ({
+            ...i,
+            deliverableInBundle:
+              (
+                items.find(
+                  (i2) => i.itemId === i2.itemId && i2.quality >= i.quality
+                ) || {}
+              ).stack >= i.stack,
+          })
+        ),
+        nMissing: bundleStatus[bundleKey].nMissing,
+        ...dataBundle,
+      };
+    });
     return {
       gameInfo,
       items,
       harvest: findHarvestInLocations(data, ['Farm', 'Greenhouse']),
+      bundleInfo: missingBundleItems,
     };
   } catch (ex) {
     throw new Error(ex);
