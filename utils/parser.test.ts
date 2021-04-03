@@ -26,6 +26,7 @@ describe('Parser tests', () => {
     } = parsed.bundleInfo[parsed.bundleInfo.length - 3];
     expect(roomName).toBe('Bulletin Board');
     expect(bundleName).toBe('Dye');
+    expect(nMissing).toBe(2);
     expect(missingIngredients[0].itemId).toBe(444);
     expect(missingIngredients[0].deliverableInBundle).toBe(true);
     expect(missingIngredients[1].itemId).toBe(266);

@@ -3,7 +3,7 @@ import { findObjects } from './object-search';
 import rgbhex from 'rgb-hex';
 import { forageItems, REVERSE_ID_TABLE } from './lookups';
 import { FarmItem } from 'typings/stardew';
-import bundles from '../data/bundles.json';
+import bundles from 'data/bundles';
 
 type SaveGame = {
   id: string;
@@ -33,7 +33,7 @@ type BundleReward = {
 };
 
 type Bundle = {
-  id: number;
+  id: string;
   roomName: string;
   bundleName: string;
   reward: BundleReward;
