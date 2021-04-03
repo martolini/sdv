@@ -1,7 +1,13 @@
 import parser from 'fast-xml-parser';
 import { findObjects } from './object-search';
 import rgbhex from 'rgb-hex';
-import { forageItems, REVERSE_ID_TABLE } from './lookups';
+import {
+  forageItems,
+  REVERSE_ID_TABLE,
+  SKILL_TABLE,
+  EXP_TABLE,
+  PROFESSIONS_TABLE,
+} from './lookups';
 import { FarmItem } from 'typings/stardew';
 import bundles from 'data/bundles';
 
@@ -56,6 +62,7 @@ export type ParsedGame = {
   items: Item[];
   harvest: FarmItem[];
   bundleInfo: Bundle[];
+  players: Player[];
 };
 
 const getBundleStatus = (gameState: RawGame) => {
@@ -142,6 +149,7 @@ export const parseXml = (xmlString: string): ParsedGame => {
       items,
       harvest: findHarvestInLocations(data, ['Farm', 'Greenhouse']),
       bundleInfo: missingBundleItems,
+      players: getPlayers(data),
     };
   } catch (ex) {
     throw new Error(ex);
@@ -403,3 +411,57 @@ const findInBuildings = (location, building, names = []) => {
 
   return allObjects;
 };
+
+export type Player = {
+  name: string;
+  skills: Skill[];
+};
+
+export type Skill = {
+  name: string;
+  level: number;
+  percentageToNextLevel: number;
+  professions: {
+    name: string;
+    description: string;
+  }[];
+};
+
+function getPlayers(gameState): Player[] {
+  return [
+    gameState.player,
+    ...findObjects(gameState, 'farmhand').filter((f) => f.name !== ''),
+  ].map((player) => {
+    const experiencePoints = player.experiencePoints.int;
+    // find skills per level
+    const skills: Skill[] = Object.entries(SKILL_TABLE).map(
+      ([key, skillName]) => {
+        const stateKey = `${skillName.toLowerCase()}Level`;
+        const level = player[stateKey];
+        const exp = EXP_TABLE[level];
+        const nextExp = EXP_TABLE[level + 1];
+        const percentage =
+          level === 10
+            ? 100
+            : ((experiencePoints[key] - exp) / (nextExp - exp)) * 100;
+        const professions = forceAsArray(player.professions.int)
+          .filter((prof) => !!PROFESSIONS_TABLE[skillName][prof])
+          .map((prof) => PROFESSIONS_TABLE[skillName][prof])
+          .map((prof) => ({
+            name: prof.name,
+            description: prof.description,
+          }));
+        return {
+          name: skillName as string,
+          level: +level,
+          percentageToNextLevel: percentage,
+          professions,
+        };
+      }
+    );
+    return {
+      name: player.name,
+      skills,
+    };
+  });
+}

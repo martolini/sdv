@@ -2,10 +2,11 @@ import Head from 'next/head';
 import { Heading, toaster } from 'evergreen-ui';
 import FileUploader from 'components/FileUploader';
 import { useParsedGame } from 'hooks/useParsedGame';
-import Link from 'next/link';
+import FarmerStats from 'components/FarmerStats';
 
 export default function Home() {
   const { setParsedGame } = useParsedGame();
+
   return (
     <div>
       <Head>
@@ -21,6 +22,7 @@ export default function Home() {
           );
         }}
       />
+      <FarmerStats />
     </div>
   );
 }

@@ -32,4 +32,14 @@ describe('Parser tests', () => {
     expect(missingIngredients[1].itemId).toBe(266);
     expect(missingIngredients[1].deliverableInBundle).toBe(false);
   });
+
+  it('Can parsep players', () => {
+    const { players } = parsed;
+    expect(players).toHaveLength(2);
+    expect(players[0].name).toBe('Linnk');
+    expect(players[1].name).toBe('Randy');
+    expect(players[0].skills[0].percentageToNextLevel).toBe(24.3);
+    expect(players[0].skills[0].professions).toHaveLength(1);
+    expect(players[0].skills[0].professions[0].name).toBe('Rancher');
+  });
 });
