@@ -5,15 +5,26 @@ import { useParsedGame } from 'hooks/useParsedGame';
 import FarmerStats from 'components/FarmerStats';
 import FarmInfoCard from 'components/FarmInfoCard';
 import RecommendedSellables from 'components/RecommendedSellables';
+import GrowingCropsList from 'components/GrowingCropsList';
+import DashboardCard from 'components/DashboardCard';
 
 export default function Home() {
   const { setParsedGame, parsedGame } = useParsedGame();
   const content = parsedGame ? (
-    <>
-      <FarmerStats />
-      <FarmInfoCard />
-      <RecommendedSellables />
-    </>
+    <Pane display="flex" flexFlow="row wrap" justifyContent="center">
+      <DashboardCard minWidth="40%">
+        <FarmerStats />
+      </DashboardCard>
+      <DashboardCard minWidth="40%">
+        <FarmInfoCard />
+      </DashboardCard>
+      <DashboardCard minWidth="40%">
+        <RecommendedSellables />
+      </DashboardCard>
+      <DashboardCard minWidth="40%">
+        <GrowingCropsList />
+      </DashboardCard>
+    </Pane>
   ) : (
     <FileUploader
       onFinished={(game) => {
@@ -28,9 +39,7 @@ export default function Home() {
         <title>Stardew Guide 2.0</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Pane flexDirection="row" display="flex" justifyContent="space-between">
-        {content}
-      </Pane>
+      <Pane display="flex">{content}</Pane>
     </>
   );
 }

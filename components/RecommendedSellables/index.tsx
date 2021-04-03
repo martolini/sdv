@@ -1,6 +1,5 @@
 import CardTitle from 'components/CardTitle';
-import DashboardCard from 'components/DashboardCard';
-import { Paragraph, Pane } from 'evergreen-ui';
+import { Pane, Table } from 'evergreen-ui';
 import { useParsedGame } from 'hooks/useParsedGame';
 import { useMemo } from 'react';
 import { calculateRecommendedSellables } from './utils';
@@ -11,22 +10,23 @@ const RecommendedSellables: React.FC = () => {
     parsedGame,
   ]);
   return (
-    <DashboardCard>
+    <Pane width="100%">
       <CardTitle>Recommended sellables</CardTitle>
-      <Pane marginTop={10}>
-        {recommended.slice(0, 8).map((item) => (
-          <Paragraph
-            fontSize="1.2rem"
-            letterSpacing="0.8px"
-            key={item.key}
-            marginBottom={10}
-          >
-            {item.name} x {item.stack}:
-            <span style={{ float: 'right' }}>${item.price}</span>
-          </Paragraph>
-        ))}
-      </Pane>
-    </DashboardCard>
+      <Table marginTop={5}>
+        <Table.Body maxHeight={240}>
+          {recommended.slice(0, 10).map(({ name, stack, price }) => (
+            <Table.Row key={name}>
+              <Table.TextCell textProps={{ fontSize: '1.1rem' }}>
+                {name} x {stack}
+              </Table.TextCell>
+              <Table.TextCell textProps={{ fontSize: '1.1rem' }} isNumber>
+                ${price}
+              </Table.TextCell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    </Pane>
   );
 };
 

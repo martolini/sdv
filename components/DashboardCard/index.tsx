@@ -1,26 +1,23 @@
 import { Card, CardProps } from 'evergreen-ui';
 
-type DashboardCardProps = {
-  width?: string | number;
-  cardProps?: CardProps;
-};
+type DashboardCardProps = {};
 
-const DashboardCard: React.FC<DashboardCardProps> = ({
+const DashboardCard: React.FC<DashboardCardProps & CardProps> = ({
   children,
   width = '30%',
-  cardProps = {},
 }) => {
   return (
     <Card
+      display="flex"
+      maxWidth="40%"
       backgroundColor="white"
       elevation={2}
       padding={16}
       borderRadius={15}
       margin={8}
       width={width}
-      alignItems="center"
+      alignItems="flex-start"
       justifyContent="center"
-      {...cardProps}
     >
       {children}
     </Card>
