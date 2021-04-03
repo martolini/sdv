@@ -42,6 +42,7 @@ export default function PlacedDiv({
       fontSize={`${((tileSize * mapSize.x) / mapSize.y) * 65}%`}
       width={`${tileSize * (farmItem.width || 1)}%`}
       lineHeight={1}
+      hoverElevation={1}
       backgroundColor={getColorForTile(
         farmItem.dead,
         farmItem.done,
