@@ -1,21 +1,16 @@
-import {
-  Card,
-  CloudUploadIcon,
-  Pane,
-  Paragraph,
-  ClipboardIcon,
-  toaster,
-} from 'evergreen-ui';
+import { Card, Pane, toaster } from 'evergreen-ui';
 import React, { useCallback, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { ParsedGame, parseXml } from 'utils/parser';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import UploadBody from './UploadBody';
+import UploadBodySmall from './UploadBodySmall';
 
 type FileUploaderProps = {
   onFinished: (parsedGame: ParsedGame) => void;
+  small?: boolean;
 };
 
-export default function FileUploader({ onFinished }: FileUploaderProps) {
+export default function FileUploader({ onFinished, small }: FileUploaderProps) {
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
@@ -60,70 +55,23 @@ export default function FileUploader({ onFinished }: FileUploaderProps) {
   }, [isDragActive, isDragAccept, isDragReject]);
 
   return (
-    <Pane width="600px">
+    <Pane width={small ? '130px' : '600px'}>
       <div {...getRootProps()}>
         <Card
           elevation={3}
           hoverElevation={4}
-          height="250px"
+          height={small ? '36px' : '250px'}
           display="flex"
           justifyContent="space-around"
           textAlign="left"
           alignItems="center"
-          padding={20}
+          padding={small ? 3 : 20}
           border
           borderColor={borderColor}
-          flexDirection="column"
+          flexDirection={small ? 'row' : 'column'}
         >
           <input {...getInputProps()} />
-          <CloudUploadIcon size={40} color="info" alignSelf="center" />
-          <Paragraph fontSize="1.5rem" fontFamily="mono" letterSpacing={0.6}>
-            Drag and drop a save file to this area to upload
-          </Paragraph>
-          <Paragraph fontSize="1" fontFamily="mono" letterSpacing={0.6}>
-            The save file (e.g. named Player_123456789) is located under:
-          </Paragraph>
-          <Paragraph fontSize="1" fontFamily="mono" letterSpacing={0.6}>
-            <>
-              <span>Windows: %AppData%\StardewValley\Saves\</span>
-              <CopyToClipboard
-                text="%AppData%\StardewValley\Saves\"
-                onCopy={() => {
-                  toaster.success(
-                    'Copied %AppData%StardewValleySaves to clipboard'
-                  );
-                }}
-              >
-                <ClipboardIcon
-                  marginLeft="10px"
-                  onClick={(e) => e.stopPropagation()}
-                  cursor="pointer"
-                  color="success"
-                />
-              </CopyToClipboard>
-            </>
-          </Paragraph>
-          <Paragraph fontSize="1" fontFamily="mono" letterSpacing={0.6}>
-            <>
-              <span>Mac OSX & Linux: ~/.config/StardewValley/Saves/</span>
-              <CopyToClipboard
-                text="~/.config/StardewValley/Saves/"
-                onCopy={() => {
-                  toaster.success(
-                    'Copied ~/.config/StardewValley/Saves/ to clipboard',
-                    {}
-                  );
-                }}
-              >
-                <ClipboardIcon
-                  marginLeft="10px"
-                  onClick={(e) => e.stopPropagation()}
-                  cursor="pointer"
-                  color="success"
-                />
-              </CopyToClipboard>
-            </>
-          </Paragraph>
+          {small ? <UploadBodySmall /> : <UploadBody />}
         </Card>
       </div>
     </Pane>

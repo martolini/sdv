@@ -1,8 +1,10 @@
-import { Pane, Tab, TabNavigation, Text } from 'evergreen-ui';
+import { Pane, Tab, TabNavigation, Text, toaster } from 'evergreen-ui';
 import React from 'react';
 import { useRouter } from 'next/router';
 import WikiSearch from 'components/WikiSearch';
 import Link from 'next/link';
+import { useParsedGame } from 'hooks/useParsedGame';
+import FileUploader from 'components/FileUploader';
 
 type NavTabProps = {
   text: string;
@@ -37,6 +39,8 @@ const LINKS = [
 export default function Header() {
   const router = useRouter();
   const { asPath } = router;
+  const { setParsedGame } = useParsedGame();
+
   return (
     <Pane display="flex" padding={5} borderBottom>
       <Pane width="30%">
@@ -53,6 +57,17 @@ export default function Header() {
       </Pane>
       <Pane width="40%">
         <WikiSearch />
+      </Pane>
+      <Pane width="30%" display="flex" justifyContent="flex-end">
+        <FileUploader
+          small
+          onFinished={(game) => {
+            setParsedGame(game);
+            toaster.success(
+              `Successfully uploaded farm ${game.gameInfo.farmName}`
+            );
+          }}
+        />
       </Pane>
     </Pane>
   );

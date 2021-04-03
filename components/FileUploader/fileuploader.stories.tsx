@@ -11,3 +11,11 @@ export const Basic = () => (
     }}
   />
 );
+export const Small = () => (
+  <FileUploader
+    small
+    onFinished={(game) => {
+      console.log(game);
+    }}
+  />
+);
