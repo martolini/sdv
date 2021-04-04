@@ -46,7 +46,9 @@ describe('Parser tests', () => {
   });
 
   it('Can find recommended sales items', () => {
-    const recommended = calculateRecommendedSellables(parsed);
-    expect(recommended).toHaveLength(280);
+    const file = fs.readFileSync('tests/fixtures/sellable_test.xml').toString();
+    const parsedData = parseXml(file);
+    const recommended = calculateRecommendedSellables(parsedData);
+    expect(recommended).toHaveLength(78);
   });
 });

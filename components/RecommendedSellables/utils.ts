@@ -32,12 +32,14 @@ export const calculateRecommendedSellables = (
     });
     return p;
   }, {});
-  const recommended = sellableItems.filter((item) => !bundleItems[item.itemId]);
+  const recommended = sellableItems.filter(
+    (item) => !bundleItems[item.itemId] && !['Furniture'].includes(item.type)
+  );
   const groupedRecommendations = groupBy(
     recommended,
     (i) => `${i.itemId}_${i.quality}`
   );
-  return Object.entries(groupedRecommendations)
+  const result = Object.entries(groupedRecommendations)
     .reduce((p, [key, items]) => {
       const first = items[0];
       return [
@@ -57,6 +59,6 @@ export const calculateRecommendedSellables = (
         },
       ];
     }, [])
-    .flat()
-    .sort((a, b) => b.price - a.price);
+    .flat();
+  return result.sort((a, b) => b.price - a.price);
 };

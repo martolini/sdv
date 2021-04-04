@@ -135,13 +135,13 @@ const parseItem = (item: any): Item => ({
   itemId: item.parentSheetIndex,
   quality: item.quality,
   basePrice: item.price,
+  type: item['@_xsi:type'],
 });
 
 const findItems = (saveGame: RawGame) => {
   const playerItems = saveGame.player.items.Item.filter(
     (item) => item['@_xsi:nil'] !== true
   ).map(parseItem) as Item[];
-
   const farmhands = findObjects(saveGame.locations, 'farmhand').filter(
     (player) => player.name
   );

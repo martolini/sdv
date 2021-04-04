@@ -20,6 +20,7 @@ export type Item = {
   basePrice?: number;
   chestColor?: string;
   deliverableInBundle?: boolean;
+  type?: string;
 };
 
 export type Bundle = {
