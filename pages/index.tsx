@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Pane, toaster, useTheme } from 'evergreen-ui';
+import { Pane, Spinner, toaster, useTheme } from 'evergreen-ui';
 import FileUploader from 'components/FileUploader';
 import { useParsedGame } from 'hooks/useParsedGame';
 import FarmerStats from 'components/FarmerStats';
@@ -10,7 +10,7 @@ import MissingIngredientsCard from 'components/MissingIngredientsCard';
 import FarmInfoHeader from 'components/FarmInfoHeader';
 
 export default function Home() {
-  const { setParsedGame, parsedGame } = useParsedGame();
+  const { setParsedGame, parsedGame, loadingParsedGame } = useParsedGame();
   const theme = useTheme();
   const content = parsedGame ? (
     <Pane display="flex" flexFlow="row wrap" justifyContent="space-around">
@@ -48,7 +48,7 @@ export default function Home() {
         <title>Stardew Guide 2.0</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Pane display="flex">{content}</Pane>
+      <Pane display="flex">{loadingParsedGame ? <Spinner /> : content}</Pane>
     </>
   );
 }

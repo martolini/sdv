@@ -1,9 +1,11 @@
 import FarmView from 'components/FarmView';
+import { Spinner } from 'evergreen-ui';
 import { useParsedGame } from 'hooks/useParsedGame';
 import { useMemo } from 'react';
 
 export default function Farm() {
-  const { parsedGame } = useParsedGame();
+  const { parsedGame, loadingParsedGame } = useParsedGame();
+
   const farmCrops = useMemo(
     () =>
       parsedGame === null
@@ -11,5 +13,5 @@ export default function Farm() {
         : parsedGame.harvest.filter((h) => h.location === 'Farm'),
     [parsedGame]
   );
-  return <FarmView items={farmCrops} />;
+  return loadingParsedGame ? <Spinner /> : <FarmView items={farmCrops} />;
 }

@@ -8,22 +8,29 @@ const LOCALSTORAGE_KEY = '__SDV__SAVE';
 
 const { useGlobalState } = createGlobalState<{
   parsedGame: ParsedGame | null;
+  loading: boolean;
 }>({
   parsedGame: null,
+  loading: true,
 });
 
 export function useParsedGame() {
   const [parsedGame, setParsedGame] = useGlobalState('parsedGame');
+  const [loading, setLoading] = useGlobalState('loading');
   const router = useRouter();
   const firestore = useFirestore();
   const _setParsedGame = useCallback(async (game: ParsedGame) => {
+    setLoading(true);
     const versioned = JSON.stringify({ parsedGame: game, version: 1 });
     localStorage.setItem(LOCALSTORAGE_KEY, versioned);
     setParsedGame(game);
     await firestore
       .collection('newfarms')
       .doc(`${game.gameInfo.gameId}`)
-      .set(JSON.parse(versioned).parsedGame);
+      .set(JSON.parse(versioned).parsedGame)
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   useEffect(() => {
@@ -35,12 +42,16 @@ export function useParsedGame() {
           if (doc.exists) {
             setParsedGame(doc.data() as ParsedGame);
           }
+          setLoading(false);
         });
       return ref;
+    } else {
+      setLoading(false);
     }
   }, [router.query.farm]);
   return {
     parsedGame,
+    loadingParsedGame: loading,
     setParsedGame: _setParsedGame,
   };
 }
