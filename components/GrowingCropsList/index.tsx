@@ -8,7 +8,12 @@ const GrowingCropsList: React.FC<{ width?: number }> = (props) => {
   const { parsedGame } = useParsedGame();
   const thingsInTheGround = useMemo(() => {
     if (!parsedGame) return [];
-    const crops = Object.entries(groupBy(parsedGame.harvest, 'name'))
+    const crops = Object.entries(
+      groupBy(
+        parsedGame.harvest.filter((i) => !i.dead),
+        'name'
+      )
+    )
       .map(([key, items]) => ({
         name: key,
         amount: items.length,
