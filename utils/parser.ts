@@ -36,6 +36,13 @@ export type ParsedGame = {
   harvest: FarmItem[];
   bundleInfo: Bundle[];
   players: Player[];
+  todaysBirthdays: Birthday[];
+};
+
+export type Birthday = {
+  name: string;
+  season: string;
+  day: string;
 };
 
 const getBundleStatus = (gameState: RawGame) => {
@@ -123,11 +130,29 @@ export const parseXml = (xmlString: string): ParsedGame => {
       harvest: findHarvestInLocations(data, ['Farm', 'Greenhouse']),
       bundleInfo: missingBundleItems,
       players: getPlayers(data),
+      todaysBirthdays: findTodaysBirthdays(data),
     };
   } catch (ex) {
     throw new Error(ex);
   }
 };
+
+function findTodaysBirthdays(saveGame: RawGame): Birthday[] {
+  return findObjects(saveGame.locations.GameLocation, 'NPC')
+    .reduce((p, c) => [...p, ...forceAsArray(c)], [])
+    .filter(
+      (c) =>
+        c.birthday_Season &&
+        c.birthday_Season === saveGame.currentSeason &&
+        c.birthday_Day &&
+        c.birthday_Day === saveGame.dayOfMonth
+    )
+    .map((c) => ({
+      name: c.name,
+      season: c.birthday_Season,
+      day: c.birthday_Day,
+    }));
+}
 
 const parseItem = (item: any): Item => ({
   name: item.name,
@@ -361,7 +386,7 @@ const findInBuildings = (location, building, names = []) => {
     if (!b.indoors.objects.item) {
       return p;
     }
-    const objects = b.indoors.objects.item
+    const objects = forceAsArray(b.indoors.objects.item)
       .filter(
         (item) => names.length === 0 || names.includes(item.value.Object.name)
       )

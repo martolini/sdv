@@ -37,6 +37,12 @@ export default function FarmInfoHeader() {
       <Text color={theme.colors.text.success} fontSize="1.2rem">
         {gameInfo.dailyLuck}% luck
       </Text>
+      <Text color={theme.colors.text.selected} fontSize="1.2rem">
+        Birthday today:{' '}
+        {(parsedGame.todaysBirthdays || []).map((birthday) => (
+          <span key={birthday.name}>{birthday.name}</span>
+        ))}
+      </Text>
     </Pane>
   );
 }

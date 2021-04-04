@@ -51,4 +51,10 @@ describe('Parser tests', () => {
     const recommended = calculateRecommendedSellables(parsedData);
     expect(recommended).toHaveLength(78);
   });
+
+  it('Can find birthdays', () => {
+    const file = fs.readFileSync('tests/fixtures/birthday_test.xml').toString();
+    const { todaysBirthdays } = parseXml(file);
+    expect(todaysBirthdays).toHaveLength(1);
+  });
 });

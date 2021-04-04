@@ -14,7 +14,7 @@ const AllItemsCard: React.FC = () => {
     return values(
       chain(parsedGame.items)
         .groupBy((item) => `${item.itemId}_${item.quality}`)
-        .reduce((p, current, key) => [
+        .reduce((p, current) => [
           ...p,
           {
             ...current[0],
