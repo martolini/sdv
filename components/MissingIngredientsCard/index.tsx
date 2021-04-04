@@ -24,7 +24,7 @@ const MissingIngredientsCard: React.FC<{ width?: number }> = (props) => {
     [parsedGame]
   );
   return (
-    <Pane flexDirection="column" width="100%" margin={12}>
+    <Pane flexDirection="column" width="100%">
       <CardTitle>Missing ingredients:</CardTitle>
       <Table>
         <Table.Body maxHeight={360}>
@@ -35,7 +35,13 @@ const MissingIngredientsCard: React.FC<{ width?: number }> = (props) => {
                 <Table.TextCell textProps={{ fontSize: '1.1rem' }}>
                   {key}
                 </Table.TextCell>
-                <Table.TextCell textProps={{ fontSize: '1.1rem' }} isNumber>
+                <Table.TextCell
+                  textProps={{ fontSize: '1.1rem' }}
+                  isNumber
+                  flexBasis={40}
+                  flexShrink={0}
+                  flexGrow={0}
+                >
                   {missingIngredientsName.reduce((p, c) => p + c.stack!, 0)}
                 </Table.TextCell>
               </Table.Row>

@@ -20,7 +20,13 @@ const RecommendedSellables: React.FC = () => {
               <Table.TextCell textProps={{ fontSize: '1.1rem' }}>
                 {name} x {stack}
               </Table.TextCell>
-              <Table.TextCell textProps={{ fontSize: '1.1rem' }} isNumber>
+              <Table.TextCell
+                textProps={{ fontSize: '1.1rem' }}
+                isNumber
+                flexBasis={80}
+                flexShrink={0}
+                flexGrow={0}
+              >
                 ${price}
               </Table.TextCell>
             </Table.Row>
