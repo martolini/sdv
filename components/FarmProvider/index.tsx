@@ -1,6 +1,6 @@
 import { useParsedGame } from 'hooks/useParsedGame';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useFirestore } from 'reactfire';
 import { ParsedGame } from 'utils/parser';
 

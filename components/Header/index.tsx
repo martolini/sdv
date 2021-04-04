@@ -45,7 +45,7 @@ export default function Header() {
     .map((key) => `${key}=${query[key]}`)
     .join('&');
   return (
-    <Pane display="flex" padding={5} borderBottom>
+    <Pane display="flex" padding={10} borderBottom alignItems="center">
       <Pane width="30%">
         <TabNavigation>
           {LINKS.map(({ text, link }) => (
