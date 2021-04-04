@@ -8,6 +8,7 @@ import GrowingCropsList from 'components/GrowingCropsList';
 import DashboardCard from 'components/DashboardCard';
 import MissingIngredientsCard from 'components/MissingIngredientsCard';
 import FarmInfoHeader from 'components/FarmInfoHeader';
+import AllItemsCard from 'components/AllItemsCard';
 
 export default function Home() {
   const { setParsedGame, parsedGame, loadingParsedGame } = useParsedGame();
@@ -16,10 +17,10 @@ export default function Home() {
     <Pane display="flex" flexFlow="row wrap" justifyContent="space-around">
       <FarmInfoHeader />
       <DashboardCard
-        backgroundColor={theme.colors.background.greenTint}
-        maxWidth="30%"
+        backgroundColor={theme.colors.background.purpleTint}
+        minWidth="20%"
       >
-        <FarmerStats />
+        <AllItemsCard />
       </DashboardCard>
       <DashboardCard
         backgroundColor={theme.colors.background.orangeTint}
@@ -32,6 +33,12 @@ export default function Home() {
       </DashboardCard>
       <DashboardCard backgroundColor={theme.colors.background.blueTint}>
         <MissingIngredientsCard />
+      </DashboardCard>
+      <DashboardCard
+        backgroundColor={theme.colors.background.greenTint}
+        maxWidth="30%"
+      >
+        <FarmerStats />
       </DashboardCard>
     </Pane>
   ) : (

@@ -4,7 +4,7 @@ import { useParsedGame } from 'hooks/useParsedGame';
 import React, { useMemo } from 'react';
 import { groupBy } from 'lodash';
 
-const MissingIngredientsCard: React.FC<{ width?: number }> = (props) => {
+const MissingIngredientsCard: React.FC = () => {
   const { parsedGame } = useParsedGame();
   if (!parsedGame) {
     return null;

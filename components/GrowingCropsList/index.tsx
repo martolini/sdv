@@ -4,7 +4,7 @@ import { useParsedGame } from 'hooks/useParsedGame';
 import { groupBy } from 'lodash';
 import React, { useMemo } from 'react';
 
-const GrowingCropsList: React.FC<{ width?: number }> = (props) => {
+const GrowingCropsList: React.FC = () => {
   const { parsedGame } = useParsedGame();
   const thingsInTheGround = useMemo(() => {
     if (!parsedGame) return [];
