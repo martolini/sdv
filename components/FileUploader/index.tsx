@@ -50,7 +50,6 @@ export default function FileUploader({ onFinished, small }: FileUploaderProps) {
       return '#ff1744';
     }
   }, [isDragActive, isDragAccept, isDragReject]);
-
   return (
     <Pane width={small ? '130px' : '600px'}>
       <div {...getRootProps()}>

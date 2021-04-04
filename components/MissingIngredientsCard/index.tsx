@@ -27,13 +27,7 @@ const MissingIngredientsCard: React.FC<{ width?: number }> = (props) => {
     <Pane flexDirection="column" width="100%" margin={12}>
       <CardTitle>Missing ingredients:</CardTitle>
       <Table marginTop={5}>
-        <Table.Head>
-          <Table.TextHeaderCell fontSize="1.1rem">
-            Ingredient
-          </Table.TextHeaderCell>
-          <Table.TextHeaderCell fontSize="1.1rem">Amount</Table.TextHeaderCell>
-        </Table.Head>
-        <Table.Body height={240}>
+        <Table.Body maxHeight={240}>
           {Object.keys(deliverables).map((key, i) => {
             const missingIngredientsName = deliverables[key];
             return (
