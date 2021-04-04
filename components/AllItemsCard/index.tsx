@@ -8,10 +8,6 @@ const AllItemsCard: React.FC = () => {
   const { parsedGame } = useParsedGame();
   const [filterValue, setFilterValue] = useState('');
 
-  if (!parsedGame) {
-    return null;
-  }
-
   const allItems = parsedGame.items;
   return (
     <Pane flexDirection="column" height={430} width="100%">
@@ -38,17 +34,21 @@ const AllItemsCard: React.FC = () => {
                 <Table.TextCell
                   textProps={{ fontSize: '1.1rem' }}
                   isNumber
-                  flexBasis={50}
+                  flexBasis={70}
                   flexShrink={0}
                   flexGrow={0}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  textAlign="center"
                 >
                   {chestColor ? (
                     <GiLockedChest color={`#${chestColor}`} />
                   ) : (
                     <Avatar
                       name={player || ''}
-                      size={25}
-                      getInitials={(name) => name.substring(0, 2)}
+                      size={35}
+                      getInitials={(name) => name.substring(0, 2).toUpperCase()}
                     />
                   )}
                 </Table.TextCell>
