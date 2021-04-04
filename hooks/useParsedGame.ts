@@ -1,8 +1,7 @@
 import { ParsedGame } from 'utils/parser';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { createGlobalState } from 'react-hooks-global-state';
 import { useFirestore } from 'reactfire';
-import { useRouter } from 'next/router';
 
 const { useGlobalState } = createGlobalState<{
   parsedGame: ParsedGame | null;

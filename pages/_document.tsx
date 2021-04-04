@@ -34,7 +34,7 @@ export default class MyDocument extends Document<Props> {
           <style dangerouslySetInnerHTML={{ __html: css }} />
         </Head>
 
-        <body>
+        <body style={{ padding: 0, margin: 0 }}>
           <Main />
           {hydrationScript}
           <NextScript />
