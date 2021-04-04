@@ -6,6 +6,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import { FirebaseAppProvider } from 'reactfire';
 import { firebaseConfig } from 'config';
 import 'firebase/firestore';
+import FarmProvider from 'components/FarmProvider';
 
 function MyApp({ Component, pageProps, ...props }) {
   const { withLayout = true } = props;
@@ -13,9 +14,11 @@ function MyApp({ Component, pageProps, ...props }) {
     <ThemeProvider value={theme}>
       <FirebaseAppProvider firebaseConfig={firebaseConfig}>
         {withLayout ? (
-          <SiteLayout>
-            <Component {...pageProps} />{' '}
-          </SiteLayout>
+          <FarmProvider>
+            <SiteLayout>
+              <Component {...pageProps} />{' '}
+            </SiteLayout>
+          </FarmProvider>
         ) : (
           <Component {...pageProps} />
         )}

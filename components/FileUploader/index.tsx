@@ -1,4 +1,5 @@
 import { Card, Pane, toaster } from 'evergreen-ui';
+import { useParsedGame } from 'hooks/useParsedGame';
 import React, { useCallback, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { ParsedGame, parseXml } from 'utils/parser';
@@ -11,12 +12,14 @@ type FileUploaderProps = {
 };
 
 export default function FileUploader({ onFinished, small }: FileUploaderProps) {
+  const { setLoading } = useParsedGame();
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
       reader.onload = () => {
         // Do whatever you want with the file contents
         console.time('Parsing');
+
         try {
           const parsedGame = parseXml(reader.result as string);
           onFinished(parsedGame);
@@ -26,8 +29,10 @@ export default function FileUploader({ onFinished, small }: FileUploaderProps) {
           });
         } finally {
           console.timeEnd('Parsing');
+          setLoading(false);
         }
       };
+      setLoading(true);
       reader.readAsText(file);
     });
   }, []);

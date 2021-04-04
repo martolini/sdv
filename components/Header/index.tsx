@@ -40,7 +40,7 @@ const LINKS = [
 export default function Header() {
   const router = useRouter();
   const { pathname, query } = router;
-  const { setParsedGame, parsedGame } = useParsedGame();
+  const { setParsedGame, parsedGame, uploadFarm } = useParsedGame();
   const queryParamLink = Object.keys(query)
     .map((key) => `${key}=${query[key]}`)
     .join('&');
@@ -66,9 +66,9 @@ export default function Header() {
           <CopyToClipboard
             text={`${window.location.origin}${window.location.pathname}?farm=${parsedGame.gameInfo.gameId}`}
             onCopy={() => {
-              toaster.success(
-                `Copied ${window.location.origin}${window.location.pathname}?farm=${parsedGame.gameInfo.gameId} to clipboard`
-              );
+              toaster.success(`${parsedGame.gameInfo.farmName} is now shared`, {
+                description: `Copied the farm's url for you at ${window.location.origin}${window.location.pathname}?farm=${parsedGame.gameInfo.gameId} to your clipboard`,
+              });
             }}
           >
             <Button
@@ -77,6 +77,16 @@ export default function Header() {
               appearance="primary"
               intent="success"
               letterSpacing=".7px"
+              onClick={() => {
+                uploadFarm(parsedGame);
+                router.push(
+                  `${router.pathname}?farm=${parsedGame.gameInfo.gameId}`,
+                  undefined,
+                  {
+                    shallow: true,
+                  }
+                );
+              }}
             >
               Share farm
             </Button>
@@ -86,9 +96,6 @@ export default function Header() {
           small
           onFinished={(game) => {
             setParsedGame(game);
-            toaster.success(
-              `Successfully uploaded farm ${game.gameInfo.farmName}`
-            );
           }}
         />
       </Pane>

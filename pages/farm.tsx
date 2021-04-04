@@ -4,7 +4,7 @@ import { useParsedGame } from 'hooks/useParsedGame';
 import { useMemo } from 'react';
 
 export default function Farm() {
-  const { parsedGame, loadingParsedGame } = useParsedGame();
+  const { parsedGame, loading } = useParsedGame();
 
   const farmCrops = useMemo(
     () =>
@@ -13,5 +13,5 @@ export default function Farm() {
         : parsedGame.harvest.filter((h) => h.location === 'Farm'),
     [parsedGame]
   );
-  return loadingParsedGame ? <Spinner /> : <FarmView items={farmCrops} />;
+  return loading ? <Spinner /> : <FarmView items={farmCrops} />;
 }
