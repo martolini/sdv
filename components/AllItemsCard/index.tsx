@@ -1,14 +1,29 @@
 import CardTitle from 'components/CardTitle';
-import { Table, Pane, Avatar } from 'evergreen-ui';
+import { Table, Pane, Avatar, StarIcon } from 'evergreen-ui';
 import { useParsedGame } from 'hooks/useParsedGame';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { GiLockedChest } from '@react-icons/all-files/gi/GiLockedChest';
+import { chain, values } from 'lodash';
+import { qualityToColor } from 'utils/stardew-helpers';
 
 const AllItemsCard: React.FC = () => {
   const { parsedGame } = useParsedGame();
   const [filterValue, setFilterValue] = useState('');
 
-  const allItems = parsedGame.items;
+  const allItems = useMemo(() => {
+    return values(
+      chain(parsedGame.items)
+        .groupBy((item) => `${item.itemId}_${item.quality}`)
+        .reduce((p, current, key) => [
+          ...p,
+          {
+            ...current[0],
+            stack: current.reduce((p, c) => p + c.stack, 0),
+          },
+        ])
+        .value()
+    ).flat();
+  }, [parsedGame]);
   return (
     <Pane flexDirection="column" height={430} width="100%">
       <CardTitle>Search in inventory</CardTitle>
@@ -25,10 +40,13 @@ const AllItemsCard: React.FC = () => {
             .filter((i) =>
               filterValue ? new RegExp(filterValue, 'i').test(i.name) : true
             )
-            .map(({ name, stack, chestColor, player }, i) => (
+            .map(({ name, stack, chestColor, player, quality }, i) => (
               <Table.Row key={i}>
                 <Table.TextCell textProps={{ fontSize: '1.1rem' }}>
                   {name}
+                  {quality > 0 && (
+                    <StarIcon size={12} color={qualityToColor(quality)} />
+                  )}
                   {stack && ` (${stack})`}
                 </Table.TextCell>
                 <Table.TextCell

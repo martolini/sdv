@@ -10,6 +10,7 @@ import {
 } from 'evergreen-ui';
 import { useMemo } from 'react';
 import { Bundle } from 'typings/stardew';
+import { qualityToColor } from 'utils/stardew-helpers';
 
 type BundlesTableProps = {
   bundleInfo: Bundle[];
@@ -26,19 +27,6 @@ const CustomTextCell: React.FC<TextTableCellProps> = ({
     {children}
   </Table.TextCell>
 );
-
-const qualityToColor = (quality) => {
-  switch (quality) {
-    case 1:
-      return 'silver';
-    case 2:
-      return 'gold';
-    case 3:
-      return 'purple';
-    default:
-      throw new Error();
-  }
-};
 
 const CustomHeaderCell: React.FC<TextTableHeaderCellProps> = ({
   children,
