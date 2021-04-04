@@ -61,7 +61,13 @@ const UploadDragHelper: React.FC = () => {
               justifyContent="center"
               height="50%"
             >
-              <Paragraph color="white" fontSize={80} letterSpacing="0.8px">
+              <Paragraph
+                color="white"
+                fontSize="3rem"
+                lineHeight="200%"
+                letterSpacing="0.8px"
+                textAlign="center"
+              >
                 Drop your file anywhere, I've got it!
               </Paragraph>
             </Pane>
