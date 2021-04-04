@@ -13,6 +13,7 @@ const RecommendedSellables: React.FC = () => {
   return (
     <Pane width="100%">
       <CardTitle>Recommended sellables</CardTitle>
+      <hr color="#e6e6e6" />
       <Table>
         <Table.Body maxHeight={360}>
           {recommended.map(({ name, stack, price, quality }) => (

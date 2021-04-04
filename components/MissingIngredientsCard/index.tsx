@@ -26,6 +26,7 @@ const MissingIngredientsCard: React.FC<{ width?: number }> = (props) => {
   return (
     <Pane flexDirection="column" width="100%">
       <CardTitle>Missing ingredients:</CardTitle>
+      <hr color="#e6e6e6" />
       <Table>
         <Table.Body maxHeight={360}>
           {Object.keys(deliverables).map((key, i) => {

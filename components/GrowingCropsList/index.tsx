@@ -27,6 +27,7 @@ const GrowingCropsList: React.FC<{ width?: number }> = (props) => {
   return (
     <Pane flexDirection="column" width="100%">
       <CardTitle>What are you growing?</CardTitle>
+      <hr color="#e6e6e6" />
       <Table width="100%">
         <Table.Body maxHeight={360}>
           {thingsInTheGround.map(({ name, amount }) => (
