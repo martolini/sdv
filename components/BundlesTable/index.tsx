@@ -37,6 +37,23 @@ const CustomHeaderCell: React.FC<TextTableHeaderCellProps> = ({
   </Table.TextHeaderCell>
 );
 
+const StardewWikiLink = (name) => {
+  return name ? (
+    <a
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ color: 'inherit' }}
+      href={`https://stardewvalleywiki.com/${name
+        .replace(/\b\w/g, (l) => l.toUpperCase())
+        .replace(' ', '_')}`}
+    >
+      {name}
+    </a>
+  ) : (
+    name
+  );
+};
+
 export default function BundlesTable({ bundleInfo }: BundlesTableProps) {
   const theme = useTheme();
   const extraGreenProps: Partial<TextProps> = useMemo(
@@ -66,11 +83,13 @@ export default function BundlesTable({ bundleInfo }: BundlesTableProps) {
                   marginY={5}
                   height="auto"
                   padding={5}
+                  minHeight={31}
                 >
                   <CustomTextCell>{bundle.roomName}</CustomTextCell>
                   <CustomTextCell>{bundle.bundleName}</CustomTextCell>
                   <CustomTextCell>
-                    {bundle.reward.name} ({bundle.reward.stack})
+                    {StardewWikiLink(bundle.reward.name)} ({bundle.reward.stack}
+                    )
                   </CustomTextCell>
                   <CustomTextCell isNumber>{bundle.nMissing}</CustomTextCell>
                   <CustomTextCell flexBasis={580}>
@@ -95,7 +114,7 @@ export default function BundlesTable({ bundleInfo }: BundlesTableProps) {
                               ? extraGreenProps
                               : {})}
                           >
-                            {elem.name} ({elem.stack}
+                            {StardewWikiLink(elem.name)}({elem.stack}
                             {elem.quality > 0 && (
                               <StarIcon
                                 size={10}
