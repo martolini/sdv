@@ -1,9 +1,8 @@
 import CardTitle from 'components/CardTitle';
-import { Table, Pane } from 'evergreen-ui';
+import { Table, Pane, Avatar } from 'evergreen-ui';
 import { useParsedGame } from 'hooks/useParsedGame';
 import React, { useState } from 'react';
 import { GiLockedChest } from '@react-icons/all-files/gi/GiLockedChest';
-import { VscPerson } from '@react-icons/all-files/vsc/VscPerson';
 
 const AllItemsCard: React.FC = () => {
   const { parsedGame } = useParsedGame();
@@ -15,7 +14,7 @@ const AllItemsCard: React.FC = () => {
 
   const allItems = parsedGame.items;
   return (
-    <Pane flexDirection="column" height={430}>
+    <Pane flexDirection="column" height={430} width="100%">
       <CardTitle>Search in inventory</CardTitle>
       <hr color="#e6e6e6" />
       <Table width="100%">
@@ -30,7 +29,7 @@ const AllItemsCard: React.FC = () => {
             .filter((i) =>
               filterValue ? new RegExp(filterValue, 'i').test(i.name) : true
             )
-            .map(({ name, stack, chestColor }, i) => (
+            .map(({ name, stack, chestColor, player }, i) => (
               <Table.Row key={i}>
                 <Table.TextCell textProps={{ fontSize: '1.1rem' }}>
                   {name}
@@ -46,7 +45,11 @@ const AllItemsCard: React.FC = () => {
                   {chestColor ? (
                     <GiLockedChest color={`#${chestColor}`} />
                   ) : (
-                    <VscPerson />
+                    <Avatar
+                      name={player || ''}
+                      size={25}
+                      getInitials={(name) => name.substring(0, 2)}
+                    />
                   )}
                 </Table.TextCell>
               </Table.Row>

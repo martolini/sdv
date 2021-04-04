@@ -19,6 +19,7 @@ export type Item = {
   quality?: number;
   basePrice?: number;
   chestColor?: string;
+  player?: string;
   deliverableInBundle?: boolean;
   type?: string;
 };

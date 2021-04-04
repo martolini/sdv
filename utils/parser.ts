@@ -141,16 +141,17 @@ const parseItem = (item: any): Item => ({
 const findItems = (saveGame: RawGame) => {
   const playerItems = saveGame.player.items.Item.filter(
     (item) => item['@_xsi:nil'] !== true
-  ).map(parseItem) as Item[];
+  ).map((i) => ({ ...parseItem(i), player: saveGame.player.name })) as Item[];
   const farmhands = findObjects(saveGame.locations, 'farmhand').filter(
     (player) => player.name
   );
 
   const farmhandsItems = farmhands
     .map((hand) =>
-      hand.items.Item.filter((item) => item['@_xsi:nil'] !== true).map(
-        parseItem
-      )
+      hand.items.Item.filter((item) => item['@_xsi:nil'] !== true).map((i) => ({
+        ...parseItem(i),
+        player: hand.name,
+      }))
     )
     .flat() as Item[];
 
