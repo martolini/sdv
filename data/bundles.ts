@@ -387,7 +387,7 @@ const bundles = {
     id: '35',
     roomName: 'Bulletin Board',
     bundleName: 'Fodder',
-    reward: { id: 104, stack: '1' },
+    reward: { id: 104, stack: '1', name: 'Heater' },
     ingredients: [
       { itemId: 262, stack: 10, quality: 0, name: 'Wheat' },
       { itemId: 178, stack: 10, quality: 0, name: 'Hay' },

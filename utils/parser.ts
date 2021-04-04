@@ -2,11 +2,11 @@ import parser from 'fast-xml-parser';
 import { findObjects } from './object-search';
 import rgbhex from 'rgb-hex';
 import {
-  forageItems,
-  REVERSE_ID_TABLE,
+  ID_TABLE,
   SKILL_TABLE,
   EXP_TABLE,
   PROFESSIONS_TABLE,
+  FORAGE_ITEMS,
 } from './lookups';
 import { FarmItem, Item, Bundle } from 'typings/stardew';
 import bundles from 'data/bundles';
@@ -216,9 +216,9 @@ export const forceAsArray = (obj) => {
 
 export const isForageItem = (item) => {
   if (typeof item === 'number') {
-    return forageItems.includes(item);
+    return FORAGE_ITEMS.includes(item);
   }
-  return forageItems.includes(item.parentSheetIndex) && !item.bigCraftable;
+  return FORAGE_ITEMS.includes(item.parentSheetIndex) && !item.bigCraftable;
 };
 
 export function findHarvestInLocations(
@@ -269,7 +269,7 @@ export function findHarvestInLocations(
     const trees = forceAsArray(location.terrainFeatures.item)
       .filter((o) => o.value.TerrainFeature['@_xsi:type'] === 'FruitTree')
       .map((o) => ({
-        name: `${REVERSE_ID_TABLE[o.value.TerrainFeature.indexOfFruit]} Tree`,
+        name: `${ID_TABLE[o.value.TerrainFeature.indexOfFruit]} Tree`,
         daysToHarvest: Math.max(o.value.TerrainFeature.daysUntilMature, 0),
         done: o.value.TerrainFeature.fruitsOnTree > 0,
         x: o.key.Vector2.X,
@@ -321,8 +321,7 @@ export function findHarvestInLocations(
           }
         }
         return {
-          name:
-            REVERSE_ID_TABLE[feature.value.TerrainFeature.crop.indexOfHarvest],
+          name: ID_TABLE[feature.value.TerrainFeature.crop.indexOfHarvest],
           superName: feature.value.TerrainFeature['@_xsi:type'],
           daysToHarvest,
           done,
