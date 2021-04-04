@@ -16,10 +16,11 @@ function MyApp({ Component, pageProps, ...props }) {
       <FirebaseAppProvider firebaseConfig={firebaseConfig}>
         {withLayout ? (
           <FarmProvider>
-            <UploadDragHelper />
-            <SiteLayout>
-              <Component {...pageProps} />{' '}
-            </SiteLayout>
+            <UploadDragHelper>
+              <SiteLayout>
+                <Component {...pageProps} />{' '}
+              </SiteLayout>
+            </UploadDragHelper>
           </FarmProvider>
         ) : (
           <Component {...pageProps} />
