@@ -14,7 +14,7 @@ const RecommendedSellables: React.FC = () => {
     <Pane width="100%">
       <CardTitle>Recommended sellables</CardTitle>
       <Table>
-        <Table.Body maxHeight={240}>
+        <Table.Body maxHeight={360}>
           {recommended.map(({ name, stack, price, quality }) => (
             <Table.Row defaultValue="" key={`${name}_${quality}`}>
               <Table.TextCell textProps={{ fontSize: '1.1rem' }}>
