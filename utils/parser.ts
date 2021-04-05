@@ -170,6 +170,7 @@ const parseItem = (item: any): Item => ({
   quality: item.quality,
   basePrice: item.price,
   type: item['@_xsi:type'],
+  category: item.category,
 });
 
 const findItems = (saveGame: RawGame) => {

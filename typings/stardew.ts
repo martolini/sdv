@@ -22,6 +22,7 @@ export type Item = {
   player?: string;
   deliverableInBundle?: boolean;
   type?: string;
+  category?: number;
 };
 
 export type Bundle = {
