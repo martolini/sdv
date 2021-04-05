@@ -6,7 +6,6 @@ import { useParsedGame } from 'hooks/useParsedGame';
 const UploadDragHelper: React.FC = ({ children }) => {
   const { setParsedGame, setLoading } = useParsedGame();
   const [isDraggingFile, setIsDraggingFile] = useState(false);
-  console.log(isDraggingFile);
   const onDrop = useCallback((ev) => {
     ev.preventDefault();
     setIsDraggingFile(false);
