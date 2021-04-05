@@ -7,8 +7,9 @@ import {
   EXP_TABLE,
   PROFESSIONS_TABLE,
   FORAGE_ITEMS,
+  MAP_IMAGES,
 } from './lookups';
-import { FarmItem, Item, Bundle } from 'typings/stardew';
+import { FarmItem, Item, Bundle, ForageItem } from 'typings/stardew';
 import bundles from 'data/bundles';
 
 type SaveGame = {
@@ -30,6 +31,11 @@ type RawGame = {
   };
 };
 
+export type Map = {
+  name: string;
+  forage: ForageItem[];
+};
+
 export type ParsedGame = {
   gameInfo: SaveGame;
   items: Item[];
@@ -37,6 +43,7 @@ export type ParsedGame = {
   bundleInfo: Bundle[];
   players: Player[];
   todaysBirthday?: Birthday;
+  maps: Map[];
 };
 
 export type Birthday = {
@@ -93,6 +100,7 @@ export const parseXml = (xmlString: string): ParsedGame => {
       parseAttributeValue: true,
       ignoreAttributes: false,
     }).SaveGame as RawGame;
+
     const gameInfo: SaveGame = {
       id: `${data.uniqueIDForThisGame}-${data.year}-${data.currentSeason}-${data.dayOfMonth}`,
       currentSeason: data.currentSeason,
@@ -105,37 +113,60 @@ export const parseXml = (xmlString: string): ParsedGame => {
     };
 
     const items: Item[] = findItems(data);
-    const bundleStatus = getBundleStatus(data);
-    const missingBundleItems = Object.keys(bundles).map((bundleKey) => {
-      const dataBundle = bundles[bundleKey];
-      return {
-        missingIngredients: bundleStatus[bundleKey].missingIngredients.map(
-          (i) => ({
-            ...i,
-            deliverableInBundle:
-              (
-                items.find(
-                  (i2) => i.itemId === i2.itemId && i2.quality >= i.quality
-                ) || {}
-              ).stack >= i.stack,
-          })
-        ),
-        nMissing: bundleStatus[bundleKey].nMissing,
-        ...dataBundle,
-      };
-    });
     return {
       gameInfo,
       items,
       harvest: findHarvestInLocations(data, ['Farm', 'Greenhouse']),
-      bundleInfo: missingBundleItems,
+      bundleInfo: findMissingBundleItems(data, items),
       players: getPlayers(data),
       todaysBirthday: findTodaysBirthday(data),
+      maps: findMapData(data),
     };
   } catch (ex) {
     throw new Error(ex);
   }
 };
+
+function findMapData(saveGame: RawGame): Map[] {
+  const maps = Object.keys(MAP_IMAGES);
+  const gameLocations = saveGame.locations.GameLocation;
+  return maps.map((m) => {
+    const location = gameLocations.find((loc) => loc.name === m);
+    const items = forceAsArray(location.objects.item).filter((item) =>
+      isForageItem(+item.value.Object.parentSheetIndex)
+    );
+    return {
+      name: m,
+      forage: items.map((item) => ({
+        ...parseItem(item.value.Object),
+        x: item.key.Vector2.X,
+        y: item.key.Vector2.Y,
+      })),
+    };
+  });
+}
+
+function findMissingBundleItems(saveGame: RawGame, items: Item[]): Bundle[] {
+  const bundleStatus = getBundleStatus(saveGame);
+  return Object.keys(bundles).map((bundleKey) => {
+    const dataBundle = bundles[bundleKey];
+    return {
+      missingIngredients: bundleStatus[bundleKey].missingIngredients.map(
+        (i) => ({
+          ...i,
+          deliverableInBundle:
+            (
+              items.find(
+                (i2) => i.itemId === i2.itemId && i2.quality >= i.quality
+              ) || {}
+            ).stack >= i.stack,
+        })
+      ),
+      nMissing: bundleStatus[bundleKey].nMissing,
+      ...dataBundle,
+    };
+  });
+}
 
 function findTodaysBirthday(saveGame: RawGame): Birthday {
   return findObjects(saveGame.locations.GameLocation, 'NPC')
@@ -158,7 +189,7 @@ const parseItem = (item: any): Item => ({
   name: item.name,
   stack: +item.stack || 1,
   itemId:
-    item['@_xsi:type'] === 'Object'
+    item.parentSheetIndex !== undefined
       ? item.parentSheetIndex
       : `${item['@_xsi:type']}_${
           item.parentSheetIndex ||
@@ -224,7 +255,7 @@ export const forceAsArray = (obj) => {
   return [];
 };
 
-export const isForageItem = (item) => {
+export const isForageItem = (item: any) => {
   if (typeof item === 'number') {
     return FORAGE_ITEMS.includes(item);
   }

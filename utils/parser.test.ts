@@ -54,4 +54,12 @@ describe('Parser tests', () => {
     const { items } = parsed;
     expect(items.filter((item) => item.itemId === undefined)).toHaveLength(0);
   });
+
+  it('Can parse maps and forages', () => {
+    const { maps } = parsed;
+    expect(maps.length).toBe(9);
+    const first = maps[0];
+    expect(first.name).toBe('Beach');
+    expect(first.forage.length).toBe(11);
+  });
 });

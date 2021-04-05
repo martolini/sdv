@@ -25,6 +25,8 @@ export type Item = {
   category?: number;
 };
 
+export type ForageItem = Item & Point;
+
 export type Bundle = {
   id: string;
   roomName: string;
