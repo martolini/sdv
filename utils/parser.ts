@@ -156,8 +156,17 @@ function findTodaysBirthdays(saveGame: RawGame): Birthday[] {
 
 const parseItem = (item: any): Item => ({
   name: item.name,
-  stack: item.stack,
-  itemId: item.parentSheetIndex,
+  stack: +item.stack || 1,
+  itemId:
+    item['@_xsi:type'] === 'Object'
+      ? item.parentSheetIndex
+      : `${item['@_xsi:type']}_${
+          item.parentSheetIndex ||
+          item.currentParentTileIndex ||
+          item.initialParentTileIndex ||
+          item.indexInTileSheet ||
+          item.which
+        }`,
   quality: item.quality,
   basePrice: item.price,
   type: item['@_xsi:type'],
