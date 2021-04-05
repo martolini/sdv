@@ -36,7 +36,7 @@ export type ParsedGame = {
   harvest: FarmItem[];
   bundleInfo: Bundle[];
   players: Player[];
-  todaysBirthdays: Birthday[];
+  todaysBirthday?: Birthday;
 };
 
 export type Birthday = {
@@ -130,14 +130,14 @@ export const parseXml = (xmlString: string): ParsedGame => {
       harvest: findHarvestInLocations(data, ['Farm', 'Greenhouse']),
       bundleInfo: missingBundleItems,
       players: getPlayers(data),
-      todaysBirthdays: findTodaysBirthdays(data),
+      todaysBirthday: findTodaysBirthday(data),
     };
   } catch (ex) {
     throw new Error(ex);
   }
 };
 
-function findTodaysBirthdays(saveGame: RawGame): Birthday[] {
+function findTodaysBirthday(saveGame: RawGame): Birthday {
   return findObjects(saveGame.locations.GameLocation, 'NPC')
     .reduce((p, c) => [...p, ...forceAsArray(c)], [])
     .filter(
@@ -151,7 +151,7 @@ function findTodaysBirthdays(saveGame: RawGame): Birthday[] {
       name: c.name,
       season: c.birthday_Season,
       day: c.birthday_Day,
-    }));
+    }))[0];
 }
 
 const parseItem = (item: any): Item => ({

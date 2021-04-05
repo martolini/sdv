@@ -46,8 +46,8 @@ describe('Parser tests', () => {
 
   it('Can find birthdays', () => {
     const file = fs.readFileSync('tests/fixtures/birthday_test.xml').toString();
-    const { todaysBirthdays } = parseXml(file);
-    expect(todaysBirthdays).toHaveLength(1);
+    const { todaysBirthday } = parseXml(file);
+    expect(todaysBirthday.name).toBe('Alex');
   });
 
   it('Ensure all items has ids of some kind', () => {

@@ -13,7 +13,10 @@ const AllItemsCard: React.FC = () => {
   const allItems = useMemo(() => {
     return values(
       chain(parsedGame.items)
-        .groupBy((item) => `${item.itemId}_${item.quality}`)
+        .groupBy(
+          (item) =>
+            `${item.itemId}_${item.quality}_${item.chestColor || item.player}`
+        )
         .reduce((p, current) => [
           ...p,
           {
@@ -24,6 +27,7 @@ const AllItemsCard: React.FC = () => {
         .value()
     ).flat();
   }, [parsedGame]);
+  console.log(parsedGame.items.filter((i) => i.name === 'Obsidian Edge'));
   return (
     <Pane flexDirection="column" height={430} width="100%">
       <CardTitle>Search in inventory</CardTitle>
