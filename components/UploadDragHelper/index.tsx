@@ -1,11 +1,10 @@
-import { Pane, Paragraph, toaster, useTheme } from 'evergreen-ui';
+import { toaster } from 'evergreen-ui';
 import { useCallback, useState } from 'react';
 import { parseXml } from 'utils/parser';
 import { useParsedGame } from 'hooks/useParsedGame';
 
 const UploadDragHelper: React.FC = ({ children }) => {
   const { setParsedGame, setLoading } = useParsedGame();
-  const theme = useTheme();
   const [isDraggingFile, setIsDraggingFile] = useState(false);
   const onDrop = useCallback((ev) => {
     ev.preventDefault();
@@ -40,6 +39,13 @@ const UploadDragHelper: React.FC = ({ children }) => {
     <div
       role="button"
       tabIndex={0}
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+      }}
       onDrop={onDrop}
       onDragOver={(event) => {
         if (event.dataTransfer.items.length) {
@@ -55,43 +61,23 @@ const UploadDragHelper: React.FC = ({ children }) => {
         e.preventDefault();
         setIsDraggingFile(false);
       }}
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-      }}
     >
-      {isDraggingFile && (
-        <Pane
-          left={0}
-          top={0}
-          right={0}
-          bottom={0}
-          position="absolute"
-          zIndex={999}
-          background={theme.overlayBackgroundColor}
+      {isDraggingFile ? (
+        <div
+          style={{
+            margin: 'auto',
+            width: '50%',
+            height: '50%',
+            marginTop: '10%',
+          }}
         >
-          <Pane
-            height="50%"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Paragraph
-              color="white"
-              fontSize="3rem"
-              lineHeight="200%"
-              letterSpacing="0.8px"
-              textAlign="center"
-            >
-              Drop your file anywhere, I've got it!
-            </Paragraph>
-          </Pane>
-        </Pane>
+          <h1 style={{ textAlign: 'center', fontFamily: 'VT323, monospace' }}>
+            Drop file anywhere
+          </h1>
+        </div>
+      ) : (
+        children
       )}
-      {children}
     </div>
   );
 };

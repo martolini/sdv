@@ -9,14 +9,6 @@ describe('Parser tests', () => {
     expect(parsed.harvest).toHaveLength(189);
     expect(parsed.items).toHaveLength(351);
     expect(parsed.gameInfo.farmName).toBe('Tegrity');
-    const { missingIngredients, roomName } = parsed.bundleInfo[
-      parsed.bundleInfo.length - 3
-    ];
-    expect(roomName).toBe('Bulletin Board');
-    expect(missingIngredients[0].itemId).toBe(444);
-    expect(missingIngredients[0].deliverableInBundle).toBe(true);
-    expect(missingIngredients[1].itemId).toBe(266);
-    expect(missingIngredients[1].deliverableInBundle).toBe(false);
   });
 
   it('Can parse Bundles', () => {
@@ -49,12 +41,17 @@ describe('Parser tests', () => {
     const file = fs.readFileSync('tests/fixtures/sellable_test.xml').toString();
     const parsedData = parseXml(file);
     const recommended = calculateRecommendedSellables(parsedData);
-    expect(recommended).toHaveLength(78);
+    expect(recommended).toHaveLength(80);
   });
 
   it('Can find birthdays', () => {
     const file = fs.readFileSync('tests/fixtures/birthday_test.xml').toString();
     const { todaysBirthdays } = parseXml(file);
     expect(todaysBirthdays).toHaveLength(1);
+  });
+
+  it('Ensure all items has ids of some kind', () => {
+    const { items } = parsed;
+    expect(items.filter((item) => item.itemId === undefined)).toHaveLength(0);
   });
 });
