@@ -9,6 +9,7 @@ import DashboardCard from 'components/DashboardCard';
 import MissingIngredientsCard from 'components/MissingIngredientsCard';
 import FarmInfoHeader from 'components/FarmInfoHeader';
 import AllItemsCard from 'components/AllItemsCard';
+import ForageListCard from 'components/ForageListCard';
 
 export default function Home() {
   const { setParsedGame, parsedGame, loading } = useParsedGame();
@@ -33,6 +34,12 @@ export default function Home() {
       </DashboardCard>
       <DashboardCard backgroundColor={theme.colors.background.blueTint}>
         <MissingIngredientsCard />
+      </DashboardCard>
+      <DashboardCard
+        backgroundColor={theme.colors.background.blueTint}
+        minWidth="20%"
+      >
+        <ForageListCard />
       </DashboardCard>
       <DashboardCard
         backgroundColor={theme.colors.background.greenTint}

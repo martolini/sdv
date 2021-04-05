@@ -1,3 +1,4 @@
+import MapView from 'components/MapView';
 import { FarmItem } from 'typings/stardew';
 import FarmOverlayView from '../FarmOverlawView';
 
@@ -10,22 +11,6 @@ type FarmViewProps = {
   items?: FarmItem[];
 };
 
-export default function FarmView(props: FarmViewProps) {
-  return (
-    <div
-      style={{
-        position: 'relative',
-        top: 0,
-        left: 0,
-        width: '100%',
-        float: 'right',
-        display: 'inline-block',
-      }}
-    >
-      <div style={{ display: 'inline-flex', position: 'relative' }}>
-        <img src="/img/Farm.png" width="100%" height="100%"></img>
-        <FarmOverlayView items={props.items} mapSize={MAP_SIZES.Farm} />
-      </div>
-    </div>
-  );
+export default function FarmView({ items }: FarmViewProps) {
+  return <MapView items={items} map="Farm" />;
 }
