@@ -36,7 +36,7 @@ const AllItemsCard: React.FC = () => {
         <Table.Head>
           <Table.SearchHeaderCell
             value={filterValue}
-            onChange={(value) => setFilterValue(value.trim())}
+            onChange={(value) => setFilterValue(value)}
           />
         </Table.Head>
         <Table.Body maxHeight={360}>
