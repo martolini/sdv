@@ -1,10 +1,15 @@
 export type FarmItem = {
   name: string;
-  daysToHarvest: number;
-  dead: boolean;
-  done: boolean;
-  location: string;
+  daysToHarvest?: number;
+  dead?: boolean;
+  done?: boolean;
+  location?: string;
 } & Rect;
+
+export type Map = {
+  name: string;
+  forage: ForageItem[];
+};
 
 type BundleReward = {
   id: number;

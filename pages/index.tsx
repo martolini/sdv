@@ -37,7 +37,7 @@ export default function Home() {
       </DashboardCard>
       <DashboardCard
         backgroundColor={theme.colors.background.blueTint}
-        minWidth="20%"
+        minWidth="30%"
       >
         <ForageListCard />
       </DashboardCard>

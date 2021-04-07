@@ -9,7 +9,7 @@ import {
   FORAGE_ITEMS,
   MAP_IMAGES,
 } from './lookups';
-import { FarmItem, Item, Bundle, ForageItem } from 'typings/stardew';
+import { FarmItem, Item, Bundle, Map } from 'typings/stardew';
 import bundles from 'data/bundles';
 
 type SaveGame = {
@@ -29,11 +29,6 @@ type RawGame = {
   locations: {
     GameLocation: any[];
   };
-};
-
-export type Map = {
-  name: string;
-  forage: ForageItem[];
 };
 
 export type ParsedGame = {
