@@ -1,40 +1,29 @@
-import axios from 'axios';
+import Fuse from 'fuse.js';
+import searchData from 'data/allWikiPages.json';
 
-const cache = {};
-
-const capitalize = (s: string) => {
-  if (typeof s !== 'string') return '';
-  return s
-    .split(' ')
-    .map((n) => n.charAt(0).toUpperCase() + n.slice(1))
-    .join(' ');
+type SearchDataEntry = {
+  // Link to stardew wiki
+  href: string;
+  // Text to index
+  name: string;
 };
 
+const fuse = new Fuse<SearchDataEntry>(searchData, {
+  includeScore: true,
+  keys: ['name', 'href'],
+});
+
 export default async function wikisearch(req, res) {
-  const q = capitalize(req.query.q);
-  if (cache[q]) {
-    return res.json({ results: cache[q] });
-  }
-  try {
-    const data = await axios.get(
-      `https://stardewvalleywiki.com/mediawiki/api.php?action=opensearch&format=json&search=${encodeURIComponent(
-        q
-      )}&namespace=0&limit=10&suggest=`
-    );
-    if (data.data && data.data.length) {
-      const [, labels, , urls] = data.data;
-      const results = labels.map((label, i) => ({
-        text: label,
-        value: urls[i],
-      }));
-      cache[q] = results;
-      return res.json({
-        results,
-      });
-    }
-  } catch (err) {
-    console.error(`err`, err);
-    res.status(500).json({ error: err.message });
-  }
-  return res.status(500).json({ error: 'humzz' });
+  const query = req.query.q;
+  const results = fuse
+    .search<SearchDataEntry>(query, {
+      limit: 10,
+    })
+    .map((entry) => ({
+      text: entry.item.name,
+      value: `https://stardewvalleywiki.com${entry.item.href}`,
+    }));
+  res.json({
+    results,
+  });
 }
