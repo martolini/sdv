@@ -1,11 +1,13 @@
 import { Button, Pane, Tab, TabNavigation, Text, toaster } from 'evergreen-ui';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import WikiSearch from 'components/WikiSearch';
 import Link from 'next/link';
 import { useParsedGame } from 'hooks/useParsedGame';
 import FileUploadListener from 'components/FileUploadListener';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import usePrevious from 'hooks/usePrevious';
+import { ParsedGame } from 'utils/parser';
 
 type NavTabProps = {
   text: string;
@@ -41,6 +43,16 @@ export default function Header() {
   const router = useRouter();
   const { pathname, query } = router;
   const { parsedGame, uploadFarm } = useParsedGame();
+  const previousGame = usePrevious<ParsedGame>(parsedGame);
+  useEffect(() => {
+    if (parsedGame && previousGame) {
+      if (parsedGame.gameInfo.id !== previousGame.gameInfo.id) {
+        toaster.success(
+          `New savegame found, ${parsedGame.gameInfo.currentSeason} ${parsedGame.gameInfo.dayOfMonth} here we go!`
+        );
+      }
+    }
+  }, [parsedGame]);
   const queryParamLink = Object.keys(query)
     .map((key) => `${key}=${query[key]}`)
     .join('&');
