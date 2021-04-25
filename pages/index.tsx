@@ -3,13 +3,11 @@ import { Pane, Spinner, useTheme } from 'evergreen-ui';
 import FileUploader from 'components/FileUploader';
 import { useParsedGame } from 'hooks/useParsedGame';
 import FarmerStats from 'components/FarmerStats';
-import RecommendedSellables from 'components/RecommendedSellables';
 import GrowingCropsList from 'components/GrowingCropsList';
 import DashboardCard from 'components/DashboardCard';
 import MissingIngredientsCard from 'components/MissingIngredientsCard';
 import FarmInfoHeader from 'components/FarmInfoHeader';
 import AllItemsCard from 'components/AllItemsCard';
-import ForageListCard from 'components/ForageListCard';
 
 export default function Home() {
   const { setParsedGame, parsedGame, loading } = useParsedGame();
@@ -18,28 +16,19 @@ export default function Home() {
     <Pane display="flex" flexFlow="row wrap" justifyContent="space-around">
       <FarmInfoHeader />
       <DashboardCard
+        backgroundColor={theme.colors.background.redTint}
+        minWidth="30%"
+      >
+        <GrowingCropsList />
+      </DashboardCard>
+      <DashboardCard
         backgroundColor={theme.colors.background.purpleTint}
-        minWidth="20%"
+        minWidth="30%"
       >
         <AllItemsCard />
       </DashboardCard>
-      <DashboardCard
-        backgroundColor={theme.colors.background.orangeTint}
-        minWidth="20%"
-      >
-        <RecommendedSellables />
-      </DashboardCard>
-      <DashboardCard backgroundColor={theme.colors.background.redTint}>
-        <GrowingCropsList />
-      </DashboardCard>
       <DashboardCard backgroundColor={theme.colors.background.blueTint}>
         <MissingIngredientsCard />
-      </DashboardCard>
-      <DashboardCard
-        backgroundColor={theme.colors.background.blueTint}
-        minWidth="30%"
-      >
-        <ForageListCard />
       </DashboardCard>
       <DashboardCard
         backgroundColor={theme.colors.background.greenTint}
