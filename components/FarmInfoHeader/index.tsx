@@ -74,7 +74,7 @@ export default function FarmInfoHeader() {
                 GIFT TIPS:
               </Paragraph>
               {recommendedGifts.map((item) => (
-                <Pane>
+                <Pane key={item.itemId}>
                   <Paragraph key={item.itemId} color="white" fontSize="1.2rem">
                     {item.name} ({item.stack}){' '}
                     {item.type === 'like' && <BiLike />}

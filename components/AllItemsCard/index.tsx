@@ -1,12 +1,13 @@
 import CardTitle from 'components/CardTitle';
 import { Table, Pane, Avatar, StarIcon } from 'evergreen-ui';
 import { useParsedGame } from 'hooks/useParsedGame';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { GiLockedChest } from '@react-icons/all-files/gi/GiLockedChest';
 import { chain, values } from 'lodash';
 import { qualityToColor } from 'utils/stardew-helpers';
 import { Item } from 'typings/stardew';
 import StardewWikiLink from 'components/Shared/StardewWikiLink';
+import useHotkeyToFocus from 'hooks/useHotkeyToFocus';
 
 type KeyedItem = Item & { key: string };
 
@@ -75,13 +76,19 @@ const AllItemsCard: React.FC = () => {
         )),
     [allItems, filterValue]
   );
+  const inputRef = useRef<any>();
+  const hotkeys = useMemo(() => ['i'], []);
+  useHotkeyToFocus(inputRef, hotkeys);
   return (
     <Pane flexDirection="column" height={430} width="100%">
       <CardTitle>Search in inventory</CardTitle>
       <hr color="#e6e6e6" />
       <Table width="100%">
         <Table.Head>
-          <Table.SearchHeaderCell onChange={(value) => setFilterValue(value)} />
+          <Table.SearchHeaderCell
+            ref={inputRef}
+            onChange={(value) => setFilterValue(value)}
+          />
         </Table.Head>
         <Table.Body maxHeight={360}>{tableRows}</Table.Body>
       </Table>

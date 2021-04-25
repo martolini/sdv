@@ -1,6 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import axios from 'axios';
 import AsyncSelect from 'react-select/async';
+import useHotkeyToFocus from 'hooks/useHotkeyToFocus';
 
 export default function WikiSearch() {
   const loadOptions = useCallback(async (q) => {
@@ -11,10 +12,16 @@ export default function WikiSearch() {
     }));
   }, []);
 
+  const inputRef = useRef<any>();
+
+  const hotkeys = useMemo(() => ['s'], []);
+  useHotkeyToFocus(inputRef, hotkeys);
+
   return (
     <AsyncSelect
       id="wiki-search"
       instanceId="wiki-search"
+      ref={inputRef}
       loadOptions={loadOptions}
       styles={{
         option: (styles) => ({ ...styles, fontFamily: 'VT323', fontSize: 14 }),
