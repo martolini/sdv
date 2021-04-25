@@ -16,7 +16,6 @@ export default function WikiSearch() {
   useEffect(() => {
     const keyHandler = (e) => {
       if (e.key === 's' && document.activeElement !== inputRef.current) {
-        console.log(inputRef.current);
         inputRef.current.focus();
       }
     };
