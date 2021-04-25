@@ -28,7 +28,7 @@ export default function WikiSearch() {
     return () => {
       window.removeEventListener('keyup', keyHandler);
     };
-  }, [inputRef, document.activeElement]);
+  }, [inputRef]);
 
   return (
     <AsyncSelect
