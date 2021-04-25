@@ -43,9 +43,11 @@ const StardewWikiLink = (name) => {
       target="_blank"
       rel="noopener noreferrer"
       style={{ color: 'inherit' }}
-      href={`https://stardewvalleywiki.com/${name
-        .replace(/\b\w/g, (l) => l.toUpperCase())
-        .replace(' ', '_')}`}
+      href={encodeURI(
+        `https://stardewvalleywiki.com/${name
+          .replace(/(^|\s)\S/g, (l) => l.toUpperCase())
+          .replace(/ /g, '_')}`
+      ).replace(/'/g, '%27')}
     >
       {name}
     </a>
