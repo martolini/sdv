@@ -1,4 +1,5 @@
 [
+  { "href": "/%271000_Years_From_Now%27", "name": "'1000 Years From Now'" },
   { "href": "/%27A_Night_On_Eco-Hill%27", "name": "'A Night On Eco-Hill'" },
   { "href": "/%27Blue_City%27", "name": "'Blue City'" },
   { "href": "/%27Blueberries%27", "name": "'Blueberries'" },
@@ -358,6 +359,7 @@
   { "href": "/Cauliflower_seeds", "name": "Cauliflower seeds" },
   { "href": "/Cave", "name": "Cave" },
   { "href": "/Cave_Carrot", "name": "Cave Carrot" },
+  { "href": "/Cave_Fly", "name": "Cave Fly" },
   { "href": "/Cave_Fly_(dangerous)", "name": "Cave Fly (dangerous)" },
   { "href": "/Cave_Insects", "name": "Cave Insects" },
   { "href": "/Caviar", "name": "Caviar" },
@@ -1065,6 +1067,7 @@
   { "href": "/Infinity_Dagger", "name": "Infinity Dagger" },
   { "href": "/Infinity_Gavel", "name": "Infinity Gavel" },
   { "href": "/Insect_Head", "name": "Insect Head" },
+  { "href": "/Inventory", "name": "Inventory" },
   { "href": "/Iridium_Axe", "name": "Iridium Axe" },
   { "href": "/Iridium_Band", "name": "Iridium Band" },
   { "href": "/Iridium_Bar", "name": "Iridium Bar" },
