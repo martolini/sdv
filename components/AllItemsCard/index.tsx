@@ -6,6 +6,7 @@ import { GiLockedChest } from '@react-icons/all-files/gi/GiLockedChest';
 import { chain, values } from 'lodash';
 import { qualityToColor } from 'utils/stardew-helpers';
 import { Item } from 'typings/stardew';
+import StardewWikiLink from 'components/Shared/StardewWikiLink';
 
 type KeyedItem = Item & { key: string };
 
@@ -43,7 +44,7 @@ const AllItemsCard: React.FC = () => {
         .map(({ name, stack, chestColor, player, quality, key }) => (
           <Table.Row key={key}>
             <Table.TextCell textProps={{ fontSize: '1.1rem' }}>
-              {name}
+              <StardewWikiLink name={name} />
               {quality > 0 && (
                 <StarIcon size={12} color={qualityToColor(quality)} />
               )}

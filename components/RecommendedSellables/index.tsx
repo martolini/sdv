@@ -1,4 +1,5 @@
 import CardTitle from 'components/CardTitle';
+import StardewWikiLink from 'components/Shared/StardewWikiLink';
 import { Pane, Table } from 'evergreen-ui';
 import { useParsedGame } from 'hooks/useParsedGame';
 import { useMemo } from 'react';
@@ -19,7 +20,7 @@ const RecommendedSellables: React.FC = () => {
           {recommended.map(({ name, stack, price, quality }) => (
             <Table.Row defaultValue="" key={`${name}_${quality}`}>
               <Table.TextCell textProps={{ fontSize: '1.1rem' }}>
-                {name} x {stack}
+                <StardewWikiLink name={name} /> x {stack}
               </Table.TextCell>
               <Table.TextCell
                 textProps={{ fontSize: '1.1rem' }}

@@ -1,4 +1,5 @@
 import CardTitle from 'components/CardTitle';
+import StardewWikiLink from 'components/Shared/StardewWikiLink';
 import { Table, Pane } from 'evergreen-ui';
 import { useParsedGame } from 'hooks/useParsedGame';
 import { groupBy } from 'lodash';
@@ -33,7 +34,7 @@ const GrowingCropsList: React.FC = () => {
           {thingsInTheGround.map(({ name, amount }) => (
             <Table.Row key={name}>
               <Table.TextCell textProps={{ fontSize: '1.1rem' }}>
-                {name}
+                <StardewWikiLink name={name} />
               </Table.TextCell>
               <Table.TextCell
                 textProps={{ fontSize: '1.1rem' }}

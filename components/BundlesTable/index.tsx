@@ -1,3 +1,4 @@
+import StardewWikiLink from 'components/Shared/StardewWikiLink';
 import {
   Pane,
   StarIcon,
@@ -37,25 +38,6 @@ const CustomHeaderCell: React.FC<TextTableHeaderCellProps> = ({
   </Table.TextHeaderCell>
 );
 
-const StardewWikiLink = (name) => {
-  return name ? (
-    <a
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{ color: 'inherit' }}
-      href={encodeURI(
-        `https://stardewvalleywiki.com/${name
-          .replace(/(^|\s)\S/g, (l) => l.toUpperCase())
-          .replace(/ /g, '_')}`
-      ).replace(/'/g, '%27')}
-    >
-      {name}
-    </a>
-  ) : (
-    name
-  );
-};
-
 export default function BundlesTable({ bundleInfo }: BundlesTableProps) {
   const theme = useTheme();
   const extraGreenProps: Partial<TextProps> = useMemo(
@@ -87,11 +69,13 @@ export default function BundlesTable({ bundleInfo }: BundlesTableProps) {
                   padding={5}
                   minHeight={31}
                 >
-                  <CustomTextCell>{bundle.roomName}</CustomTextCell>
+                  <CustomTextCell>
+                    <StardewWikiLink name={bundle.roomName} />
+                  </CustomTextCell>
                   <CustomTextCell>{bundle.bundleName}</CustomTextCell>
                   <CustomTextCell>
-                    {StardewWikiLink(bundle.reward.name)} ({bundle.reward.stack}
-                    )
+                    <StardewWikiLink name={bundle.reward.name} /> (
+                    {bundle.reward.stack})
                   </CustomTextCell>
                   <CustomTextCell isNumber>{bundle.nMissing}</CustomTextCell>
                   <CustomTextCell flexBasis={580}>
@@ -116,7 +100,7 @@ export default function BundlesTable({ bundleInfo }: BundlesTableProps) {
                               ? extraGreenProps
                               : {})}
                           >
-                            {StardewWikiLink(elem.name)}({elem.stack}
+                            <StardewWikiLink name={elem.name} />({elem.stack}
                             {elem.quality > 0 && (
                               <StarIcon
                                 size={10}

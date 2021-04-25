@@ -3,6 +3,7 @@ import { Table, Pane } from 'evergreen-ui';
 import { useParsedGame } from 'hooks/useParsedGame';
 import React, { useMemo } from 'react';
 import { groupBy } from 'lodash';
+import StardewWikiLink from 'components/Shared/StardewWikiLink';
 
 const MissingIngredientsCard: React.FC = () => {
   const { parsedGame } = useParsedGame();
@@ -29,12 +30,12 @@ const MissingIngredientsCard: React.FC = () => {
       <hr color="#e6e6e6" />
       <Table>
         <Table.Body maxHeight={360}>
-          {Object.keys(deliverables).map((key, i) => {
-            const missingIngredientsName = deliverables[key];
+          {Object.keys(deliverables).map((name, i) => {
+            const missingIngredientsName = deliverables[name];
             return (
               <Table.Row key={i}>
                 <Table.TextCell textProps={{ fontSize: '1.1rem' }}>
-                  {key}
+                  <StardewWikiLink name={name} />
                 </Table.TextCell>
                 <Table.TextCell
                   textProps={{ fontSize: '1.1rem' }}
