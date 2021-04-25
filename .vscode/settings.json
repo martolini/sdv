@@ -1,14 +1,6 @@
 {
   "files.exclude": {
-    ".next": true
-  },
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact"
-  ],
-  "eslint.enable": true
+    ".next": true,
+    "node_modules": true
+  }
 }

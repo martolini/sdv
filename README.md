@@ -1,45 +1,34 @@
-# sdv
-
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-
-A nice little utility helper for Stardew Valley
-
-https://sdv.msroed.now.sh
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 
-### Install dependencies
+First, run the development server:
 
-`yarn`
+```bash
+npm run dev
+# or
+yarn dev
+```
 
-### Run the development server
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-`yarn dev`
+You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-### Build
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
-`yarn build`
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-### Run full production server locally
+## Learn More
 
-`yarn start`
+To learn more about Next.js, take a look at the following resources:
 
-### Style and formatting
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-`yarn lint` will run `ESLint` on all the staged files.
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deployment
+## Deploy on Vercel
 
-All commits will be deployed to its own URL. Commiting on master will deploy to production.
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-## Contributing
-
-Feel free to send a pull request. The repository is commitizen-friendly.
-
-Running `yarn commit`
-
-will guide you in creating a nice commit -- this is a commitizen friendly repo.
-
-## Acknowledgments
-
-ConcernedApe for being absolutely amazing
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

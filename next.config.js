@@ -1,6 +1,15 @@
-// next.config.js
-const withCSS = require('@zeit/next-css');
+const SentryCliPlugin = require('@sentry/webpack-plugin');
 
-module.exports = withCSS({
-  /* config options here */
-});
+module.exports = {
+  future: {
+    webpack5: true,
+  },
+  plugins: [
+    new SentryCliPlugin({
+      include: '.',
+      ignoreFile: '.sentrycliignore',
+      ignore: ['node_modules', 'next.config.js'],
+      configFile: 'sentry.properties',
+    }),
+  ],
+};
