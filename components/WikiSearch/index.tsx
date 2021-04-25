@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import axios from 'axios';
 import AsyncSelect from 'react-select/async';
 
@@ -11,10 +11,27 @@ export default function WikiSearch() {
     }));
   }, []);
 
+  const inputRef = useRef<any>();
+
+  useEffect(() => {
+    const keyHandler = (e) => {
+      if (e.key === 's' && document.activeElement !== inputRef.current) {
+        console.log(inputRef.current);
+        inputRef.current.focus();
+      }
+    };
+    window.addEventListener('keyup', keyHandler);
+    // Remove event listeners on cleanup
+    return () => {
+      window.removeEventListener('keyup', keyHandler);
+    };
+  }, [inputRef]);
+
   return (
     <AsyncSelect
       id="wiki-search"
       instanceId="wiki-search"
+      ref={inputRef}
       loadOptions={loadOptions}
       styles={{
         option: (styles) => ({ ...styles, fontFamily: 'VT323', fontSize: 14 }),
