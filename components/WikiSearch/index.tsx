@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import axios from 'axios';
 import AsyncSelect from 'react-select/async';
+import useHotkeyToFocus from 'hooks/useHotkeyToFocus';
 
 export default function WikiSearch() {
   const loadOptions = useCallback(async (q) => {
@@ -13,22 +14,8 @@ export default function WikiSearch() {
 
   const inputRef = useRef<any>();
 
-  useEffect(() => {
-    const keyHandler = (e) => {
-      if (
-        e.key === 's' &&
-        document.activeElement !== inputRef.current &&
-        document.activeElement.nodeName !== 'INPUT'
-      ) {
-        inputRef.current.focus();
-      }
-    };
-    window.addEventListener('keyup', keyHandler);
-    // Remove event listeners on cleanup
-    return () => {
-      window.removeEventListener('keyup', keyHandler);
-    };
-  }, [inputRef]);
+  const hotkeys = useMemo(() => ['s'], []);
+  useHotkeyToFocus(inputRef, hotkeys);
 
   return (
     <AsyncSelect
