@@ -13,7 +13,7 @@ type FileUploaderProps = {
 
 export default function FileUploader({ onFinished, small }: FileUploaderProps) {
   const { setLoading } = useParsedGame();
-  const onDrop = useCallback((acceptedFiles) => {
+  const onDrop = useCallback(async (acceptedFiles) => {
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
       reader.onload = () => {

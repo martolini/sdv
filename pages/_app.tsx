@@ -8,6 +8,12 @@ import { firebaseConfig } from 'config';
 import 'firebase/firestore';
 import FarmProvider from 'components/FarmProvider';
 import UploadDragHelper from 'components/UploadDragHelper';
+import Router from 'next/router';
+
+Router.events.on('routeChangeComplete', (url) => {
+  // @ts-ignore
+  window.analytics.page(url);
+});
 
 function MyApp({ Component, pageProps, ...props }) {
   const { withLayout = true } = props;

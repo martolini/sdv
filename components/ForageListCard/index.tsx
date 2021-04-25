@@ -43,6 +43,7 @@ const ForageListCard: React.FC<Props> = (props) => {
           onClick={() => setChosenMap(map)}
           fontSize="1.1rem"
           marginBottom={15}
+          key={map.name}
         >
           {map.name}
         </Paragraph>

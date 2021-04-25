@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import WikiSearch from 'components/WikiSearch';
 import Link from 'next/link';
 import { useParsedGame } from 'hooks/useParsedGame';
-import FileUploader from 'components/FileUploader';
+import FileUploadListener from 'components/FileUploadListener';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 type NavTabProps = {
@@ -40,7 +40,7 @@ const LINKS = [
 export default function Header() {
   const router = useRouter();
   const { pathname, query } = router;
-  const { setParsedGame, parsedGame, uploadFarm } = useParsedGame();
+  const { parsedGame, uploadFarm } = useParsedGame();
   const queryParamLink = Object.keys(query)
     .map((key) => `${key}=${query[key]}`)
     .join('&');
@@ -92,12 +92,7 @@ export default function Header() {
             </Button>
           </CopyToClipboard>
         )}
-        <FileUploader
-          small
-          onFinished={(game) => {
-            setParsedGame(game);
-          }}
-        />
+        <FileUploadListener />
       </Pane>
     </Pane>
   );
