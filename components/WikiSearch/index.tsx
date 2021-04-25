@@ -15,7 +15,11 @@ export default function WikiSearch() {
 
   useEffect(() => {
     const keyHandler = (e) => {
-      if (e.key === 's' && !document.activeElement) {
+      if (
+        e.key === 's' &&
+        document.activeElement !== inputRef.current &&
+        document.activeElement.nodeName !== 'INPUT'
+      ) {
         inputRef.current.focus();
       }
     };
@@ -24,7 +28,7 @@ export default function WikiSearch() {
     return () => {
       window.removeEventListener('keyup', keyHandler);
     };
-  }, [inputRef]);
+  }, [inputRef, document.activeElement]);
 
   return (
     <AsyncSelect
