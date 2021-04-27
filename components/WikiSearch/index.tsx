@@ -35,7 +35,7 @@ export default function WikiSearch() {
       ({ value }) => {
         setSuggestions(getSuggestions(value));
       },
-      [setSuggestions]
+      [setSuggestions, getSuggestions]
     ),
     100
   );
