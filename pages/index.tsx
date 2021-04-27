@@ -15,18 +15,6 @@ export default function Home() {
   const content = parsedGame ? (
     <Pane display="flex" flexFlow="row wrap" justifyContent="space-around">
       <FarmInfoHeader />
-      <DashboardCard
-        backgroundColor={theme.colors.background.redTint}
-        minWidth="30%"
-      >
-        <GrowingCropsList />
-      </DashboardCard>
-      <DashboardCard
-        backgroundColor={theme.colors.background.purpleTint}
-        minWidth="30%"
-      >
-        <AllItemsCard />
-      </DashboardCard>
       <DashboardCard backgroundColor={theme.colors.background.blueTint}>
         <MissingIngredientsCard />
       </DashboardCard>
