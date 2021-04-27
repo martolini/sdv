@@ -22,7 +22,7 @@ const FileUploadListener: React.FC<Props> = (props) => {
           setSaveFile(file);
           uploadFarm(parsedGame);
         } else {
-          console.log(file.lastModified, saveFile.lastModified);
+          // console.log(file.lastModified, saveFile.lastModified);
         }
       }
     },
