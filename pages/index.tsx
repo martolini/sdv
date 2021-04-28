@@ -3,11 +3,9 @@ import { Pane, Spinner, useTheme } from 'evergreen-ui';
 import FileUploader from 'components/FileUploader';
 import { useParsedGame } from 'hooks/useParsedGame';
 import FarmerStats from 'components/FarmerStats';
-import GrowingCropsList from 'components/GrowingCropsList';
 import DashboardCard from 'components/DashboardCard';
 import MissingIngredientsCard from 'components/MissingIngredientsCard';
 import FarmInfoHeader from 'components/FarmInfoHeader';
-import AllItemsCard from 'components/AllItemsCard';
 
 export default function Home() {
   const { setParsedGame, parsedGame, loading } = useParsedGame();
@@ -15,18 +13,6 @@ export default function Home() {
   const content = parsedGame ? (
     <Pane display="flex" flexFlow="row wrap" justifyContent="space-around">
       <FarmInfoHeader />
-      <DashboardCard
-        backgroundColor={theme.colors.background.redTint}
-        minWidth="30%"
-      >
-        <GrowingCropsList />
-      </DashboardCard>
-      <DashboardCard
-        backgroundColor={theme.colors.background.purpleTint}
-        minWidth="30%"
-      >
-        <AllItemsCard />
-      </DashboardCard>
       <DashboardCard backgroundColor={theme.colors.background.blueTint}>
         <MissingIngredientsCard />
       </DashboardCard>

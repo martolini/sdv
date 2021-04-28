@@ -10,12 +10,7 @@ export default function useHotkeyToFocus<T extends MutableRefObject<any>>(
         inputRef.current.focus();
       }
       // If escape key is hit and the input field is focused
-      // The inputRef.current.mounted is for the AsyncSelect thingy
-      if (
-        e.key === 'Escape' &&
-        (document.activeElement === inputRef.current ||
-          inputRef.current.mounted)
-      ) {
+      if (e.key === 'Escape' && document.activeElement === inputRef.current) {
         inputRef.current.blur();
       }
     };

@@ -1,5 +1,7 @@
 export const qualityToColor = (quality) => {
   switch (quality) {
+    case 0:
+      return 'black';
     case 1:
       return 'silver';
     case 2:
