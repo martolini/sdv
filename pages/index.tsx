@@ -3,11 +3,9 @@ import { Pane, Spinner, useTheme } from 'evergreen-ui';
 import FileUploader from 'components/FileUploader';
 import { useParsedGame } from 'hooks/useParsedGame';
 import FarmerStats from 'components/FarmerStats';
-import GrowingCropsList from 'components/GrowingCropsList';
 import DashboardCard from 'components/DashboardCard';
 import MissingIngredientsCard from 'components/MissingIngredientsCard';
 import FarmInfoHeader from 'components/FarmInfoHeader';
-import AllItemsCard from 'components/AllItemsCard';
 
 export default function Home() {
   const { setParsedGame, parsedGame, loading } = useParsedGame();
