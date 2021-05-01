@@ -1,6 +1,5 @@
 import { parseXml } from './parser';
 import fs from 'fs';
-import { calculateRecommendedSellables } from 'components/RecommendedSellables/utils';
 
 describe('Parser tests', () => {
   const file = fs.readFileSync('tests/fixtures/testdata.xml').toString();
@@ -35,13 +34,6 @@ describe('Parser tests', () => {
     expect(players[0].skills[0].percentageToNextLevel).toBe(24.3);
     expect(players[0].skills[0].professions).toHaveLength(1);
     expect(players[0].skills[0].professions[0].name).toBe('Rancher');
-  });
-
-  it('Can find recommended sales items', () => {
-    const file = fs.readFileSync('tests/fixtures/sellable_test.xml').toString();
-    const parsedData = parseXml(file);
-    const recommended = calculateRecommendedSellables(parsedData);
-    expect(recommended).toHaveLength(80);
   });
 
   it('Can find birthdays', () => {

@@ -19,19 +19,22 @@ const DAYS = [
 export default function Header() {
   const { parsedGame } = useParsedGame();
   const theme = useTheme();
-  const gameInfoText = useMemo(() => {
+  const gameInfo = useMemo(() => {
     if (parsedGame) {
       const {
-        gameInfo: { currentSeason, dayOfMonth, year, dailyLuck, farmName },
+        gameInfo: { currentSeason, dayOfMonth, year, farmName, dailyLuck },
       } = parsedGame;
       const weekday = DAYS[dayOfMonth % 7];
-      return (
-        <Pane display="flex" justifyContent="space-around" alignItems="center">
-          <Text fontSize="1.1rem">{farmName}</Text>
-          <Text fontSize="1rem">{`${weekday} ${dayOfMonth} ${currentSeason}, YEAR ${year}`}</Text>
-        </Pane>
-      );
+      return {
+        currentSeason,
+        dayOfMonth,
+        year,
+        dailyLuck,
+        weekday,
+        farmName,
+      };
     }
+    return {};
   }, [parsedGame]);
   const previousGame = usePrevious<ParsedGame>(parsedGame);
   useEffect(() => {
@@ -45,7 +48,18 @@ export default function Header() {
   }, [parsedGame]);
   return (
     <Pane display="flex" padding={10} borderBottom alignItems="center">
-      <Pane width="30%">{gameInfoText}</Pane>
+      <Pane width="30%">
+        {gameInfo && (
+          <Pane
+            display="flex"
+            justifyContent="space-around"
+            alignItems="center"
+          >
+            <Text fontSize="1.1rem">{gameInfo.farmName}</Text>
+            <Text fontSize="1rem">{`${gameInfo.weekday} ${gameInfo.dayOfMonth} ${gameInfo.currentSeason}, YEAR ${gameInfo.year}`}</Text>
+          </Pane>
+        )}
+      </Pane>
       <Pane width="40%">
         <WikiSearch />
       </Pane>
@@ -55,11 +69,11 @@ export default function Header() {
         justifyContent="space-around"
         alignItems="center"
       >
-        {parsedGame && (
+        {gameInfo && (
           <Text
             fontSize="1rem"
             color={theme.colors.text.success}
-          >{`${parsedGame.gameInfo.dailyLuck}% luck`}</Text>
+          >{`${gameInfo.dailyLuck}% luck`}</Text>
         )}
         <FileUploadListener />
       </Pane>

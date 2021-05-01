@@ -1,9 +1,8 @@
-import Header from 'components/Header';
-import { Pane, useTheme } from 'evergreen-ui';
+import { Pane } from 'evergreen-ui';
 import Head from 'next/head';
+import Header from 'components/Header';
 
 const SiteLayout: React.FC = ({ children }) => {
-  const theme = useTheme();
   return (
     <Pane>
       <Head>
