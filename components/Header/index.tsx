@@ -34,7 +34,7 @@ export default function Header() {
         farmName,
       };
     }
-    return {};
+    return null;
   }, [parsedGame]);
   const previousGame = usePrevious<ParsedGame>(parsedGame);
   useEffect(() => {
