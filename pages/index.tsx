@@ -1,34 +1,18 @@
 import Head from 'next/head';
-import { Pane, Spinner, useTheme } from 'evergreen-ui';
-import FileUploader from 'components/FileUploader';
+import { Pane, Spinner } from 'evergreen-ui';
 import { useParsedGame } from 'hooks/useParsedGame';
-import FarmerStats from 'components/FarmerStats';
-import DashboardCard from 'components/DashboardCard';
-import MissingIngredientsCard from 'components/MissingIngredientsCard';
-import FarmInfoHeader from 'components/FarmInfoHeader';
+import FileUploadListener from 'components/FileUploadListener';
 
 export default function Home() {
-  const { setParsedGame, parsedGame, loading } = useParsedGame();
-  const theme = useTheme();
+  const { parsedGame, loading } = useParsedGame();
   const content = parsedGame ? (
-    <Pane display="flex" flexFlow="row wrap" justifyContent="space-around">
-      <FarmInfoHeader />
-      <DashboardCard backgroundColor={theme.colors.background.blueTint}>
-        <MissingIngredientsCard />
-      </DashboardCard>
-      <DashboardCard
-        backgroundColor={theme.colors.background.greenTint}
-        maxWidth="30%"
-      >
-        <FarmerStats />
-      </DashboardCard>
-    </Pane>
+    <Pane
+      display="flex"
+      flexFlow="row wrap"
+      justifyContent="space-around"
+    ></Pane>
   ) : (
-    <FileUploader
-      onFinished={(game) => {
-        setParsedGame(game);
-      }}
-    />
+    <FileUploadListener />
   );
   return (
     <>

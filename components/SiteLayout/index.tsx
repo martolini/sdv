@@ -14,13 +14,7 @@ const SiteLayout: React.FC = ({ children }) => {
         />
       </Head>
       <Header />
-      <Pane
-        paddingX={16}
-        paddingY={24}
-        backgroundColor={theme.palette.neutral.lightest}
-        display="flex"
-        justifyContent="center"
-      >
+      <Pane paddingX={16} paddingY={24} display="flex" justifyContent="center">
         {children}
       </Pane>
     </Pane>
