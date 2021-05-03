@@ -24,6 +24,7 @@ const Suggestion: React.FC<Props> = ({
       justifyContent="space-between"
       className={`${styles.container} ${focused ? styles.focused : null}`}
       onMouseOver={onFocused}
+      minHeight="80px"
     >
       <Text size={500}>
         {item.name}

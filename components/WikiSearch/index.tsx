@@ -13,7 +13,7 @@ export default function WikiSearch() {
     (query) => {
       if (query && query.trim().length === 0) return [];
       const suggestions = searchIndex.search(query.trim(), {
-        limit: 10,
+        limit: 5,
       });
       return suggestions;
     },
@@ -53,22 +53,36 @@ export default function WikiSearch() {
 
   const onKeyPress = useCallback(
     (e) => {
-      if (e.key === 'ArrowUp') {
-        setFocusedResult((prev) => {
-          return Math.max(prev - 1, 0);
-        });
-        e.preventDefault();
-      } else if (e.key === 'ArrowDown') {
-        setFocusedResult((prev) => {
-          return Math.min(prev + 1, suggestions.length - 1);
-        });
-        e.preventDefault();
+      switch (e.key) {
+        case 'ArrowUp': {
+          setFocusedResult((prev) => {
+            return Math.max(prev - 1, 0);
+          });
+          break;
+        }
+        case 'ArrowDown': {
+          setFocusedResult((prev) => {
+            return Math.min(prev + 1, suggestions.length - 1);
+          });
+          break;
+        }
+        case 'Enter': {
+          const {
+            item: { href },
+          } = suggestions[focusedResult];
+          if (href)
+            window.open(`https://stardewvalleywiki.com${href}`, '_blank');
+          break;
+        }
+        default: {
+          break;
+        }
       }
     },
-    [setFocusedResult, suggestions]
+    [setFocusedResult, suggestions, focusedResult]
   );
 
-  useHotkeys('up,down', onKeyPress);
+  useHotkeys('up,down,enter', onKeyPress);
   useEffect(() => {
     setFocusedResult(0);
   }, [suggestions]);

@@ -65,11 +65,21 @@ const buildSearchIndex = (parsedGame?: ParsedGame) => {
         .uniq()
         .map(getReadableQuality)
         .value(),
-      isOnMaps: maps
-        .filter((m) => m.forage.find((forage) => forage.name === key))
-        .map((m) => m.name),
     };
     itemContext[key] = entry;
+  }
+  // Forage context
+  const forageContext: Dataset = {};
+  for (const map of maps) {
+    const forages = groupBy(map.forage, (f) => f.name);
+    for (const [key, forage] of Object.entries(forages)) {
+      const entry: Partial<SearchEntry> = forageContext[key] || {};
+      entry.isOnMaps = [
+        ...(entry.isOnMaps || []),
+        `${map.name} (${forage.length})`,
+      ];
+      forageContext[key] = entry;
+    }
   }
   // Go through harvest to add context
   const groupedHarvest = groupBy(harvest, 'name');
@@ -89,6 +99,7 @@ const buildSearchIndex = (parsedGame?: ParsedGame) => {
       href,
       ...(itemContext[name] || {}),
       ...(cropsContext[name] || {}),
+      ...(forageContext[name] || {}),
     };
   });
 
