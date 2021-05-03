@@ -23,7 +23,7 @@ export default function Header() {
       const {
         gameInfo: { currentSeason, dayOfMonth, year, farmName, dailyLuck },
       } = parsedGame;
-      const weekday = DAYS[dayOfMonth % 7];
+      const weekday = DAYS[(dayOfMonth % 7) - 1];
       return {
         currentSeason,
         dayOfMonth,
