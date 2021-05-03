@@ -16,53 +16,58 @@ const Suggestion: React.FC<Props> = ({
   item,
   focused = false,
   onFocused = () => {},
-}) => (
-  <Pane
-    display="flex"
-    alignItems="center"
-    justifyContent="space-between"
-    className={`${styles.container} ${focused ? styles.focused : null}`}
-    onMouseOver={onFocused}
-  >
-    <Text size={500}>
-      {item.name}
-      {item.stack && ` x ${item.stack}`}
-    </Text>
-    <Text>
-      {item.qualities?.length
-        ? item.qualities.map((quality) => (
-            <StarIcon key={quality} color={qualityToColor(quality)} />
-          ))
-        : null}
-    </Text>
-    <Pane>
-      {item.chests?.length
-        ? item.chests.map((color) => (
-            <GiLockedChest key={color} color={color} />
-          ))
-        : null}
+}) => {
+  return (
+    <Pane
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      className={`${styles.container} ${focused ? styles.focused : null}`}
+      onMouseOver={onFocused}
+    >
+      <Text size={500}>
+        {item.name}
+        {item.stack && ` x ${item.stack}`}
+      </Text>
+      <Text>
+        {item.qualities?.length
+          ? item.qualities.map((quality) => (
+              <StarIcon key={quality} color={qualityToColor(quality)} />
+            ))
+          : null}
+      </Text>
+      <Pane>
+        {item.chests?.length
+          ? item.chests.map((color) => (
+              <GiLockedChest key={color} color={color} />
+            ))
+          : null}
+      </Pane>
+      <Pane>
+        {item.players?.length
+          ? item.players.map((player) => (
+              <Avatar
+                key={player}
+                name={player}
+                size="1.4rem"
+                round
+                textSizeRatio={2.5}
+              />
+            ))
+          : null}
+      </Pane>
+      <Pane maxWidth="30%">
+        {item.isOnMaps?.map((name) => (
+          <Badge color="green" key={name} marginX={4}>
+            {name}
+          </Badge>
+        ))}
+      </Pane>
+      {item.nextCropFinished !== undefined && (
+        <Pane>next in {item.nextCropFinished} days</Pane>
+      )}
     </Pane>
-    <Pane>
-      {item.players?.length
-        ? item.players.map((player) => (
-            <Avatar
-              key={player}
-              name={player}
-              size="1.4rem"
-              round
-              textSizeRatio={2.5}
-            />
-          ))
-        : null}
-    </Pane>
-    <Pane maxWidth="30%">
-      {item.isOnMaps?.map((name) => (
-        <Badge color="green" key={name} marginX={4}>
-          {name}
-        </Badge>
-      ))}
-    </Pane>
-  </Pane>
-);
+  );
+};
 
 export default Suggestion;

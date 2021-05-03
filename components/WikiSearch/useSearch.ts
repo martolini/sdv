@@ -1,6 +1,6 @@
 import { ParsedGame } from 'utils/parser';
 import Fuse from 'fuse.js';
-import { chain, groupBy } from 'lodash';
+import { chain, groupBy, minBy, uniqBy } from 'lodash';
 import { useMemo } from 'react';
 import allWikiPages from 'data/allWikiPages';
 import { useParsedGame } from 'hooks/useParsedGame';
@@ -13,7 +13,10 @@ export type SearchEntry = Item & {
   players?: string[];
   isOnMaps?: string[];
   href: string;
+  nextCropFinished?: number;
 };
+
+type Dataset = Record<string, Partial<SearchEntry>>;
 
 const getReadableQuality = (quality: number) => {
   switch (quality) {
@@ -32,10 +35,12 @@ const getReadableQuality = (quality: number) => {
 };
 
 const buildSearchIndex = (parsedGame?: ParsedGame) => {
-  const { items = [], maps = [] } = parsedGame || {};
+  const { items = [], maps = [], harvest = [] } = parsedGame || {};
   // Build item stats grouped by name
+  const dataset = uniqBy(allWikiPages, (p) => p.name.toLowerCase());
+
+  const itemContext: Dataset = {};
   const groupedItems = groupBy(items, 'name');
-  const dataset: Record<string, Partial<SearchEntry>> = {};
   for (const [key, items] of Object.entries(groupedItems)) {
     const entry = {
       chests: chain(items)
@@ -64,16 +69,28 @@ const buildSearchIndex = (parsedGame?: ParsedGame) => {
         .filter((m) => m.forage.find((forage) => forage.name === key))
         .map((m) => m.name),
     };
-    dataset[key] = entry;
+    itemContext[key] = entry;
+  }
+  // Go through harvest to add context
+  const groupedHarvest = groupBy(harvest, 'name');
+  const cropsContext: Dataset = {};
+  for (const [key, harvest] of Object.entries(groupedHarvest)) {
+    const nextCropFinished = minBy(harvest, (h) => h.daysToHarvest)
+      .daysToHarvest;
+    cropsContext[key] = {
+      nextCropFinished,
+    };
   }
 
-  const finalDataset = chain(allWikiPages)
-    .uniqBy(({ href }) => href.toLowerCase())
-    .map((page) => ({
-      ...page,
-      ...(dataset[page.name] || {}),
-    }))
-    .value();
+  // Merge contexts
+  const finalDataset = dataset.map(({ name, href }) => {
+    return {
+      name,
+      href,
+      ...(itemContext[name] || {}),
+      ...(cropsContext[name] || {}),
+    };
+  });
 
   const fuse = new Fuse<SearchEntry>(finalDataset, {
     includeScore: true,
