@@ -67,11 +67,11 @@ export default function WikiSearch() {
           break;
         }
         case 'Enter': {
-          const {
-            item: { href },
-          } = suggestions[focusedResult];
-          if (href)
+          const { item: { href = null } = {} } =
+            suggestions[focusedResult] || {};
+          if (href) {
             window.open(`https://stardewvalleywiki.com${href}`, '_blank');
+          }
           break;
         }
         default: {

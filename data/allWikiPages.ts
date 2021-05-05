@@ -1023,7 +1023,6 @@ export default [
   { href: '/Holly', name: 'Holly' },
   { href: '/Holy_Blade', name: 'Holy Blade' },
   { href: '/Honey', name: 'Honey' },
-  { href: '/Hop', name: 'Hop' },
   { href: '/Hopper', name: 'Hopper' },
   { href: '/Hops', name: 'Hops' },
   { href: '/Hops_Starter', name: 'Hops Starter' },
