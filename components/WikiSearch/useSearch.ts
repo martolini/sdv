@@ -14,6 +14,7 @@ export type SearchEntry = Item & {
   isOnMaps?: string[];
   href: string;
   nextCropFinished?: number;
+  amountInGround?: number;
 };
 
 type Dataset = Record<string, Partial<SearchEntry>>;
@@ -89,6 +90,7 @@ const buildSearchIndex = (parsedGame?: ParsedGame) => {
       .daysToHarvest;
     cropsContext[key] = {
       nextCropFinished,
+      amountInGround: harvest.length,
     };
   }
 

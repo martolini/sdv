@@ -29,6 +29,9 @@ const Suggestion: React.FC<Props> = ({
       <Text size={500}>
         {item.name}
         {item.stack && ` x ${item.stack}`}
+        {item.amountInGround && (
+          <Text size={300}> ({item.amountInGround})</Text>
+        )}
       </Text>
       <Text>
         {item.qualities?.length
