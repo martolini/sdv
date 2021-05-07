@@ -29,9 +29,6 @@ const Suggestion: React.FC<Props> = ({
       <Text size={500}>
         {item.name}
         {item.stack && ` x ${item.stack}`}
-        {item.amountInGround && (
-          <Text size={300}> ({item.amountInGround})</Text>
-        )}
       </Text>
       <Text>
         {item.qualities?.length
@@ -68,7 +65,12 @@ const Suggestion: React.FC<Props> = ({
         ))}
       </Pane>
       {item.nextCropFinished !== undefined && (
-        <Pane>next in {item.nextCropFinished} days</Pane>
+        <Text>
+          next in {item.nextCropFinished} days
+          {item.amountInGround && (
+            <Text size={300}> ({item.amountInGround} total)</Text>
+          )}
+        </Text>
       )}
     </Pane>
   );
