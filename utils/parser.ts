@@ -1,5 +1,5 @@
 import parser from 'fast-xml-parser';
-import { findObjects } from './object-search';
+import { findObjects, findPaths } from './object-search';
 import rgbhex from 'rgb-hex';
 import {
   ID_TABLE,
@@ -123,15 +123,13 @@ export const parseXml = (xmlString: string): ParsedGame => {
 };
 
 function findMapData(saveGame: RawGame): Map[] {
-  const maps = Object.keys(MAP_IMAGES);
   const gameLocations = saveGame.locations.GameLocation;
-  return maps.map((m) => {
-    const location = gameLocations.find((loc) => loc.name === m);
+  return gameLocations.map((location) => {
     const items = forceAsArray(location.objects.item).filter((item) =>
       isForageItem(+item.value.Object.parentSheetIndex)
     );
     return {
-      name: m,
+      name: location.name,
       forage: items.map((item) => ({
         ...parseItem(item.value.Object),
         x: item.key.Vector2.X,

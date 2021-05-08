@@ -656,6 +656,7 @@ export const FORAGE_ITEMS = [
   718,
   719,
   723,
+  829,
 ];
 
 export const MAP_SIZES = {
