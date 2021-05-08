@@ -1,5 +1,5 @@
 import parser from 'fast-xml-parser';
-import { findObjects, findPaths } from './object-search';
+import { findObjects } from './object-search';
 import rgbhex from 'rgb-hex';
 import {
   ID_TABLE,
@@ -7,7 +7,6 @@ import {
   EXP_TABLE,
   PROFESSIONS_TABLE,
   FORAGE_ITEMS,
-  MAP_IMAGES,
 } from './lookups';
 import { FarmItem, Item, Bundle, Map } from 'typings/stardew';
 import bundles from 'data/bundles';
@@ -111,7 +110,7 @@ export const parseXml = (xmlString: string): ParsedGame => {
     return {
       gameInfo,
       items,
-      harvest: findHarvestInLocations(data, ['Farm', 'Greenhouse']),
+      harvest: findHarvestInLocations(data),
       bundleInfo: findMissingBundleItems(data, items),
       players: getPlayers(data),
       todaysBirthday: findTodaysBirthday(data),
@@ -259,8 +258,8 @@ export function findHarvestInLocations(
   gameState: RawGame,
   names: string[] = []
 ): FarmItem[] {
-  const locations = gameState.locations.GameLocation.filter(({ name }) =>
-    names.includes(name)
+  const locations = gameState.locations.GameLocation.filter(
+    ({ name }) => names.length === 0 || names.includes(name)
   );
 
   return locations.reduce((p, location) => {
@@ -328,15 +327,18 @@ export function findHarvestInLocations(
       .filter((feature) => feature.value.TerrainFeature.crop)
       .map((feature) => {
         const phaseDays = feature.value.TerrainFeature.crop.phaseDays.int;
-        const { currentPhase } = feature.value.TerrainFeature.crop;
-        const { dayOfCurrentPhase } = feature.value.TerrainFeature.crop;
-        const { regrowAfterHarvest } = feature.value.TerrainFeature.crop;
+        const {
+          dayOfCurrentPhase,
+          currentPhase,
+          regrowAfterHarvest,
+        } = feature.value.TerrainFeature.crop;
         let daysToHarvest =
+          phaseDays &&
           phaseDays.slice(currentPhase + 1, -1).reduce((pp, c) => pp + c, 0) +
-          phaseDays[currentPhase] -
-          dayOfCurrentPhase;
-        let done = false;
-        if (currentPhase === phaseDays.length - 1) {
+            phaseDays[currentPhase] -
+            dayOfCurrentPhase;
+        let done = !phaseDays;
+        if (phaseDays && currentPhase === phaseDays.length - 1) {
           // Check if done
           if (regrowAfterHarvest > 0) {
             if (
