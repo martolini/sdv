@@ -266,6 +266,13 @@ export function findHarvestInLocations(
     const tappers = filterObjectsByName(location, 'Tapper');
     const preservesJars = filterObjectsByName(location, 'Preserves Jar');
     const beeHouses = filterObjectsByName(location, 'Bee House');
+    const artifactSpots = filterObjectsByName(location, 'Artifact Spot')
+      .filter((obj) => true)
+      .map((obj) => ({
+        location: location.name,
+        ...obj,
+        name: obj.value.Object.name,
+      }));
     const eggs = [
       ...filterObjectsByName(location, 'Egg'),
       ...findInBuildings(location, 'Coop', ['Egg']),
@@ -380,6 +387,7 @@ export function findHarvestInLocations(
       ...crops,
       ...forages,
       ...roes,
+      ...artifactSpots,
     ];
   }, []);
 }

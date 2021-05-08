@@ -1,6 +1,6 @@
 import { ParsedGame } from 'utils/parser';
 import Fuse from 'fuse.js';
-import { chain, groupBy, maxBy, minBy, uniqBy } from 'lodash';
+import { chain, groupBy, minBy, uniqBy } from 'lodash';
 import { useMemo } from 'react';
 import allWikiPages from 'data/allWikiPages';
 import { useParsedGame } from 'hooks/useParsedGame';
@@ -86,14 +86,19 @@ const buildSearchIndex = (parsedGame?: ParsedGame) => {
   const groupedHarvest = groupBy(harvest, 'name');
   const cropsContext: Dataset = {};
   for (const [key, harvest] of Object.entries(groupedHarvest)) {
-    const nextCropFinished = minBy(harvest, (h) => h.daysToHarvest)
-      .daysToHarvest;
+    const earliestFinishCrop = minBy(harvest, (h) => h.daysToHarvest);
+    const context: Partial<SearchEntry> = {};
+    if (earliestFinishCrop) {
+      context.nextCropFinished = earliestFinishCrop.daysToHarvest;
+    }
+    const byMaps = groupBy(harvest, 'location');
+    const isOnMaps = Object.entries(byMaps).map(
+      ([key, harvestOnMap]) => `${key} (${harvestOnMap.length})`
+    );
     cropsContext[key] = {
-      nextCropFinished:
-        maxBy(harvest, (h) => h.daysToHarvest).daysToHarvest === 0
-          ? undefined
-          : nextCropFinished,
+      ...context,
       amountInGround: harvest.length,
+      isOnMaps,
     };
   }
 
