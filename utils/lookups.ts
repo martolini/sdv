@@ -1012,3 +1012,12 @@ export const MAP_IMAGES = {
   Town: '/img/Pelican_Town.png',
   Woods: '/img/Woods.png',
 };
+
+export const TREE_TYPES = {
+  1: 'Oak Tree',
+  2: 'Maple Tree',
+  3: 'Pine Tree',
+  7: 'Mushroom Tree',
+  8: 'Mahogny Tree',
+  9: 'Palm Tree',
+};

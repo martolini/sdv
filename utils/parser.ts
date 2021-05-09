@@ -7,6 +7,7 @@ import {
   EXP_TABLE,
   PROFESSIONS_TABLE,
   FORAGE_ITEMS,
+  TREE_TYPES,
 } from './lookups';
 import { FarmItem, Item, Bundle, Map } from 'typings/stardew';
 import bundles from 'data/bundles';
@@ -30,6 +31,11 @@ type RawGame = {
   };
 };
 
+export type Tree = {
+  treeType: number;
+  location: string;
+};
+
 export type ParsedGame = {
   gameInfo: SaveGame;
   items: Item[];
@@ -38,6 +44,7 @@ export type ParsedGame = {
   players: Player[];
   todaysBirthday?: Birthday;
   maps: Map[];
+  trees: any[];
 };
 
 export type Birthday = {
@@ -111,6 +118,7 @@ export const parseXml = (xmlString: string): ParsedGame => {
       gameInfo,
       items,
       harvest: findHarvestInLocations(data),
+      trees: findTrees(data),
       bundleInfo: findMissingBundleItems(data, items),
       players: getPlayers(data),
       todaysBirthday: findTodaysBirthday(data),
@@ -136,6 +144,25 @@ function findMapData(saveGame: RawGame): Map[] {
       })),
     };
   });
+}
+
+function findTrees(saveGame: RawGame) {
+  const gameLocations = saveGame.locations.GameLocation;
+  const trees = [];
+  for (const location of gameLocations) {
+    trees.push(
+      ...forceAsArray(location.terrainFeatures.item)
+        .filter((o) => o.value.TerrainFeature['@_xsi:type'] === 'Tree')
+        .map((o) => ({
+          name: `${TREE_TYPES[o.value.TerrainFeature.treeType]}`,
+          done: o.value.TerrainFeature.growthStage === 4,
+          location: location.name,
+          treeType: o.value.TerrainFeature.treeType,
+          growthStage: o.value.TerrainFeature.growthStage,
+        }))
+    );
+  }
+  return trees;
 }
 
 function findMissingBundleItems(saveGame: RawGame, items: Item[]): Bundle[] {
@@ -267,9 +294,12 @@ export function findHarvestInLocations(
       location: location.name,
       name: obj.value.Object.name,
     });
-    const tappers = filterObjectsByName(location, 'Tapper').map(
-      nameLocationMapper
-    );
+    const tappers = filterObjectsByName(location, 'Tapper')
+      // .filter((o) => {
+      //   console.log(o);
+      //   return true;
+      // })
+      .map(nameLocationMapper);
     const preservesJars = filterObjectsByName(location, 'Preserves Jar').map(
       nameLocationMapper
     );
@@ -312,7 +342,7 @@ export function findHarvestInLocations(
       ],
       []
     );
-    const trees = forceAsArray(location.terrainFeatures.item)
+    const fruitTrees = forceAsArray(location.terrainFeatures.item)
       .filter((o) => o.value.TerrainFeature['@_xsi:type'] === 'FruitTree')
       .map((o) => ({
         name: `${ID_TABLE[o.value.TerrainFeature.indexOfFruit]} Tree`,
@@ -390,7 +420,7 @@ export function findHarvestInLocations(
       ...beeHouses,
       ...eggs,
       ...kegs,
-      ...trees,
+      ...fruitTrees,
       ...crops,
       ...forages,
       ...roes,

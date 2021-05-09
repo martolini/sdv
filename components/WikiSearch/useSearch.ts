@@ -37,7 +37,7 @@ const getReadableQuality = (quality: number) => {
 };
 
 const buildSearchIndex = (parsedGame?: ParsedGame) => {
-  const { items = [], maps = [], harvest = [] } = parsedGame || {};
+  const { items = [], maps = [], harvest = [], trees = [] } = parsedGame || {};
   // Build item stats grouped by name
   const dataset = uniqBy(allWikiPages, (p) => p.name.toLowerCase());
   const itemContext: Dataset = {};
@@ -112,17 +112,32 @@ const buildSearchIndex = (parsedGame?: ParsedGame) => {
     setTag(key, 'harvest');
   }
 
+  const groupedTrees = groupBy(trees, 'name');
+  const treeContext: Dataset = {};
+  for (const [key, trees] of Object.entries(groupedTrees)) {
+    const byMaps = groupBy(trees, 'location');
+    const isOnMaps = Object.entries(byMaps).map(
+      ([key, treesOnMap]) => `${key} (${treesOnMap.length})`
+    );
+    treeContext[key] = {
+      stack: trees.length,
+      isOnMaps,
+    };
+  }
+
   // Merge contexts
   const finalDataset = dataset.map(({ name, href }) => {
     const itemData = itemContext[name] || {};
     const cropsData = cropsContext[name] || {};
     const forageData = forageContext[name] || {};
+    const treeData = treeContext[name] || {};
     return {
       name,
       href,
       ...itemData,
       ...cropsData,
       ...forageData,
+      ...treeData,
       tags: tagsContext[name],
     };
   });
@@ -134,7 +149,6 @@ const buildSearchIndex = (parsedGame?: ParsedGame) => {
         name: 'name',
         weight: 2,
       },
-      'qualityTags',
       'isOnMaps',
       {
         name: 'tags',
