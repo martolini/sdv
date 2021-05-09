@@ -44,7 +44,7 @@ export type ParsedGame = {
   players: Player[];
   todaysBirthday?: Birthday;
   maps: Map[];
-  trees: any[];
+  trees: Tree[];
 };
 
 export type Birthday = {
