@@ -517,6 +517,7 @@ export const ID_TABLE = {
   801: 'Wedding Ring',
   802: 'Cactus Seeds',
   803: 'Iridium Milk',
+  830: 'Taro Root',
 };
 
 export const SKILL_TABLE = {
@@ -657,6 +658,7 @@ export const FORAGE_ITEMS = [
   719,
   723,
   829,
+  830,
 ];
 
 export const MAP_SIZES = {

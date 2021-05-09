@@ -13,7 +13,7 @@ export default function WikiSearch() {
     (query) => {
       if (query && query.trim().length === 0) return [];
       const suggestions = searchIndex.search(query.trim(), {
-        limit: 5,
+        limit: 10,
       });
       return suggestions;
     },

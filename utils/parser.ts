@@ -263,16 +263,22 @@ export function findHarvestInLocations(
   );
 
   return locations.reduce((p, location) => {
-    const tappers = filterObjectsByName(location, 'Tapper');
-    const preservesJars = filterObjectsByName(location, 'Preserves Jar');
-    const beeHouses = filterObjectsByName(location, 'Bee House');
-    const artifactSpots = filterObjectsByName(location, 'Artifact Spot')
-      .filter((obj) => true)
-      .map((obj) => ({
-        location: location.name,
-        ...obj,
-        name: obj.value.Object.name,
-      }));
+    const nameLocationMapper = (obj) => ({
+      location: location.name,
+      name: obj.value.Object.name,
+    });
+    const tappers = filterObjectsByName(location, 'Tapper').map(
+      nameLocationMapper
+    );
+    const preservesJars = filterObjectsByName(location, 'Preserves Jar').map(
+      nameLocationMapper
+    );
+    const beeHouses = filterObjectsByName(location, 'Bee House').map(
+      nameLocationMapper
+    );
+    const artifactSpots = filterObjectsByName(location, 'Artifact Spot').map(
+      nameLocationMapper
+    );
     const eggs = [
       ...filterObjectsByName(location, 'Egg'),
       ...findInBuildings(location, 'Coop', ['Egg']),
@@ -328,6 +334,7 @@ export function findHarvestInLocations(
         name: forage.value.Object.name,
         width: forage.tilesWide,
         height: forage.tilesHigh,
+        category: 'forage',
       }));
 
     const crops: FarmItem[] = forceAsArray(location.terrainFeatures.item)

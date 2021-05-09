@@ -1,6 +1,6 @@
 import { ParsedGame } from 'utils/parser';
 import Fuse from 'fuse.js';
-import { chain, groupBy, minBy, uniqBy } from 'lodash';
+import { chain, groupBy, minBy, uniq, uniqBy } from 'lodash';
 import { useMemo } from 'react';
 import allWikiPages from 'data/allWikiPages';
 import { useParsedGame } from 'hooks/useParsedGame';
@@ -15,6 +15,7 @@ export type SearchEntry = Item & {
   href: string;
   nextCropFinished?: number;
   amountInGround?: number;
+  tags?: string[];
 };
 
 type Dataset = Record<string, Partial<SearchEntry>>;
@@ -39,9 +40,14 @@ const buildSearchIndex = (parsedGame?: ParsedGame) => {
   const { items = [], maps = [], harvest = [] } = parsedGame || {};
   // Build item stats grouped by name
   const dataset = uniqBy(allWikiPages, (p) => p.name.toLowerCase());
-
   const itemContext: Dataset = {};
   const groupedItems = groupBy(items, 'name');
+  const tagsContext: Record<string, string[]> = {};
+  const setTag = (key: string, value: string) => {
+    const ctx = tagsContext[key] || [];
+    ctx.push(value);
+    tagsContext[key] = uniq(ctx);
+  };
   for (const [key, items] of Object.entries(groupedItems)) {
     const entry = {
       chests: chain(items)
@@ -68,6 +74,8 @@ const buildSearchIndex = (parsedGame?: ParsedGame) => {
         .value(),
     };
     itemContext[key] = entry;
+    setTag(key, items[0].type);
+    setTag(key, 'inventory');
   }
   // Forage context
   const forageContext: Dataset = {};
@@ -80,6 +88,7 @@ const buildSearchIndex = (parsedGame?: ParsedGame) => {
         `${map.name} (${forage.length})`,
       ];
       forageContext[key] = entry;
+      setTag(key, 'forage');
     }
   }
   // Go through harvest to add context
@@ -100,16 +109,21 @@ const buildSearchIndex = (parsedGame?: ParsedGame) => {
       amountInGround: harvest.length,
       isOnMaps,
     };
+    setTag(key, 'harvest');
   }
 
   // Merge contexts
   const finalDataset = dataset.map(({ name, href }) => {
+    const itemData = itemContext[name] || {};
+    const cropsData = cropsContext[name] || {};
+    const forageData = forageContext[name] || {};
     return {
       name,
       href,
-      ...(itemContext[name] || {}),
-      ...(cropsContext[name] || {}),
-      ...(forageContext[name] || {}),
+      ...itemData,
+      ...cropsData,
+      ...forageData,
+      tags: tagsContext[name],
     };
   });
 
@@ -122,6 +136,10 @@ const buildSearchIndex = (parsedGame?: ParsedGame) => {
       },
       'qualityTags',
       'isOnMaps',
+      {
+        name: 'tags',
+        weight: 0.5,
+      },
     ],
   });
   return fuse;
