@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { Pane, Spinner } from 'evergreen-ui';
 import { useParsedGame } from 'hooks/useParsedGame';
 import WikiSearch from 'components/WikiSearch';
+import TodoList from 'components/TodoList';
 
 export default function Home() {
   const { parsedGame, loading } = useParsedGame();
@@ -11,6 +12,7 @@ export default function Home() {
       return (
         <Pane width="70%">
           <WikiSearch />
+          <TodoList />
         </Pane>
       );
     }

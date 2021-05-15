@@ -13,7 +13,7 @@ export default function WikiSearch() {
     (query) => {
       if (query && query.trim().length === 0) return [];
       const suggestions = searchIndex.search(query.trim(), {
-        limit: 10,
+        limit: 6,
       });
       return suggestions;
     },
@@ -24,9 +24,17 @@ export default function WikiSearch() {
   const suggestions = useMemo(() => getSuggestions(debouncedInput), [
     debouncedInput,
   ]);
-  const searchResults = useMemo(
-    () => (
-      <ul style={{ listStyle: 'none', padding: 0 }}>
+  const searchResults = useMemo(() => {
+    if (suggestions.length === 0) return null;
+    return (
+      <ul
+        style={{
+          listStyle: 'none',
+          padding: 0,
+          border: '1px solid #aaa',
+          borderRadius: '4px',
+        }}
+      >
         {suggestions.map((sugg, i) => (
           <li key={sugg.refIndex}>
             <Link
@@ -43,9 +51,8 @@ export default function WikiSearch() {
           </li>
         ))}
       </ul>
-    ),
-    [suggestions, focusedResult]
-  );
+    );
+  }, [suggestions, focusedResult]);
 
   const onChange = useCallback((e) => {
     setInputValue(e.target.value);
@@ -95,6 +102,9 @@ export default function WikiSearch() {
         value={inputValue}
         onChange={onChange}
         onKeyDown={onKeyPress}
+        onBlur={() => {
+          console.log('blurred');
+        }}
       />
       <Pane marginTop="10px">{searchResults}</Pane>
     </Pane>
