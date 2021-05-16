@@ -1,6 +1,12 @@
+import { Todo } from 'hooks/useTodos';
+import nlp from 'compromise';
+import dates from 'compromise-dates';
+import numbers from 'compromise-numbers';
+
+const enlp = nlp.extend(numbers).extend(dates);
+
 export const formatTag = (tag: string) => {
   const regexString = /\[\[[^\]\]]*\]\]/gim;
-  const matches = [];
   let m;
   let output = tag;
   while ((m = regexString.exec(tag)) !== null) {
@@ -14,10 +20,26 @@ export const formatTag = (tag: string) => {
         match,
         `<a href="https://stardewvalleywiki.com${jsonMatch.href}" target="_blank">${jsonMatch.value}</a>`
       );
-      matches.push({
-        ...match,
-      });
     });
   }
   return output;
+};
+
+const WEEKDAYS = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
+
+export const isRelevantToday = (todo: Todo, today: string) => {
+  const dates = enlp(todo.text)
+    .dates()
+    .json()
+    .map((d) => WEEKDAYS[new Date(d.start).getDay()]);
+  if (dates.includes(today)) return true;
+  return false;
 };

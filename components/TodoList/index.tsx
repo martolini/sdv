@@ -1,10 +1,18 @@
-import { Button, Pane, Paragraph, TrashIcon, Card } from 'evergreen-ui';
+import {
+  Button,
+  Pane,
+  Paragraph,
+  TrashIcon,
+  Card,
+  useTheme,
+} from 'evergreen-ui';
 import { Todo, useTodos } from 'hooks/useTodos';
 import { useCallback, useMemo, useRef } from 'react';
 import styles from './TodoList.module.css';
 import Tagify from '@yaireo/tagify/dist/react.tagify'; // React-wrapper file
 import allWikiPages from 'data/allWikiPages';
 import { formatTag } from './utils';
+import { useParsedGame } from 'hooks/useParsedGame';
 
 const TodoList: React.FC = () => {
   const { todos, createTodo, deleteTodo } = useTodos();
@@ -32,6 +40,26 @@ const TodoList: React.FC = () => {
     [tagifyRef]
   );
 
+  const { parsedGame } = useParsedGame();
+  const suggestedTodos = useMemo(() => {
+    // Create birthday todo
+    const todos = [];
+    if (parsedGame) {
+      const birthday = parsedGame.todaysBirthday;
+      if (birthday) {
+        const todo = {
+          text: `<a href="https://stardewvalleywiki.com/${birthday.name
+            .split(' ')
+            .join('_')}">${
+            birthday.name
+          } target="_blank"></a> has their birthday today, remember to give a lovely gift!`,
+        };
+        todos.push(todo);
+      }
+    }
+    return todos;
+  }, [parsedGame]);
+  const theme = useTheme() as any;
   return (
     <Pane width="100%" display="flex" flexDirection="column">
       <Pane width="100%" display="flex" flexDirection="row">
@@ -82,7 +110,7 @@ const TodoList: React.FC = () => {
         marginTop={10}
       >
         {todos &&
-          todos.map((todo: Todo, i) => (
+          [...todos, ...suggestedTodos].map((todo: Todo, i) => (
             <Card
               key={i}
               width="45%"
@@ -96,6 +124,9 @@ const TodoList: React.FC = () => {
               paddingY="3%"
               marginY="2%"
               hoverElevation={4}
+              backgroundColor={
+                todo.isRelevantToday ? theme.colors.yellowTint : null
+              }
             >
               <Paragraph
                 className={styles.paragraph}

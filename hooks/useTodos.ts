@@ -1,3 +1,4 @@
+import { isRelevantToday } from 'components/TodoList/utils';
 import { useCallback, useMemo } from 'react';
 import { useFirestore, useFirestoreCollectionData } from 'reactfire';
 import { useParsedGame } from './useParsedGame';
@@ -6,6 +7,7 @@ export type Todo = {
   text: string;
   createdAtMillis?: number;
   NO_ID_FIELD?: string;
+  isRelevantToday?: boolean;
 };
 
 export function useTodos() {
@@ -25,7 +27,7 @@ export function useTodos() {
       return todosRef.orderBy('createdAtMillis', 'desc');
     }
   }, [todosRef]);
-  const { status, data } = useFirestoreCollectionData(queryRef);
+  const { status, data } = useFirestoreCollectionData<Todo>(queryRef);
   const createTodo = useCallback(
     (todo: Todo) => {
       if (todosRef !== null) {
@@ -37,6 +39,16 @@ export function useTodos() {
     },
     [todosRef]
   );
+  const mutatedData = useMemo(
+    () =>
+      data === null || data === undefined
+        ? []
+        : data.map((todo) => ({
+            ...todo,
+            isRelevantToday: isRelevantToday(todo, parsedGame.gameInfo.weekday),
+          })),
+    [data]
+  );
   const deleteTodo = useCallback((id: string) => {
     if (todosRef) {
       return todosRef.doc(id).delete();
@@ -44,7 +56,7 @@ export function useTodos() {
   }, []);
   return {
     status,
-    todos: data,
+    todos: mutatedData,
     createTodo,
     deleteTodo,
   };
