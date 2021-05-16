@@ -1,66 +1,80 @@
-import {
-  Button,
-  Pane,
-  TextInput,
-  Paragraph,
-  TrashIcon,
-  Card,
-} from 'evergreen-ui';
+import { Button, Pane, Paragraph, TrashIcon, Card } from 'evergreen-ui';
 import { Todo, useTodos } from 'hooks/useTodos';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import styles from './TodoList.module.css';
+import Tagify from '@yaireo/tagify/dist/react.tagify'; // React-wrapper file
+import typeStyles from './TypeAhead.module.css';
+import allWikiPages from 'data/allWikiPages';
+import { formatTag } from './utils';
 
 const TodoList: React.FC = () => {
-  const [inputValue, setInputValue] = useState('');
-  const onChange = useCallback(
-    (e) => {
-      setInputValue(e.target.value);
-    },
-    [setInputValue]
-  );
-
   const { todos, createTodo, deleteTodo } = useTodos();
-  const onCreateTodo = useCallback(() => {
-    if (inputValue.length === 0) return;
-    const text = inputValue.trim();
-    createTodo({ text });
-    setInputValue('');
-  }, [inputValue, todos]);
 
-  const onEnter = useCallback(
+  const whitelistedWords = useMemo(() => {
+    return Object.values(allWikiPages).map((p) => ({
+      value: p.name,
+      href: p.href,
+    }));
+  }, []);
+
+  const tagifyRef = useRef<typeof Tagify>();
+  const onSubmit = useCallback(
     (e) => {
-      if (e.key === 'Enter') {
-        onCreateTodo();
+      e.preventDefault();
+      if (tagifyRef && tagifyRef.current) {
+        const text = tagifyRef.current!.state.lastOriginalValueReported;
+        if (text && text.length > 0) {
+          const trimmedText = text.trim().replace(/\s+/g, ' ');
+          createTodo({ text: trimmedText });
+          tagifyRef.current.loadOriginalValues('');
+        }
       }
     },
-    [onCreateTodo]
+    [tagifyRef]
   );
 
   return (
     <Pane width="100%" display="flex" flexDirection="column">
       <Pane width="100%" display="flex" flexDirection="row">
-        <TextInput
-          value={inputValue}
-          placeholder="Go to Krobus on Fridays for Iridium Sprinkler"
-          onChange={onChange}
-          onKeyDown={onEnter}
-          width="90%"
-        />
-        <Button
-          fontSize="1.5rem"
-          lineHeight="1.5rem"
-          width="10%"
-          textAlign="center"
-          onClick={onCreateTodo}
-        >
-          +
-        </Button>
+        <form style={{ width: '100%', display: 'flex' }} onSubmit={onSubmit}>
+          <Pane width="90%" display="block">
+            <Tagify
+              tagifyRef={tagifyRef}
+              className={typeStyles.custom}
+              whitelist={whitelistedWords}
+              duplicates={true}
+              placeholder="visit the @traveling cart every friday and sunday"
+              settings={{
+                pattern: '@',
+                mode: 'mix',
+                enforceWhitelist: true,
+                dropdown: {
+                  enabled: 1,
+                  highlightFirst: true,
+                  position: 'text',
+                },
+              }}
+            />
+          </Pane>
+          <Button
+            fontSize="1.5rem"
+            lineHeight="1.5rem"
+            height="100%"
+            width="8%"
+            textAlign="center"
+            // onClick={onCreateTodo}
+            type="submit"
+            className={styles.submitButton}
+          >
+            +
+          </Button>
+        </form>
       </Pane>
       <Pane
         display="flex"
         height="100%"
         flexWrap="wrap"
-        justifyContent="center"
+        justifyContent="flex-start"
         marginTop="10px"
       >
         {todos &&
@@ -80,7 +94,10 @@ const TodoList: React.FC = () => {
               elevation={3}
               hoverElevation={4}
             >
-              <Paragraph>{todo.text}</Paragraph>
+              <Paragraph
+                className={styles.paragraph}
+                dangerouslySetInnerHTML={{ __html: formatTag(todo.text) }}
+              ></Paragraph>
               <div
                 className={styles.delete}
                 onClick={() => {

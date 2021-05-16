@@ -15,3 +15,11 @@
 .card:hover .delete {
   display: flex;
 }
+
+.submitButton:focus {
+  background-color: #fafbff;
+}
+
+.paragraph a {
+  color: #474d66;
+}
