@@ -1,4 +1,4 @@
-import { Pane, Text, toaster, useTheme } from 'evergreen-ui';
+import { Pane, Text, toaster } from 'evergreen-ui';
 import React, { useEffect, useMemo } from 'react';
 import { useParsedGame } from 'hooks/useParsedGame';
 import FileUploadListener from 'components/FileUploadListener';
@@ -17,7 +17,6 @@ const DAYS = [
 
 export default function Header() {
   const { parsedGame } = useParsedGame();
-  const theme = useTheme();
   const gameInfo = useMemo(() => {
     if (parsedGame) {
       const {
@@ -57,9 +56,7 @@ export default function Header() {
         <>
           <Text size={500}>{gameInfo.farmName}</Text>
           <Text>{`${gameInfo.weekday} ${gameInfo.dayOfMonth} ${gameInfo.currentSeason}, YEAR ${gameInfo.year}`}</Text>
-          <Text
-            color={theme.colors.text.success}
-          >{`${gameInfo.dailyLuck}% luck`}</Text>
+          <Text>{`${gameInfo.dailyLuck}% luck`}</Text>
         </>
       )}
       <FileUploadListener />

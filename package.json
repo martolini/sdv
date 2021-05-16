@@ -8,14 +8,15 @@
     "start": "next start",
     "storybook": "start-storybook -p 6006 -s ./public",
     "build-storybook": "build-storybook",
-    "test": "yarn jest"
+    "test": "yarn jest",
+    "commit": "npx git-cz"
   },
   "dependencies": {
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@react-icons/all-files": "^4.1.0",
     "@segment/snippet": "^4.13.2",
-    "evergreen-ui": "^5.1.2",
+    "evergreen-ui": "^6.0.0",
     "fast-xml-parser": "^3.19.0",
     "firebase": "^8.3.2",
     "framer-motion": "^4",
