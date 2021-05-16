@@ -102,6 +102,9 @@ export default function WikiSearch() {
         value={inputValue}
         onChange={onChange}
         onKeyDown={onKeyPress}
+        style={{
+          fontSize: '1rem',
+        }}
       />
       <Pane marginTop="10px">{searchResults}</Pane>
     </Pane>
