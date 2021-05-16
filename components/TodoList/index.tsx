@@ -1,10 +1,11 @@
 import {
-  Button,
   Pane,
   TextInput,
   Paragraph,
   TrashIcon,
   Card,
+  IconButton,
+  PlusIcon,
 } from 'evergreen-ui';
 import { Todo, useTodos } from 'hooks/useTodos';
 import { useCallback, useState } from 'react';
@@ -37,31 +38,23 @@ const TodoList: React.FC = () => {
   );
 
   return (
-    <Pane width="100%" display="flex" flexDirection="column">
-      <Pane width="100%" display="flex" flexDirection="row">
+    <Pane display="flex" flexDirection="column" marginTop={25}>
+      <Pane display="flex" flexDirection="row">
         <TextInput
           value={inputValue}
           placeholder="Go to Krobus on Fridays for Iridium Sprinkler"
           onChange={onChange}
           onKeyDown={onEnter}
-          width="90%"
+          flex="1"
         />
-        <Button
-          fontSize="1.5rem"
-          lineHeight="1.5rem"
-          width="10%"
-          textAlign="center"
-          onClick={onCreateTodo}
-        >
-          +
-        </Button>
+        <IconButton icon={PlusIcon} />
       </Pane>
       <Pane
         display="flex"
         height="100%"
         flexWrap="wrap"
         justifyContent="center"
-        marginTop="10px"
+        marginTop={10}
       >
         {todos &&
           todos.map((todo: Todo, i) => (
@@ -69,7 +62,7 @@ const TodoList: React.FC = () => {
               key={i}
               width="40%"
               className={styles.card}
-              minHeight="50px"
+              minHeight={50}
               display="flex"
               alignItems="center"
               flexDirection="row"
