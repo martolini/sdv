@@ -47,7 +47,7 @@ export function useTodos() {
             ...todo,
             isRelevantToday: isRelevantToday(todo, parsedGame.gameInfo.weekday),
           })),
-    [data]
+    [data, parsedGame]
   );
   const deleteTodo = useCallback((id: string) => {
     if (todosRef) {

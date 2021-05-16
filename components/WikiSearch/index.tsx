@@ -4,11 +4,13 @@ import { useDebounce } from 'use-debounce';
 import Suggestion from './Suggestion';
 import { Link, Pane, SearchInput } from 'evergreen-ui';
 import { useHotkeys } from 'react-hotkeys-hook';
+import { useParsedGame } from 'hooks/useParsedGame';
 
 export default function WikiSearch() {
   const [inputValue, setInputValue] = useState('');
   const [focusedResult, setFocusedResult] = useState(0);
   const searchIndex = useSearch();
+  const { parsedGame } = useParsedGame();
   const getSuggestions = useCallback(
     (query) => {
       if (query && query.trim().length === 0) return [];
@@ -52,7 +54,7 @@ export default function WikiSearch() {
         ))}
       </ul>
     );
-  }, [suggestions, focusedResult]);
+  }, [suggestions, focusedResult, parsedGame]);
 
   const onChange = useCallback((e) => {
     setInputValue(e.target.value);
