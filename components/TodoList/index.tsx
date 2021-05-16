@@ -50,9 +50,10 @@ const TodoList: React.FC = () => {
         const todo = {
           text: `<a href="https://stardewvalleywiki.com/${birthday.name
             .split(' ')
-            .join('_')}">${
+            .join('_')}" target="_blank">${
             birthday.name
-          } target="_blank"></a> has their birthday today, remember to give a lovely gift!`,
+          }</a> has their birthday today, remember to give a lovely gift!`,
+          isRelevantToday: true,
         };
         todos.push(todo);
       }
