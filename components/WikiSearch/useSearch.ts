@@ -13,7 +13,10 @@ export type SearchEntry = Item & {
   players?: string[];
   isOnMaps?: string[];
   href: string;
-  nextCropFinished?: number;
+  nextCropFinished?: {
+    amount: number;
+    daysToHarvest: number;
+  };
   amountInGround?: number;
   tags?: string[];
 };
@@ -96,9 +99,17 @@ const buildSearchIndex = (parsedGame?: ParsedGame) => {
   const cropsContext: Dataset = {};
   for (const [key, harvest] of Object.entries(groupedHarvest)) {
     const earliestFinishCrop = minBy(harvest, (h) => h.daysToHarvest);
+    const amount = earliestFinishCrop
+      ? harvest.filter(
+          (h) => h.daysToHarvest === earliestFinishCrop.daysToHarvest
+        ).length
+      : 0;
     const context: Partial<SearchEntry> = {};
     if (earliestFinishCrop) {
-      context.nextCropFinished = earliestFinishCrop.daysToHarvest;
+      context.nextCropFinished = {
+        daysToHarvest: earliestFinishCrop.daysToHarvest,
+        amount,
+      };
     }
     const byMaps = groupBy(harvest, 'location');
     const isOnMaps = Object.entries(byMaps).map(

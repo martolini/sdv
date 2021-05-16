@@ -29,7 +29,6 @@ const TodoList: React.FC<Props> = (props) => {
     },
     [onCreateTodo]
   );
-  console.log(todos);
 
   return (
     <Pane width="100%">

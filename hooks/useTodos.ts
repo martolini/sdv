@@ -13,7 +13,6 @@ export function useTodos() {
   const firestore = useFirestore();
   const todosRef = useMemo(() => {
     if (parsedGame) {
-      console.log(parsedGame);
       return firestore
         .collection('todos')
         .doc(`${parsedGame.gameInfo.gameId}`)

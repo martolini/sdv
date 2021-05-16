@@ -102,9 +102,6 @@ export default function WikiSearch() {
         value={inputValue}
         onChange={onChange}
         onKeyDown={onKeyPress}
-        onBlur={() => {
-          console.log('blurred');
-        }}
       />
       <Pane marginTop="10px">{searchResults}</Pane>
     </Pane>
