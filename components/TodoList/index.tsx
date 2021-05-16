@@ -74,8 +74,8 @@ const TodoList: React.FC = () => {
         display="flex"
         height="100%"
         flexWrap="wrap"
-        justifyContent="flex-start"
-        marginTop="10px"
+        justifyContent="center"
+        marginTop={10}
       >
         {todos &&
           todos.map((todo: Todo, i) => (
@@ -83,7 +83,7 @@ const TodoList: React.FC = () => {
               key={i}
               width="40%"
               className={styles.card}
-              minHeight="50px"
+              minHeight={50}
               display="flex"
               alignItems="center"
               flexDirection="row"
