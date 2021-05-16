@@ -12,7 +12,9 @@ export default function Home() {
       return (
         <Pane width="70%">
           <WikiSearch />
-          <TodoList />
+          <Pane marginY={24}>
+            <TodoList />
+          </Pane>
         </Pane>
       );
     }
