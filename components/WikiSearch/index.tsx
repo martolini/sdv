@@ -10,6 +10,7 @@ import { useDebounce } from 'use-debounce';
 import Suggestion from './Suggestion';
 import { Pane, Popover, SearchInput } from 'evergreen-ui';
 import { useParsedGame } from 'hooks/useParsedGame';
+import useHotkeyToFocus from 'hooks/useHotkeyToFocus';
 
 export default function WikiSearch() {
   const [inputValue, setInputValue] = useState('');
@@ -52,12 +53,7 @@ export default function WikiSearch() {
         }}
       >
         {suggestions.map((sugg, i) => (
-          <li
-            key={sugg.refIndex}
-            onClick={(e) => {
-              e.preventDefault();
-            }}
-          >
+          <li key={sugg.refIndex}>
             <Suggestion
               key={sugg.refIndex}
               item={sugg.item}
@@ -109,6 +105,7 @@ export default function WikiSearch() {
   useEffect(() => {
     setFocusedResult(0);
   }, [suggestions]);
+  useHotkeyToFocus(searchRef, ['s']);
 
   return (
     <Popover
@@ -124,7 +121,7 @@ export default function WikiSearch() {
           onKeyDown={onKeyPress}
           value={inputValue}
           onBlur={() => {
-            // setInputValue('');
+            setInputValue('');
           }}
           onChange={onChange}
           ref={searchRef}
