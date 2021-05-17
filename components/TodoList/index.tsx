@@ -41,7 +41,11 @@ const TodoList: React.FC = () => {
         const text = tagifyRef.current!.state.lastOriginalValueReported;
         if (text && text.length > 0) {
           const trimmedText = text.trim().replace(/\s+/g, ' ');
-          createTodo({ text: trimmedText, type: TodoType.CUSTOM });
+          createTodo({
+            text: trimmedText,
+            type: TodoType.CUSTOM,
+            color: theme.colors.yellowTint,
+          });
           tagifyRef.current.loadOriginalValues('');
         }
       }
@@ -62,6 +66,7 @@ const TodoList: React.FC = () => {
           )} has their birthday today, remember to give a lovely gift!`,
           isRelevantToday: true,
           type: TodoType.BIRTHDAY,
+          color: theme.colors.greenTint,
         } as Partial<Todo>;
         todos.push(todo);
       }
@@ -82,19 +87,21 @@ const TodoList: React.FC = () => {
         if (deliverableItems.length === bundle.nMissing) {
           todo.text = `Finish the ${wikifyString(
             `${bundle.bundleName} Bundle`
-          )} by delivering ${ingredientsText}!`;
+          )} by delivering ${ingredientsText} in the ${wikifyString(
+            bundle.roomName
+          )}!`;
           todo.color = theme.colors.tealTint;
         } else {
           todo.text = `You can deliver ${ingredientsText} for the ${wikifyString(
             `${bundle.bundleName} Bundle`
-          )}`;
+          )} in the ${wikifyString(bundle.roomName)}!`;
           todo.color = theme.colors.purpleTint;
         }
         todos.push(todo);
       }
     }
     return sortBy(todos, ['type', 'color']);
-  }, [parsedGame]);
+  }, [parsedGame, theme]);
   return (
     <Pane width="100%" display="flex" flexDirection="column">
       <Pane width="100%" display="flex" flexDirection="row">
@@ -159,9 +166,7 @@ const TodoList: React.FC = () => {
               paddingY="3%"
               marginY="2%"
               hoverElevation={4}
-              backgroundColor={
-                todo.isRelevantToday ? theme.colors.yellowTint : todo.color
-              }
+              backgroundColor={todo.color}
             >
               <Paragraph
                 className={styles.paragraph}
