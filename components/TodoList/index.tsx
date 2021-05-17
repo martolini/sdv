@@ -13,6 +13,7 @@ import Tagify from '@yaireo/tagify/dist/react.tagify'; // React-wrapper file
 import allWikiPages from 'data/allWikiPages';
 import { formatTag } from './utils';
 import { useParsedGame } from 'hooks/useParsedGame';
+import { sortBy } from 'lodash';
 
 const wikifyString = (text: string) => {
   if (!text) return text;
@@ -77,22 +78,22 @@ const TodoList: React.FC = () => {
             return `${wikifyString(item.name)} x ${item.stack}`;
           })
           .join(', ');
-        let text = `You can deliver ${ingredientsText} for the ${wikifyString(
-          `${bundle.bundleName} Bundle`
-        )}`;
-        let color = theme.colors.purpleTint;
+        const todo: Partial<Todo> = { type: TodoType.BUNDLE };
         if (deliverableItems.length === bundle.nMissing) {
-          text = `${text} to finish it!`;
-          color = theme.colors.tealTint;
+          todo.text = `Finish the ${wikifyString(
+            `${bundle.bundleName} Bundle`
+          )} by delivering ${ingredientsText}!`;
+          todo.color = theme.colors.tealTint;
+        } else {
+          todo.text = `You can deliver ${ingredientsText} for the ${wikifyString(
+            `${bundle.bundleName} Bundle`
+          )}`;
+          todo.color = theme.colors.purpleTint;
         }
-        todos.push({
-          text,
-          color,
-          type: TodoType.BUNDLE,
-        });
+        todos.push(todo);
       }
     }
-    return todos;
+    return sortBy(todos, ['type', 'color']);
   }, [parsedGame]);
   return (
     <Pane width="100%" display="flex" flexDirection="column">

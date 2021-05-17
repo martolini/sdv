@@ -234,7 +234,7 @@ const bundles = {
     ingredients: [
       { itemId: 388, stack: 99, quality: 0, name: 'Wood' },
       { itemId: 388, stack: 99, quality: 0, name: 'Wood' },
-      { itemId: 390, stack: 99, quality: 0, name: 'stone' },
+      { itemId: 390, stack: 99, quality: 0, name: 'Stone' },
       { itemId: 709, stack: 10, quality: 0, name: 'Hardwood' },
     ],
     itemCount: 4,

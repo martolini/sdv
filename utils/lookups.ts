@@ -241,6 +241,7 @@ export const ID_TABLE = {
   384: 'Gold Ore',
   386: 'Iridium Ore',
   388: 'Wood',
+  390: 'Stone',
   392: 'Nautilus Shell',
   393: 'Coral',
   394: 'Rainbow Shell',
