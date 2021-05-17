@@ -306,12 +306,9 @@ export function findHarvestInLocations(
       location: location.name,
       name: obj.value.Object.name,
     });
-    const tappers = filterObjectsByName(location, 'Tapper')
-      // .filter((o) => {
-      //   console.log(o);
-      //   return true;
-      // })
-      .map(nameLocationMapper);
+    const tappers = filterObjectsByName(location, 'Tapper').map(
+      nameLocationMapper
+    );
     const preservesJars = filterObjectsByName(location, 'Preserves Jar').map(
       nameLocationMapper
     );
