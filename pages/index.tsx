@@ -9,7 +9,7 @@ export default function Home() {
   const content = useMemo(() => {
     if (parsedGame) {
       return (
-        <Pane marginY={24}>
+        <Pane marginY={24} display="flex" flex="1" flexDirection="column">
           <Heading marginBottom={10}>Set your own goals</Heading>
           <TodoList />
         </Pane>
@@ -22,7 +22,7 @@ export default function Home() {
         <title>Stardew Guide 2.0</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Pane display="flex" width="60%" justifyContent="center">
+      <Pane display="flex" width="55%" justifyContent="center">
         {loading ? <Spinner /> : content}
       </Pane>
     </>
