@@ -5,11 +5,15 @@ export default function useHotkeyToFocus<T extends MutableRefObject<any>>(
   keys: string[]
 ): T {
   useEffect(() => {
-    if (document) {
-      const keyHandler = (e) => {
+    const keyHandler = (e) => {
+      if (document.activeElement) {
+        const isTodoField =
+          (document.activeElement.attributes['role'] || {}).nodeValue ===
+          'textbox';
         if (
           keys.includes(e.key) &&
-          document.activeElement.nodeName !== 'INPUT'
+          document.activeElement.nodeName !== 'INPUT' &&
+          !isTodoField
         ) {
           inputRef.current.focus();
         }
@@ -17,13 +21,13 @@ export default function useHotkeyToFocus<T extends MutableRefObject<any>>(
         if (e.key === 'Escape' && document.activeElement === inputRef.current) {
           inputRef.current.blur();
         }
-      };
-      window.addEventListener('keyup', keyHandler);
-      // Remove event listeners on cleanup
-      return () => {
-        window.removeEventListener('keyup', keyHandler);
-      };
-    }
+      }
+    };
+    window.addEventListener('keyup', keyHandler);
+    // Remove event listeners on cleanup
+    return () => {
+      window.removeEventListener('keyup', keyHandler);
+    };
   }, [inputRef, keys]);
   return inputRef;
 }
