@@ -4,6 +4,7 @@ import useInterval from 'use-interval';
 import platform from 'platform';
 import { parseXml } from 'utils/parser';
 import { useParsedGame } from 'hooks/useParsedGame';
+import { useRouter } from 'next/router';
 
 type Props = {};
 
@@ -11,6 +12,7 @@ const FileUploadListener: React.FC<Props> = (props) => {
   const [fileHandle, setFileHandle] = useState<any>();
   const [saveFile, setSaveFile] = useState<any>();
   const { setParsedGame, uploadFarm } = useParsedGame();
+  const router = useRouter();
   const [polling, setPolling] = useState(false);
   useInterval(
     async () => {
@@ -48,6 +50,12 @@ const FileUploadListener: React.FC<Props> = (props) => {
         setFileHandle(fileHandle);
         setSaveFile(file);
         uploadFarm(parsedGame);
+        router.replace({
+          pathname: router.pathname,
+          query: {
+            farm: parsedGame.gameInfo.gameId,
+          },
+        });
         setPolling(true);
       } catch (ex) {
         toaster.danger(ex.message);
