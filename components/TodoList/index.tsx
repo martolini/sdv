@@ -77,12 +77,18 @@ const TodoList: React.FC = () => {
             return `${wikifyString(item.name)} x ${item.stack}`;
           })
           .join(', ');
+        let text = `You can deliver ${ingredientsText} for the ${wikifyString(
+          `${bundle.bundleName} Bundle`
+        )}`;
+        let color = theme.colors.purpleTint;
+        if (deliverableItems.length === bundle.nMissing) {
+          text = `${text} to finish it!`;
+          color = theme.colors.tealTint;
+        }
         todos.push({
-          text: `You can deliver ${ingredientsText} for the ${wikifyString(
-            bundle.bundleName
-          )} bundle`,
-          color: theme.colors.purpleTint,
-          type: TodoType.BIRTHDAY,
+          text,
+          color,
+          type: TodoType.BUNDLE,
         });
       }
     }
