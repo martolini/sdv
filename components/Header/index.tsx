@@ -58,6 +58,9 @@ export default function Header() {
           <>
             <Heading>{gameInfo.farmName}</Heading>
             <Text>{`${gameInfo.weekday} ${gameInfo.dayOfMonth} ${gameInfo.currentSeason}, YEAR ${gameInfo.year}`}</Text>
+            <Text color="green" marginLeft="5px">
+              ({`${gameInfo.dailyLuck}% luck`})
+            </Text>
           </>
         )}
       </Pane>
