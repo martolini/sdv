@@ -6,7 +6,7 @@ import {
   Card,
   useTheme,
 } from 'evergreen-ui';
-import { Todo, useTodos } from 'hooks/useTodos';
+import { Todo, useTodos, TodoType } from 'hooks/useTodos';
 import { useCallback, useMemo, useRef } from 'react';
 import styles from './TodoList.module.css';
 import Tagify from '@yaireo/tagify/dist/react.tagify'; // React-wrapper file
@@ -40,7 +40,7 @@ const TodoList: React.FC = () => {
         const text = tagifyRef.current!.state.lastOriginalValueReported;
         if (text && text.length > 0) {
           const trimmedText = text.trim().replace(/\s+/g, ' ');
-          createTodo({ text: trimmedText });
+          createTodo({ text: trimmedText, type: TodoType.CUSTOM });
           tagifyRef.current.loadOriginalValues('');
         }
       }
@@ -60,7 +60,8 @@ const TodoList: React.FC = () => {
             birthday.name
           )} has their birthday today, remember to give a lovely gift!`,
           isRelevantToday: true,
-        };
+          type: TodoType.BIRTHDAY,
+        } as Partial<Todo>;
         todos.push(todo);
       }
       // Find missing items
@@ -81,6 +82,7 @@ const TodoList: React.FC = () => {
             bundle.bundleName
           )} bundle`,
           color: theme.colors.purpleTint,
+          type: TodoType.BIRTHDAY,
         });
       }
     }

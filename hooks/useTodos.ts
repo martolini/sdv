@@ -3,12 +3,19 @@ import { useCallback, useMemo } from 'react';
 import { useFirestore, useFirestoreCollectionData } from 'reactfire';
 import { useParsedGame } from './useParsedGame';
 
+export enum TodoType {
+  CUSTOM = 0,
+  BIRTHDAY,
+  BUNDLE,
+}
+
 export type Todo = {
   text: string;
   createdAtMillis?: number;
   NO_ID_FIELD?: string;
   isRelevantToday?: boolean;
   color?: string;
+  type: TodoType;
 };
 
 export function useTodos() {
