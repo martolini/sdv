@@ -14,8 +14,16 @@ import allWikiPages from 'data/allWikiPages';
 import { formatTag } from './utils';
 import { useParsedGame } from 'hooks/useParsedGame';
 
+const wikifyString = (text: string) => {
+  if (!text) return text;
+  return `<a href="https://stardewvalleywiki.com/${text
+    .split(' ')
+    .join('_')}" target="_blank">${text}</a>`;
+};
+
 const TodoList: React.FC = () => {
   const { todos, createTodo, deleteTodo } = useTodos();
+  const theme = useTheme() as any;
 
   const whitelistedWords = useMemo(() => {
     return Object.values(allWikiPages).map((p) => ({
@@ -48,19 +56,36 @@ const TodoList: React.FC = () => {
       const birthday = parsedGame.todaysBirthday;
       if (birthday) {
         const todo = {
-          text: `<a href="https://stardewvalleywiki.com/${birthday.name
-            .split(' ')
-            .join('_')}" target="_blank">${
+          text: `${wikifyString(
             birthday.name
-          }</a> has their birthday today, remember to give a lovely gift!`,
+          )} has their birthday today, remember to give a lovely gift!`,
           isRelevantToday: true,
         };
         todos.push(todo);
       }
+      // Find missing items
+      const { bundleInfo } = parsedGame;
+      for (const bundle of bundleInfo) {
+        const { missingIngredients } = bundle;
+        const deliverableItems = missingIngredients.filter(
+          (item) => item.deliverableInBundle
+        );
+        if (deliverableItems.length === 0) continue;
+        const ingredientsText = deliverableItems
+          .map((item) => {
+            return `${wikifyString(item.name)} x ${item.stack}`;
+          })
+          .join(', ');
+        todos.push({
+          text: `You can deliver ${ingredientsText} for the ${wikifyString(
+            bundle.bundleName
+          )} bundle`,
+          color: theme.colors.purpleTint,
+        });
+      }
     }
     return todos;
   }, [parsedGame]);
-  const theme = useTheme() as any;
   return (
     <Pane width="100%" display="flex" flexDirection="column">
       <Pane width="100%" display="flex" flexDirection="row">
@@ -126,7 +151,7 @@ const TodoList: React.FC = () => {
               marginY="2%"
               hoverElevation={4}
               backgroundColor={
-                todo.isRelevantToday ? theme.colors.yellowTint : null
+                todo.isRelevantToday ? theme.colors.yellowTint : todo.color
               }
             >
               <Paragraph

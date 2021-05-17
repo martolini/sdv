@@ -8,6 +8,7 @@ export type Todo = {
   createdAtMillis?: number;
   NO_ID_FIELD?: string;
   isRelevantToday?: boolean;
+  color?: string;
 };
 
 export function useTodos() {
