@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useMemo } from 'react';
-import { Pane, Spinner } from 'evergreen-ui';
+import { Heading, Pane, Spinner } from 'evergreen-ui';
 import { useParsedGame } from 'hooks/useParsedGame';
 import WikiSearch from 'components/WikiSearch';
 import TodoList from 'components/TodoList';
@@ -13,6 +13,7 @@ export default function Home() {
         <Pane width="70%">
           <WikiSearch />
           <Pane marginY={24}>
+            <Heading marginBottom={10}>Set your own goals</Heading>
             <TodoList />
           </Pane>
         </Pane>

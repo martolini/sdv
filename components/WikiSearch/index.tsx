@@ -1,10 +1,16 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import useSearch from './useSearch';
 import { useDebounce } from 'use-debounce';
 import Suggestion from './Suggestion';
 import { Link, Pane, SearchInput } from 'evergreen-ui';
-import { useHotkeys } from 'react-hotkeys-hook';
 import { useParsedGame } from 'hooks/useParsedGame';
+import useHotkeyToFocus from 'hooks/useHotkeyToFocus';
 
 export default function WikiSearch() {
   const [inputValue, setInputValue] = useState('');
@@ -90,8 +96,8 @@ export default function WikiSearch() {
     },
     [setFocusedResult, suggestions, focusedResult]
   );
-
-  useHotkeys('up,down,enter', onKeyPress);
+  const searchRef = useRef<any>();
+  useHotkeyToFocus(searchRef, ['s']);
   useEffect(() => {
     setFocusedResult(0);
   }, [suggestions]);
@@ -104,6 +110,7 @@ export default function WikiSearch() {
         value={inputValue}
         onChange={onChange}
         onKeyDown={onKeyPress}
+        ref={searchRef}
         style={{
           fontSize: '1rem',
         }}

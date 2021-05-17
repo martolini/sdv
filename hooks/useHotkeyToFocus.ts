@@ -6,7 +6,11 @@ export default function useHotkeyToFocus<T extends MutableRefObject<any>>(
 ): T {
   useEffect(() => {
     const keyHandler = (e) => {
-      if (keys.includes(e.key) && document.activeElement.nodeName !== 'INPUT') {
+      if (
+        keys.includes(e.key) &&
+        document.activeElement.nodeName !== 'INPUT' &&
+        document.activeElement.attributes['role'].nodeValue !== 'textbox'
+      ) {
         inputRef.current.focus();
       }
       // If escape key is hit and the input field is focused
@@ -19,6 +23,6 @@ export default function useHotkeyToFocus<T extends MutableRefObject<any>>(
     return () => {
       window.removeEventListener('keyup', keyHandler);
     };
-  }, [inputRef, keys]);
+  }, [inputRef, keys, document]);
   return inputRef;
 }
