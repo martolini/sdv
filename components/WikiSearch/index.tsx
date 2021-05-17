@@ -8,7 +8,7 @@ import React, {
 import useSearch from './useSearch';
 import { useDebounce } from 'use-debounce';
 import Suggestion from './Suggestion';
-import { Link, Pane, SearchInput } from 'evergreen-ui';
+import { Link, Pane, Popover, SearchInput } from 'evergreen-ui';
 import { useParsedGame } from 'hooks/useParsedGame';
 import useHotkeyToFocus from 'hooks/useHotkeyToFocus';
 
@@ -21,7 +21,7 @@ export default function WikiSearch() {
     (query) => {
       if (query && query.trim().length === 0) return [];
       const suggestions = searchIndex.search(query.trim(), {
-        limit: 6,
+        limit: 3,
       });
       return suggestions;
     },
@@ -39,8 +39,7 @@ export default function WikiSearch() {
         style={{
           listStyle: 'none',
           padding: 0,
-          border: '1px solid #aaa',
-          borderRadius: '4px',
+          margin: 0,
         }}
       >
         {suggestions.map((sugg, i) => (
@@ -68,17 +67,21 @@ export default function WikiSearch() {
 
   const onKeyPress = useCallback(
     (e) => {
+      console.log('pressed');
       switch (e.key) {
         case 'ArrowUp': {
           setFocusedResult((prev) => {
             return Math.max(prev - 1, 0);
           });
+          e.preventDefault();
           break;
         }
         case 'ArrowDown': {
+          console.log('ummm');
           setFocusedResult((prev) => {
             return Math.min(prev + 1, suggestions.length - 1);
           });
+          e.preventDefault();
           break;
         }
         case 'Enter': {
@@ -87,6 +90,7 @@ export default function WikiSearch() {
           if (href) {
             window.open(`https://stardewvalleywiki.com${href}`, '_blank');
           }
+          e.preventDefault();
           break;
         }
         default: {
@@ -103,19 +107,28 @@ export default function WikiSearch() {
   }, [suggestions]);
 
   return (
-    <Pane width="100%">
-      <SearchInput
-        placeholder="search wiki"
-        width="100%"
-        value={inputValue}
-        onChange={onChange}
-        onKeyDown={onKeyPress}
-        ref={searchRef}
-        style={{
-          fontSize: '1rem',
-        }}
-      />
-      <Pane marginTop="10px">{searchResults}</Pane>
-    </Pane>
+    <Popover
+      content={searchResults || []}
+      isShown={suggestions.length > 0 || true}
+      minWidth="30%"
+      position="bottom"
+    >
+      <Pane width="100%">
+        <SearchInput
+          placeholder="search wiki"
+          width="100%"
+          value={inputValue}
+          onBlur={() => {
+            // setInputValue('');
+          }}
+          onChange={onChange}
+          onKeyDown={onKeyPress}
+          ref={searchRef}
+          style={{
+            fontSize: '1rem',
+          }}
+        />
+      </Pane>
+    </Popover>
   );
 }

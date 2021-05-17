@@ -23,6 +23,6 @@ export default function useHotkeyToFocus<T extends MutableRefObject<any>>(
     return () => {
       window.removeEventListener('keyup', keyHandler);
     };
-  }, [inputRef, keys, document]);
+  }, [inputRef, keys]);
   return inputRef;
 }

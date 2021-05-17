@@ -1,9 +1,10 @@
-import { Pane, Text, toaster } from 'evergreen-ui';
+import { Heading, Pane, Text, toaster } from 'evergreen-ui';
 import React, { useEffect, useMemo } from 'react';
 import { useParsedGame } from 'hooks/useParsedGame';
 import FileUploadListener from 'components/FileUploadListener';
 import usePrevious from 'hooks/usePrevious';
 import { ParsedGame } from 'utils/parser';
+import WikiSearch from 'components/WikiSearch';
 
 const DAYS = [
   'Monday',
@@ -50,16 +51,22 @@ export default function Header() {
       padding={10}
       borderBottom
       alignItems="center"
-      justifyContent="space-around"
+      justifyContent="space-between"
     >
-      {gameInfo && (
-        <>
-          <Text size={500}>{gameInfo.farmName}</Text>
-          <Text>{`${gameInfo.weekday} ${gameInfo.dayOfMonth} ${gameInfo.currentSeason}, YEAR ${gameInfo.year}`}</Text>
-          <Text>{`${gameInfo.dailyLuck}% luck`}</Text>
-        </>
-      )}
-      <FileUploadListener />
+      <Pane width="20%">
+        {gameInfo && (
+          <>
+            <Heading>{gameInfo.farmName}</Heading>
+            <Text>{`${gameInfo.weekday} ${gameInfo.dayOfMonth} ${gameInfo.currentSeason}, YEAR ${gameInfo.year}`}</Text>
+          </>
+        )}
+      </Pane>
+      <Pane flex={1} justifyContent="center" maxWidth="30%">
+        <WikiSearch />
+      </Pane>
+      <Pane width="20%" justifyContent="flex-end" display="flex">
+        <FileUploadListener />
+      </Pane>
     </Pane>
   );
 }
