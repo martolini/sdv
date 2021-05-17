@@ -51,7 +51,7 @@ export default function Header() {
       padding={10}
       borderBottom
       alignItems="center"
-      justifyContent="space-between"
+      justifyContent="space-around"
     >
       <Pane width="20%">
         {gameInfo && (
