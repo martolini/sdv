@@ -3,12 +3,14 @@ import { ThemeProvider } from 'evergreen-ui';
 import SiteLayout from 'components/SiteLayout';
 import theme from 'utils/theme';
 import 'react-circular-progressbar/dist/styles.css';
+import '@yaireo/tagify/src/tagify.scss';
 import { FirebaseAppProvider } from 'reactfire';
 import { firebaseConfig } from 'config';
 import 'firebase/firestore';
 import FarmProvider from 'components/FarmProvider';
 import UploadDragHelper from 'components/UploadDragHelper';
 import Router from 'next/router';
+import './global.css';
 
 Router.events.on('routeChangeComplete', (url) => {
   // @ts-ignore

@@ -1,6 +1,7 @@
 {
   "files.exclude": {
     ".next": true,
-    "node_modules": true
+    "node_modules": true,
+    "tests/fixtures/*.xml": true
   }
 }

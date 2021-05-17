@@ -21,6 +21,7 @@ type SaveGame = {
   year: number;
   farmName: string;
   money: number;
+  weekday: string;
 };
 
 type RawGame = {
@@ -95,6 +96,16 @@ const getBundleStatus = (gameState: RawGame) => {
   return missing;
 };
 
+const DAYS = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday',
+];
+
 export const parseXml = (xmlString: string): ParsedGame => {
   try {
     const data = parser.parse(xmlString, {
@@ -111,6 +122,7 @@ export const parseXml = (xmlString: string): ParsedGame => {
       farmName: data.player.farmName,
       money: data.player.money,
       gameId: data.uniqueIDForThisGame,
+      weekday: DAYS[(data.dayOfMonth - 1) % 7],
     };
 
     const items: Item[] = findItems(data);
@@ -294,12 +306,9 @@ export function findHarvestInLocations(
       location: location.name,
       name: obj.value.Object.name,
     });
-    const tappers = filterObjectsByName(location, 'Tapper')
-      // .filter((o) => {
-      //   console.log(o);
-      //   return true;
-      // })
-      .map(nameLocationMapper);
+    const tappers = filterObjectsByName(location, 'Tapper').map(
+      nameLocationMapper
+    );
     const preservesJars = filterObjectsByName(location, 'Preserves Jar').map(
       nameLocationMapper
     );

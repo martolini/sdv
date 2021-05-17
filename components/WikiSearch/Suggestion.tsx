@@ -66,7 +66,8 @@ const Suggestion: React.FC<Props> = ({
       </Pane>
       {item.nextCropFinished !== undefined && (
         <Text>
-          next in {item.nextCropFinished} days
+          {item.nextCropFinished.amount} {`ready in `}
+          {item.nextCropFinished.daysToHarvest} days
           {item.amountInGround && (
             <Text size={300}> ({item.amountInGround} total)</Text>
           )}
