@@ -1,9 +1,8 @@
-import Header from 'components/Header';
-import { Pane, useTheme } from 'evergreen-ui';
+import { Pane } from 'evergreen-ui';
 import Head from 'next/head';
+import Header from 'components/Header';
 
 const SiteLayout: React.FC = ({ children }) => {
-  const theme = useTheme();
   return (
     <Pane>
       <Head>
@@ -14,13 +13,7 @@ const SiteLayout: React.FC = ({ children }) => {
         />
       </Head>
       <Header />
-      <Pane
-        paddingX={16}
-        paddingY={24}
-        backgroundColor={theme.palette.neutral.lightest}
-        display="flex"
-        justifyContent="center"
-      >
+      <Pane paddingX={16} paddingY={24} display="flex" justifyContent="center">
         {children}
       </Pane>
     </Pane>

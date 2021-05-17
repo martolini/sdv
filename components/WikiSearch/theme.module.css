@@ -1,18 +1,25 @@
 .container {
   position: relative;
   color: #425a70;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .input {
   width: 80%;
   height: 20px;
   padding: 10px 20px;
-  font-family: VT323, monospace;
   font-size: 1.1rem;
   letter-spacing: 0.5px;
   border: 1px solid #aaa;
   border-radius: 4px;
   color: #425a70;
+}
+
+.container ::placeholder {
+  opacity: 0.4;
 }
 
 .inputFocused {
@@ -35,9 +42,7 @@
   width: calc(80% + 40px);
   border: 1px solid #aaa;
   background-color: #fff;
-  font-family: VT323, monospace;
   font-size: 1.2rem;
-  letter-spacing: 0.5px;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   z-index: 2;
@@ -51,7 +56,7 @@
 
 .suggestion {
   cursor: pointer;
-  padding: 10px 20px;
+  padding: 16px 24px;
 }
 
 .suggestionHighlighted {

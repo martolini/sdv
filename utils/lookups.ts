@@ -517,6 +517,7 @@ export const ID_TABLE = {
   801: 'Wedding Ring',
   802: 'Cactus Seeds',
   803: 'Iridium Milk',
+  830: 'Taro Root',
 };
 
 export const SKILL_TABLE = {
@@ -656,6 +657,8 @@ export const FORAGE_ITEMS = [
   718,
   719,
   723,
+  829,
+  830,
 ];
 
 export const MAP_SIZES = {
@@ -1008,4 +1011,13 @@ export const MAP_IMAGES = {
   Mountain: '/img/Mountain.png',
   Town: '/img/Pelican_Town.png',
   Woods: '/img/Woods.png',
+};
+
+export const TREE_TYPES = {
+  1: 'Oak Tree',
+  2: 'Maple Tree',
+  3: 'Pine Tree',
+  7: 'Mushroom Tree',
+  8: 'Mahogny Tree',
+  9: 'Palm Tree',
 };

@@ -1,0 +1,152 @@
+import {
+  Button,
+  Pane,
+  Paragraph,
+  TrashIcon,
+  Card,
+  useTheme,
+} from 'evergreen-ui';
+import { Todo, useTodos } from 'hooks/useTodos';
+import { useCallback, useMemo, useRef } from 'react';
+import styles from './TodoList.module.css';
+import Tagify from '@yaireo/tagify/dist/react.tagify'; // React-wrapper file
+import allWikiPages from 'data/allWikiPages';
+import { formatTag } from './utils';
+import { useParsedGame } from 'hooks/useParsedGame';
+
+const TodoList: React.FC = () => {
+  const { todos, createTodo, deleteTodo } = useTodos();
+
+  const whitelistedWords = useMemo(() => {
+    return Object.values(allWikiPages).map((p) => ({
+      value: p.name,
+      href: p.href,
+    }));
+  }, []);
+
+  const tagifyRef = useRef<typeof Tagify>();
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (tagifyRef && tagifyRef.current) {
+        const text = tagifyRef.current!.state.lastOriginalValueReported;
+        if (text && text.length > 0) {
+          const trimmedText = text.trim().replace(/\s+/g, ' ');
+          createTodo({ text: trimmedText });
+          tagifyRef.current.loadOriginalValues('');
+        }
+      }
+    },
+    [tagifyRef]
+  );
+
+  const { parsedGame } = useParsedGame();
+  const suggestedTodos = useMemo(() => {
+    // Create birthday todo
+    const todos = [];
+    if (parsedGame) {
+      const birthday = parsedGame.todaysBirthday;
+      if (birthday) {
+        const todo = {
+          text: `<a href="https://stardewvalleywiki.com/${birthday.name
+            .split(' ')
+            .join('_')}" target="_blank">${
+            birthday.name
+          }</a> has their birthday today, remember to give a lovely gift!`,
+          isRelevantToday: true,
+        };
+        todos.push(todo);
+      }
+    }
+    return todos;
+  }, [parsedGame]);
+  const theme = useTheme() as any;
+  return (
+    <Pane width="100%" display="flex" flexDirection="column">
+      <Pane width="100%" display="flex" flexDirection="row">
+        <form
+          style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+          onSubmit={onSubmit}
+        >
+          <Pane width="88%" display="block">
+            <Tagify
+              tagifyRef={tagifyRef}
+              whitelist={whitelistedWords}
+              duplicates={true}
+              placeholder="visit the @traveling cart every friday and sunday"
+              settings={{
+                pattern: '@',
+                mode: 'mix',
+                enforceWhitelist: true,
+                dropdown: {
+                  enabled: 1,
+                  highlightFirst: true,
+                  position: 'text',
+                },
+              }}
+            />
+          </Pane>
+          <Button
+            height="100%"
+            float="right"
+            textAlign="center"
+            // onClick={onCreateTodo}
+            type="submit"
+            className={styles.submitButton}
+          >
+            + Add
+          </Button>
+        </form>
+      </Pane>
+      <Pane
+        display="flex"
+        height="100%"
+        flexWrap="wrap"
+        justifyContent="space-between"
+        alignItems="space-between"
+        marginTop={10}
+      >
+        {todos &&
+          [...todos, ...suggestedTodos].map((todo: Todo, i) => (
+            <Card
+              key={i}
+              width="45%"
+              className={styles.card}
+              minHeight={50}
+              display="flex"
+              alignItems="center"
+              flexDirection="row"
+              elevation={2}
+              paddingX="3%"
+              paddingY="3%"
+              marginY="2%"
+              hoverElevation={4}
+              backgroundColor={
+                todo.isRelevantToday ? theme.colors.yellowTint : null
+              }
+            >
+              <Paragraph
+                className={styles.paragraph}
+                size={500}
+                dangerouslySetInnerHTML={{ __html: formatTag(todo.text) }}
+              ></Paragraph>
+              <div
+                className={styles.delete}
+                onClick={() => {
+                  deleteTodo(todo.NO_ID_FIELD);
+                }}
+              >
+                <TrashIcon />
+              </div>
+            </Card>
+          ))}
+      </Pane>
+    </Pane>
+  );
+};
+
+export default TodoList;

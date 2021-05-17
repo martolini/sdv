@@ -7,7 +7,7 @@ import {
   EXP_TABLE,
   PROFESSIONS_TABLE,
   FORAGE_ITEMS,
-  MAP_IMAGES,
+  TREE_TYPES,
 } from './lookups';
 import { FarmItem, Item, Bundle, Map } from 'typings/stardew';
 import bundles from 'data/bundles';
@@ -21,6 +21,7 @@ type SaveGame = {
   year: number;
   farmName: string;
   money: number;
+  weekday: string;
 };
 
 type RawGame = {
@@ -31,6 +32,11 @@ type RawGame = {
   };
 };
 
+export type Tree = {
+  treeType: number;
+  location: string;
+};
+
 export type ParsedGame = {
   gameInfo: SaveGame;
   items: Item[];
@@ -39,6 +45,7 @@ export type ParsedGame = {
   players: Player[];
   todaysBirthday?: Birthday;
   maps: Map[];
+  trees: Tree[];
 };
 
 export type Birthday = {
@@ -89,6 +96,16 @@ const getBundleStatus = (gameState: RawGame) => {
   return missing;
 };
 
+const DAYS = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday',
+];
+
 export const parseXml = (xmlString: string): ParsedGame => {
   try {
     const data = parser.parse(xmlString, {
@@ -105,13 +122,15 @@ export const parseXml = (xmlString: string): ParsedGame => {
       farmName: data.player.farmName,
       money: data.player.money,
       gameId: data.uniqueIDForThisGame,
+      weekday: DAYS[(data.dayOfMonth - 1) % 7],
     };
 
     const items: Item[] = findItems(data);
     return {
       gameInfo,
       items,
-      harvest: findHarvestInLocations(data, ['Farm', 'Greenhouse']),
+      harvest: findHarvestInLocations(data),
+      trees: findTrees(data),
       bundleInfo: findMissingBundleItems(data, items),
       players: getPlayers(data),
       todaysBirthday: findTodaysBirthday(data),
@@ -123,15 +142,13 @@ export const parseXml = (xmlString: string): ParsedGame => {
 };
 
 function findMapData(saveGame: RawGame): Map[] {
-  const maps = Object.keys(MAP_IMAGES);
   const gameLocations = saveGame.locations.GameLocation;
-  return maps.map((m) => {
-    const location = gameLocations.find((loc) => loc.name === m);
+  return gameLocations.map((location) => {
     const items = forceAsArray(location.objects.item).filter((item) =>
       isForageItem(+item.value.Object.parentSheetIndex)
     );
     return {
-      name: m,
+      name: location.name,
       forage: items.map((item) => ({
         ...parseItem(item.value.Object),
         x: item.key.Vector2.X,
@@ -139,6 +156,25 @@ function findMapData(saveGame: RawGame): Map[] {
       })),
     };
   });
+}
+
+function findTrees(saveGame: RawGame) {
+  const gameLocations = saveGame.locations.GameLocation;
+  const trees = [];
+  for (const location of gameLocations) {
+    trees.push(
+      ...forceAsArray(location.terrainFeatures.item)
+        .filter((o) => o.value.TerrainFeature['@_xsi:type'] === 'Tree')
+        .map((o) => ({
+          name: `${TREE_TYPES[o.value.TerrainFeature.treeType]}`,
+          done: o.value.TerrainFeature.growthStage === 4,
+          location: location.name,
+          treeType: o.value.TerrainFeature.treeType,
+          growthStage: o.value.TerrainFeature.growthStage,
+        }))
+    );
+  }
+  return trees;
 }
 
 function findMissingBundleItems(saveGame: RawGame, items: Item[]): Bundle[] {
@@ -261,14 +297,27 @@ export function findHarvestInLocations(
   gameState: RawGame,
   names: string[] = []
 ): FarmItem[] {
-  const locations = gameState.locations.GameLocation.filter(({ name }) =>
-    names.includes(name)
+  const locations = gameState.locations.GameLocation.filter(
+    ({ name }) => names.length === 0 || names.includes(name)
   );
 
   return locations.reduce((p, location) => {
-    const tappers = filterObjectsByName(location, 'Tapper');
-    const preservesJars = filterObjectsByName(location, 'Preserves Jar');
-    const beeHouses = filterObjectsByName(location, 'Bee House');
+    const nameLocationMapper = (obj) => ({
+      location: location.name,
+      name: obj.value.Object.name,
+    });
+    const tappers = filterObjectsByName(location, 'Tapper').map(
+      nameLocationMapper
+    );
+    const preservesJars = filterObjectsByName(location, 'Preserves Jar').map(
+      nameLocationMapper
+    );
+    const beeHouses = filterObjectsByName(location, 'Bee House').map(
+      nameLocationMapper
+    );
+    const artifactSpots = filterObjectsByName(location, 'Artifact Spot').map(
+      nameLocationMapper
+    );
     const eggs = [
       ...filterObjectsByName(location, 'Egg'),
       ...findInBuildings(location, 'Coop', ['Egg']),
@@ -302,7 +351,7 @@ export function findHarvestInLocations(
       ],
       []
     );
-    const trees = forceAsArray(location.terrainFeatures.item)
+    const fruitTrees = forceAsArray(location.terrainFeatures.item)
       .filter((o) => o.value.TerrainFeature['@_xsi:type'] === 'FruitTree')
       .map((o) => ({
         name: `${ID_TABLE[o.value.TerrainFeature.indexOfFruit]} Tree`,
@@ -324,21 +373,25 @@ export function findHarvestInLocations(
         name: forage.value.Object.name,
         width: forage.tilesWide,
         height: forage.tilesHigh,
+        category: 'forage',
       }));
 
     const crops: FarmItem[] = forceAsArray(location.terrainFeatures.item)
       .filter((feature) => feature.value.TerrainFeature.crop)
       .map((feature) => {
         const phaseDays = feature.value.TerrainFeature.crop.phaseDays.int;
-        const { currentPhase } = feature.value.TerrainFeature.crop;
-        const { dayOfCurrentPhase } = feature.value.TerrainFeature.crop;
-        const { regrowAfterHarvest } = feature.value.TerrainFeature.crop;
+        const {
+          dayOfCurrentPhase,
+          currentPhase,
+          regrowAfterHarvest,
+        } = feature.value.TerrainFeature.crop;
         let daysToHarvest =
+          phaseDays &&
           phaseDays.slice(currentPhase + 1, -1).reduce((pp, c) => pp + c, 0) +
-          phaseDays[currentPhase] -
-          dayOfCurrentPhase;
-        let done = false;
-        if (currentPhase === phaseDays.length - 1) {
+            phaseDays[currentPhase] -
+            dayOfCurrentPhase;
+        let done = !phaseDays;
+        if (phaseDays && currentPhase === phaseDays.length - 1) {
           // Check if done
           if (regrowAfterHarvest > 0) {
             if (
@@ -376,10 +429,11 @@ export function findHarvestInLocations(
       ...beeHouses,
       ...eggs,
       ...kegs,
-      ...trees,
+      ...fruitTrees,
       ...crops,
       ...forages,
       ...roes,
+      ...artifactSpots,
     ];
   }, []);
 }

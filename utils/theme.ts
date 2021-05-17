@@ -1,14 +1,5 @@
-import { defaultTheme, Theme } from 'evergreen-ui';
-import { merge } from 'lodash';
+import { defaultTheme } from 'evergreen-ui';
 
-const theme = merge(defaultTheme, {
-  typography: {
-    fontFamilies: {
-      display: 'VT323',
-      ui: 'VT323',
-      mono: 'VT323',
-    },
-  },
-} as Partial<Theme>);
+const theme = defaultTheme;
 
 export default theme;

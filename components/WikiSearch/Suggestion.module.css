@@ -1,0 +1,8 @@
+.container {
+  cursor: pointer;
+  padding: 16px 24px;
+}
+
+.focused {
+  background-color: #efefef;
+}

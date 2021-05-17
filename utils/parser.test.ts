@@ -1,12 +1,12 @@
 import { parseXml } from './parser';
 import fs from 'fs';
-import { calculateRecommendedSellables } from 'components/RecommendedSellables/utils';
+import { groupBy } from 'lodash';
 
 describe('Parser tests', () => {
   const file = fs.readFileSync('tests/fixtures/testdata.xml').toString();
   const parsed = parseXml(file);
   it('Can parse harvest and items', () => {
-    expect(parsed.harvest).toHaveLength(189);
+    expect(parsed.harvest).toHaveLength(262);
     expect(parsed.items).toHaveLength(351);
     expect(parsed.gameInfo.farmName).toBe('Tegrity');
   });
@@ -37,13 +37,6 @@ describe('Parser tests', () => {
     expect(players[0].skills[0].professions[0].name).toBe('Rancher');
   });
 
-  it('Can find recommended sales items', () => {
-    const file = fs.readFileSync('tests/fixtures/sellable_test.xml').toString();
-    const parsedData = parseXml(file);
-    const recommended = calculateRecommendedSellables(parsedData);
-    expect(recommended).toHaveLength(80);
-  });
-
   it('Can find birthdays', () => {
     const file = fs.readFileSync('tests/fixtures/birthday_test.xml').toString();
     const { todaysBirthday } = parseXml(file);
@@ -57,9 +50,19 @@ describe('Parser tests', () => {
 
   it('Can parse maps and forages', () => {
     const { maps } = parsed;
-    expect(maps.length).toBe(9);
-    const first = maps[0];
-    expect(first.name).toBe('Beach');
-    expect(first.forage.length).toBe(11);
+    expect(maps.length).toBe(62);
+    const first = maps[1];
+    expect(first.name).toBe('Farm');
+    expect(first.forage.length).toBe(22);
+  });
+
+  it('Can find trees', () => {
+    const file = fs.readFileSync('tests/fixtures/trees_test.xml').toString();
+    const { trees } = parseXml(file);
+    const grouped = groupBy(
+      trees.filter((t) => t.location === 'Farm'),
+      (t) => t.treeType
+    );
+    expect(Object.keys(grouped).length).toBe(5);
   });
 });
