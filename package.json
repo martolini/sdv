@@ -30,7 +30,7 @@
     "react-dom": "^16.13.0",
     "react-json-view": "^1.19.1",
     "react-spring": "^8.0.27",
-    "rgb-hex": "^3.0.0",
+    "rgb-hex": "^4.0.0",
     "styled-components": "^4.4.1",
     "uuid": "^3.4.0"
   },
