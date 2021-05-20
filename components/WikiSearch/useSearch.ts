@@ -5,6 +5,7 @@ import { useMemo } from 'react';
 import allWikiPages from 'data/allWikiPages';
 import { useParsedGame } from 'hooks/useParsedGame';
 import { Item } from 'typings/stardew';
+import bundles from 'data/bundles';
 
 export type SearchEntry = Item & {
   chests?: string[];
@@ -155,6 +156,17 @@ const buildSearchIndex = (parsedGame?: ParsedGame) => {
     return acc;
   }, {});
 
+  // Bundle rooms, make completed
+  const bundleRooms = groupBy(bundleInfo, 'roomName');
+  for (const [room, bundles] of Object.entries(bundleRooms)) {
+    if (!bundles.some((b) => b.missingIngredients.length > 0)) {
+      bundleContext[room] = { completed: true };
+    }
+    setTag(room, 'bundle');
+    setTag(room, 'group');
+    setTag(room, 'bundle group');
+    setTag(room, 'bundle room');
+  }
   // Merge contexts
   const finalDataset = dataset.map(({ name, href }) => {
     const itemData = itemContext[name] || {};
