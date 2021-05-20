@@ -5,7 +5,6 @@ import { useMemo } from 'react';
 import allWikiPages from 'data/allWikiPages';
 import { useParsedGame } from 'hooks/useParsedGame';
 import { Item } from 'typings/stardew';
-import bundles from 'data/bundles';
 
 export type SearchEntry = Item & {
   chests?: string[];
