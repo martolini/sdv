@@ -19,6 +19,9 @@ export type SearchEntry = Item & {
   };
   amountInGround?: number;
   tags?: string[];
+  // room name for bundles
+  completed?: boolean;
+  roomName?: string;
 };
 
 type Dataset = Record<string, Partial<SearchEntry>>;
@@ -40,7 +43,8 @@ const getReadableQuality = (quality: number) => {
 };
 
 const buildSearchIndex = (parsedGame?: ParsedGame) => {
-  const { items = [], maps = [], harvest = [], trees = [] } = parsedGame || {};
+  const { items = [], maps = [], harvest = [], trees = [], bundleInfo = [] } =
+    parsedGame || {};
   // Build item stats grouped by name
   const dataset = uniqBy(allWikiPages, (p) => p.name.toLowerCase());
   const itemContext: Dataset = {};
@@ -136,12 +140,28 @@ const buildSearchIndex = (parsedGame?: ParsedGame) => {
     };
   }
 
+  // Add bundle context
+  const bundleContext = bundleInfo.reduce((acc, bundle) => {
+    const key = `${bundle.bundleName} Bundle`;
+    const ctx: Partial<SearchEntry> = acc[key] || {
+      roomName: bundle.roomName,
+    };
+    if (bundle.missingIngredients.length === 0) {
+      ctx.completed = true;
+    }
+    setTag(key, 'bundle');
+    setTag(key, bundle.roomName);
+    acc[key] = ctx;
+    return acc;
+  }, {});
+
   // Merge contexts
   const finalDataset = dataset.map(({ name, href }) => {
     const itemData = itemContext[name] || {};
     const cropsData = cropsContext[name] || {};
     const forageData = forageContext[name] || {};
     const treeData = treeContext[name] || {};
+    const bundleData = bundleContext[name] || {};
     return {
       name,
       href,
@@ -149,6 +169,7 @@ const buildSearchIndex = (parsedGame?: ParsedGame) => {
       ...cropsData,
       ...forageData,
       ...treeData,
+      ...bundleData,
       tags: tagsContext[name],
     };
   });

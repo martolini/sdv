@@ -37,6 +37,7 @@ const Suggestion: React.FC<Props> = ({
             ))
           : null}
       </Text>
+      {item.roomName && <Badge color="yellow">{item.roomName}</Badge>}
       <Pane>
         {item.chests?.length
           ? item.chests.map((color) => (
@@ -64,6 +65,7 @@ const Suggestion: React.FC<Props> = ({
           </Badge>
         ))}
       </Pane>
+      {item.completed && <Badge color="green">Completed</Badge>}
       {item.nextCropFinished !== undefined && (
         <Text>
           {item.nextCropFinished.amount} {`ready in `}
